@@ -18,6 +18,9 @@
       - installed
     service:
       - running
+      - watch:
+         - file: /etc/vsftpd.conf
+         - file: /etc/vsftpd.userlist
 
   /etc/vsftpd.conf:
     file.managed:
@@ -64,13 +67,21 @@
       - require:
         - file.directory: /home/web/repo/ftp
 
+  ftp_group_{{ site }}:
+    group.present:
+      - name: {{ site }}:
+      - gid: 7503
+      - system: True
+
   ftp_user_{{ site }}:
     user.present:
       - name: {{ site }}:
+      - uid: 7503
+      - gid_from_name: True
       - password: {{ settings.get('ftp_password') }}
       - shell: /bin/bash
       - require:
-        - group: web-group
+        - group: ftp_group_{{ site }}
 
 {% endif %}
 {% endfor %}

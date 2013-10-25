@@ -13,14 +13,29 @@ python-dev:
     - require:
       - pkg.installed: build-essential
 
-python-virtualenv:                          # ID declaration
-  pkg:                                      # state declaration
-    - installed                             # function declaration
+python-virtualenv:
+  pkg.installed
 
 libpq-dev:
   pkg.installed
 
 git:
+  pkg.installed
+
+{# for pillow #}
+libjpeg62-dev:
+  pkg.installed
+
+{# for pillow #}
+zlib1g-dev:
+  pkg.installed
+
+{# for pillow #}
+libfreetype6-dev:
+  pkg.installed
+
+{# for pillow #}
+liblcms1-dev:
   pkg.installed
 
 {% endif %}

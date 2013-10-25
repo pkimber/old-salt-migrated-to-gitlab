@@ -83,5 +83,22 @@
       - require:
         - group: ftp_group_{{ site }}
 
+  {# folder for ftp upload #}
+  /home/{{ site }}/site:
+    file.directory:
+      - user: {{ site }}
+      - group: {{ site }}
+      - require:
+        - user: {{ site }}
+      - mode: 755
+
+  {# symlink uploads to site folder #}
+  /home/web/repo/ftp/{{ site }}/site:
+    file.symlink:
+      - target: /home/{{ site }}/site
+      - require:
+        - file.directory: /home/web/repo/ftp/{{ site }}
+        - file.directory: /home/{{ site }}/site
+
 {% endif %}
 {% endfor %}

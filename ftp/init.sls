@@ -92,6 +92,14 @@
         - user: {{ site }}
       - mode: 755
 
+  /home/{{ site }}/site/templates:
+    file.directory:
+      - user: {{ site }}
+      - group: {{ site }}
+      - require:
+        - file.directory: /home/{{ site }}/site
+      - mode: 755
+
   {# symlink uploads to site folder #}
   /home/web/repo/ftp/{{ site }}/site:
     file.symlink:

@@ -4,6 +4,7 @@ base:
     - default.package
     - default.user
     - devpi
+    - ftp
     - nginx
     - solr.file
     - solr.folder

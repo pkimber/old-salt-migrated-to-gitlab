@@ -63,5 +63,14 @@
         - group
       - require:
         - file.directory: /home/web/repo/ftp
+
+  ftp_user_{{ site }}:
+    user.present:
+      - name: {{ site }}:
+      - password: {{ settings.get('ftp_password') }}
+      - shell: /bin/bash
+      - require:
+        - group: web-group
+
 {% endif %}
 {% endfor %}

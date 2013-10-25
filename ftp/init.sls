@@ -13,6 +13,12 @@
 
 {# Only set-up ftp if we have a site using ftp #}
 {% if has_ftp %}
+  vsftpd:
+    pkg:
+      - installed
+    service:
+      - running
+
   /home/web/repo/ftp:
     file.directory:
       - user: web

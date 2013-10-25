@@ -28,15 +28,15 @@
 {% for site, settings in sites.iteritems() %}
 {% if settings.get('ftp', None) %}
 {# for ftp uploads #}
-/home/web/repo/ftp/{{ site }}:
-  file.directory:
-    - user: web
-    - group: web
-    - mode: 755
-    - recurse:
-      - user
-      - group
-    - require:
-      - file.directory: /home/web/repo/ftp
+  /home/web/repo/ftp/{{ site }}:
+    file.directory:
+      - user: web
+      - group: web
+      - mode: 755
+      - recurse:
+        - user
+        - group
+      - require:
+        - file.directory: /home/web/repo/ftp
 {% endif %}
 {% endfor %}

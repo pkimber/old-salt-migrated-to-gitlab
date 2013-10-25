@@ -4,7 +4,7 @@
 {# nasty workaround from #}
 {# http://stackoverflow.com/questions/9486393/jinja2-change-the-value-of-a-variable-inside-a-loop #}
 {% set vars = {'has_ftp': False} %}
-{% for site, settings in sites.iteritems() scoped %}
+{% for site, settings in sites.iteritems() %}
   {% if settings.get('ftp', None) %}
     {% if vars.update({'has_ftp': True}) %} {% endif %}
   {% endif %}
@@ -24,19 +24,19 @@
       - require:
         - file.directory: /home/web/repo
 {% endif %}
-  {% for site, settings in sites.iteritems() %}
-    {% set ftp = settings.get('ftp', None) %}
-    {% if ftp %}
-      {# for ftp uploads #}
-      /home/web/repo/ftp/{{ site }}:
-        file.directory:
-          - user: web
-          - group: web
-          - mode: 755
-          - recurse:
-            - user
-            - group
-          - require:
-            - file.directory: /home/web/repo/ftp
-    {% endif %}
-  {% endfor %}
+
+{% for site, settings in sites.iteritems() %}
+{% if settings.get('ftp', None) %}
+{# for ftp uploads #}
+/home/web/repo/ftp/{{ site }}:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - recurse:
+      - user
+      - group
+    - require:
+      - file.directory: /home/web/repo/ftp
+{% endif %}
+{% endfor %}

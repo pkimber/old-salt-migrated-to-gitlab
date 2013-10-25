@@ -1,0 +1,4 @@
+{# we create a user for each site #}
+{% for site, settings in sites.iteritems() -%}
+{{ site }}
+{% endfor -%}

@@ -19,6 +19,25 @@
     service:
       - running
 
+  /etc/vsftpd.conf:
+    file.managed:
+      - source: salt://ftp/vsftpd.conf
+      - user: root
+      - group: root
+      - mode: 644
+      - require:
+        - pkg.installed: vsftpd
+
+  /etc/vsftpd.userlist:
+    file:
+      - managed
+      - source: salt://ftp/vsftpd.userlist
+      - template: jinja
+      - context:
+        sites: {{ sites }}
+      - require:
+        - pkg: vsftpd
+
   /home/web/repo/ftp:
     file.directory:
       - user: web

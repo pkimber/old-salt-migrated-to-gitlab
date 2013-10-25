@@ -69,13 +69,13 @@
 
   ftp_group_{{ site }}:
     group.present:
-      - name: {{ site }}:
+      - name: {{ site }}
       - gid: 7503
       - system: True
 
   ftp_user_{{ site }}:
     user.present:
-      - name: {{ site }}:
+      - name: {{ site }}
       - uid: 7503
       - gid_from_name: True
       - password: {{ settings.get('ftp_password') }}

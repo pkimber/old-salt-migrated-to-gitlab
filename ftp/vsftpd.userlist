@@ -1,4 +1,7 @@
-{# we create a user for each site #}
+{# we create a user for each site which has ftp enabled -#}
 {% for site, settings in sites.iteritems() -%}
+{% set ftp = settings.get('ftp', None) -%}
+{% if ftp -%}
 {{ site }}
+{% endif -%}
 {% endfor -%}

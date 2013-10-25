@@ -1,13 +1,15 @@
 {% set sites = pillar.get('sites', {}) %}
 
 {# Do any of the sites on this server have FTP #}
-{% set has_ftp = False %}
-{% for site, settings in sites.iteritems() %}
-  {% set ftp = settings.get('ftp', None) -%}
-  {% if ftp %}
-    {% set has_ftp = True %}
+{# nasty workaround from #}
+{# http://stackoverflow.com/questions/9486393/jinja2-change-the-value-of-a-variable-inside-a-loop #}
+{% set vars = {'has_ftp': False} %}
+{% for site, settings in sites.iteritems() scoped %}
+  {% if settings.get('ftp', None) %}
+    {% if vars.update({'has_ftp': True}) %} {% endif %}
   {% endif %}
 {% endfor %}
+{% set has_ftp = vars.has_ftp %}
 
 {# Only set-up ftp if we have a site using ftp #}
 {% if has_ftp %}
@@ -23,7 +25,7 @@
         - file.directory: /home/web/repo
 {% endif %}
   {% for site, settings in sites.iteritems() %}
-    {% set ftp = settings.get('ftp', None) -%}
+    {% set ftp = settings.get('ftp', None) %}
     {% if ftp %}
       {# for ftp uploads #}
       /home/web/repo/ftp/{{ site }}:

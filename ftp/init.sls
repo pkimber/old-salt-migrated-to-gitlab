@@ -79,7 +79,7 @@
       - uid: {{ settings.get('ftp_user_id') }}
       - gid_from_name: True
       - password: {{ settings.get('ftp_password') }}
-      - shell: /bin/bash
+      - shell: /bin/nologin
       - require:
         - group: ftp_group_{{ site }}
 

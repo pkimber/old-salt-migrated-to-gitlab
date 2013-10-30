@@ -79,7 +79,7 @@
       - uid: {{ settings.get('ftp_user_id') }}
       - gid_from_name: True
       - password: {{ settings.get('ftp_password') }}
-      - shell: /bin/nologin
+      - shell: /bin/bash
       - require:
         - group: ftp_group_{{ site }}
 
@@ -92,12 +92,28 @@
         - user: {{ site }}
       - mode: 755
 
+  /home/{{ site }}/site/static:
+    file.directory:
+      - user: {{ site }}
+      - group: {{ site }}
+      - require:
+        - file.directory: /home/{{ site }}/site
+      - mode: 755
+
   /home/{{ site }}/site/templates:
     file.directory:
       - user: {{ site }}
       - group: {{ site }}
       - require:
         - file.directory: /home/{{ site }}/site
+      - mode: 755
+
+  /home/{{ site }}/site/templates/templatepages:
+    file.directory:
+      - user: {{ site }}
+      - group: {{ site }}
+      - require:
+        - file.directory: /home/{{ site }}/site/templates
       - mode: 755
 
   {# symlink uploads to site folder #}

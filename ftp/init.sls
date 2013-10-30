@@ -70,13 +70,13 @@
   ftp_group_{{ site }}:
     group.present:
       - name: {{ site }}
-      - gid: 7503
+      - gid: {{ settings.get('ftp_user_id') }}
       - system: True
 
   ftp_user_{{ site }}:
     user.present:
       - name: {{ site }}
-      - uid: 7503
+      - uid: {{ settings.get('ftp_user_id') }}
       - gid_from_name: True
       - password: {{ settings.get('ftp_password') }}
       - shell: /bin/bash

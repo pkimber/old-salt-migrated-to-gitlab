@@ -1,5 +1,5 @@
 {% set php = pillar.get('php', {}) %}
-{% if php %}
+{% if php|length %}
 php5-fpm:
   pkg:
     - installed
@@ -20,4 +20,21 @@ php5:
     - makedirs: False
     - require:
       - pkg: php5-fpm
+
+{% for site, settings in php.iteritems() -%}
+{% set domain = settings.get('domain') -%}
+
+/etc/php5/fpm/pool.d/{{ domain }}.conf:
+  file:
+    - user: root
+    - group: root
+    - mode: 644
+    - source: salt://php/fpm.conf
+    - template: jinja
+    - context:
+      domain: {{ domain }}
+    - require:
+      - pkg: php5-fpm
+{% endfor -%}
+
 {% endif %}

@@ -1,9 +1,10 @@
 {# pillar data #}
 {% set devpi = pillar.get('devpi', {}) %}
+{% set php = pillar.get('php', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 
 {# Only set-up web folders if we have a site or a service (devpi) #}
-{% if sites|length or devpi|length %}
+{% if sites|length or devpi|length or php|length %}
 
 {# Create repo folder (required for other bits) #}
 /home/web/repo:
@@ -86,5 +87,34 @@
     - require:
       - file.directory: /home/web/repo/project
 
+{% endfor %}
+{% endif %}
+
+{% if php|length %}
+/home/web/repo/php:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: False
+    - recurse:
+      - user
+      - group
+      - mode
+    - require:
+      - file.directory: /home/web/repo
+
+{% for site, settings in php.iteritems() %}
+/home/web/repo/php/{{ site }}:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - recurse:
+      - user
+      - group
+    - require:
+      - file.directory: /home/web/repo/php
 {% endfor %}
 {% endif %}

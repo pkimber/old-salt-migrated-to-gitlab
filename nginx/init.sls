@@ -1,8 +1,9 @@
 {% set devpi = pillar.get('devpi', {}) %}
+{% set php = pillar.get('php', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 
 
-{% if sites|length or devpi|length %}
+{% if sites|length or devpi|length or php|length %}
 
 
 {% set nginx = pillar.get('nginx', {}) %}
@@ -27,6 +28,7 @@ nginx.conf:
       devpi: {{ devpi }}
       nginx: {{ nginx }}
       nginx_services: {{ nginx_services }}
+      php: {{ php }}
       sites: {{ sites }}
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference

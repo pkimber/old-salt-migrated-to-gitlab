@@ -1,10 +1,17 @@
 {% set mysql_server = pillar.get('mysql_server', {}) -%}
 {% if mysql_server %}
-mysql-server:
+
+mysqld:
   pkg:
     - installed
+    - name: mysql-server
   service:
     - running
+    - name: mysql
+    - enable: True
+    - watch:
+      - pkg: mysqld
+
 {% endif %}
 
 

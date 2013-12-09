@@ -1,3 +1,13 @@
+{% set mysql_server = pillar.get('mysql_server', {}) -%}
+{% if mysql_server %}
+mysql-server:
+  pkg:
+    - installed
+  service:
+    - running
+{% endif %}
+
+
 {% set postgres_server = pillar.get('postgres_server', {}) -%}
 {% if postgres_server %}
 

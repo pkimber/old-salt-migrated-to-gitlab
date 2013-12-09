@@ -6,6 +6,7 @@ base:
     - devpi
     - ftp
     - nginx
+    - php
     - solr.file
     - solr.folder
     - solr.package

@@ -24,15 +24,15 @@ php5:
 {% for site, settings in php.iteritems() -%}
 {% set domain = settings.get('domain') -%}
 
-/etc/php5/fpm/pool.d/{{ domain }}.conf:
-  file:
+/etc/php5/fpm/pool.d/{{ site }}.conf:
+  file.managed:
     - user: root
     - group: root
     - mode: 644
     - source: salt://php/fpm.conf
     - template: jinja
     - context:
-      domain: {{ domain }}
+      site: {{ site }}
     - require:
       - pkg: php5-fpm
 {% endfor -%}

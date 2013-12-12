@@ -13,7 +13,7 @@ mysqld:
       - pkg: mysqld
 
 /etc/mysql/my.cnf:
-  file:
+  file.managed:
     - source: salt://db/my.cnf
     - user: root
     - group: root

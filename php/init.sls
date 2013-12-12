@@ -12,6 +12,12 @@ php5:
     - require:
       - pkg: php5-fpm
 
+php5-mysql:
+  pkg:
+    - installed
+    - require:
+      - pkg: php5
+
 /var/run/php5-fpm:
   file.directory:
     - user: root

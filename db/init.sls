@@ -12,6 +12,15 @@ mysqld:
     - watch:
       - pkg: mysqld
 
+/etc/mysql/my.cnf:
+  file:
+    - source: salt://db/my.cnf
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: mysqld
+
 {% endif %}
 
 

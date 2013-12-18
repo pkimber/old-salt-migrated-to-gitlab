@@ -1,12 +1,7 @@
-{% set devpi = pillar.get('devpi', None) %}
-{% set django = pillar.get('django', None) %}
 {% set nginx = pillar.get('nginx', None) %}
-{% set php = pillar.get('php', None) %}
-
-{% set sites = pillar.get('sites', {}) %}
-
 {% if nginx %}
 
+{% set sites = pillar.get('sites', {}) %}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
 
 nginx:
@@ -24,11 +19,8 @@ nginx.conf:
     - source: salt://nginx/nginx.conf
     - template: jinja
     - context:
-      devpi: {{ devpi }}
       nginx: {{ nginx }}
       nginx_services: {{ nginx_services }}
-      django: {{ django }}
-      php: {{ php }}
       sites: {{ sites }}
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference

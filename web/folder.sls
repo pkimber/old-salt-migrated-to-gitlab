@@ -1,8 +1,9 @@
 {% set devpi = pillar.get('devpi', {}) %}
-{% set sites = pillar.get('sites', {}) %}
+{% set django = pillar.get('django', {}) %}
 
-{# Only set-up web folders if we have a site or a service (devpi) #}
-{% if sites|length or devpi|length %}
+{% if django or devpi or php %}
+
+{% set sites = pillar.get('sites', {}) %}
 
 {# Create repo folder (required for other bits) #}
 /home/web/repo:
@@ -13,10 +14,6 @@
     - makedirs: False
     - require:
       - user: web
-
-{% endif %}
-
-{% if sites|length %}
 
 /home/web/repo/files:
   file.directory:

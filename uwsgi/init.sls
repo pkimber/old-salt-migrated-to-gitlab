@@ -1,7 +1,7 @@
 {# Only set-up uwsgi if we are using Django #}
 {% set django = pillar.get('django', {}) %}
 
-{% if django|length %}
+{% if django %}
 
 {% set postgres_settings = pillar.get('postgres_settings') -%}
 {% set sites = pillar.get('sites', {}) %}

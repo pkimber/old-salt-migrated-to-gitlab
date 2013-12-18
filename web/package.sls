@@ -10,7 +10,7 @@ build-essential:
 git:
   pkg.installed
 
-{% if django|length or devpi|length %}
+{% if django or devpi %}
 
 python-dev:
   pkg.installed:
@@ -22,7 +22,7 @@ python-virtualenv:
 
 {% endif %}
 
-{% if django|length %}
+{% if django %}
 
 {# for pillow #}
 libjpeg62-dev:

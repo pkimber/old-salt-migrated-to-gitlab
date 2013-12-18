@@ -1,5 +1,5 @@
 {% set solr = pillar.get('solr', {}) %}
-{% if solr|length %}
+{% if solr %}
 
 tomcat-service:
   service:

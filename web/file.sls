@@ -1,5 +1,5 @@
 {% set django = pillar.get('django', {}) %}
-{% if django|length %}
+{% if django %}
 
 {% set sites = pillar.get('sites', {}) %}
 

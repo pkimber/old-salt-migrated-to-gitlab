@@ -1,7 +1,6 @@
-{% set devpi = pillar.get('devpi', {}) %}
+{% set devpi = pillar.get('devpi', None) %}
 
-
-{% if devpi|length %}
+{% if devpi %}
 
 /home/web/repo/devpi:
   file.directory:

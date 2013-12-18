@@ -1,35 +1,30 @@
-{% set devpi = pillar.get('devpi', {}) %}
+{% set devpi = pillar.get('devpi', None) %}
+{% set django = pillar.get('django', None) %}
 
-{% set sites = pillar.get('sites', {}) %}
-
-
-{% if sites|length or devpi|length %}
-
+{% if django or devpi %}
 uwsgi:
   supervisord:
     - running
-    - restart: True                         # Not sure we want to restart every time, but 'False' raises an error.
+    - restart: False
     - require:
       - pkg: supervisor
 
-supervisor:                                 # ID declaration
-  pkg:                                      # state declaration
-    - installed                             # function declaration
+supervisor:
+  pkg:
+    - installed
   service:
     - running
     - watch:
-      {% if devpi|length %}
+      {% if devpi %}
       - file: /etc/supervisor/conf.d/devpi.conf
       {% endif %}
-      {% if sites|length %}
+      {% if django %}
       - file: /etc/supervisor/conf.d/uwsgi.conf
       {% endif %}
-
 {% endif %}
 
 
-{% if devpi|length %}
-
+{% if devpi %}
 /etc/supervisor/conf.d/devpi.conf:
   file:
     - managed
@@ -39,17 +34,14 @@ supervisor:                                 # ID declaration
       devpi: {{ devpi }}
     - require:
       - pkg: supervisor
-
 {% endif %}
 
 
-{% if sites|length %}
-
+{% if django %}
 /etc/supervisor/conf.d/uwsgi.conf:          # ID declaration
   file:                                     # state declaration
     - managed                               # function
     - source: salt://supervisor/uwsgi.conf  # function arg
     - require:                              # requisite declaration
       - pkg: supervisor                     # requisite reference
-
 {% endif %}

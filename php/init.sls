@@ -1,7 +1,7 @@
 {% set php = pillar.get('php', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 
-{% if php|length %}
+{% if php %}
 php5-fpm:
   pkg:
     - installed
@@ -31,7 +31,9 @@ php5-mysql:
 
 {% for site, settings in sites.iteritems() -%}
 {% set domain = settings.get('domain') -%}
+{% set site_is_php = settings.get('php', None) -%}
 
+{% if site_is_php %}
 /etc/php5/fpm/pool.d/{{ site }}.conf:
   file.managed:
     - user: root
@@ -44,5 +46,6 @@ php5-mysql:
     - require:
       - pkg: php5-fpm
 {% endfor -%}
+{% endif %}
 
 {% endif %}

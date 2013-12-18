@@ -1,6 +1,7 @@
-{% set sites = pillar.get('sites', {}) %}
+{% set solr = pillar.get('solr', {}) %}
+{% if solr|length %}
 
-{% if sites|length %}
+{% set sites = pillar.get('sites', {}) %}
 
 /var/data:
   file.directory:

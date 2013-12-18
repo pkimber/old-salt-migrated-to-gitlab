@@ -1,10 +1,10 @@
-{# get sites data from the pillar #}
-{% set sites = pillar.get('sites', {}) %}
+{# Only set-up uwsgi if we are using Django #}
+{% set django = pillar.get('django', {}) %}
 
-{# Only set-up uwsgi if we have a site #}
-{% if sites|length %}
+{% if django|length %}
 
 {% set postgres_settings = pillar.get('postgres_settings') -%}
+{% set sites = pillar.get('sites', {}) %}
 
 /home/web/repo/uwsgi:
   file.directory:

@@ -1,8 +1,7 @@
-{# get sites data from the pillar #}
-{% set sites = pillar.get('sites', {}) %}
+{% set solr = pillar.get('solr', {}) %}
+{% if solr|length %}
 
-{# Only install SOLR stuff if there are sites on this server #}
-{% if sites|length %}
+{% set sites = pillar.get('sites', {}) %}
 
 /var/lib/tomcat7/conf/server.xml:
   file.managed:

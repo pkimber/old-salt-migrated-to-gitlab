@@ -1,12 +1,16 @@
-{# pillar data #}
+{% set django = pillar.get('django', {}) %}
+{% set php = pillar.get('php', {}) %}
+
 {% set devpi = pillar.get('devpi', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 
-{# Only install packages if we have a site or a service (devpi) #}
-{% if sites|length or devpi|length %}
-
 build-essential:
   pkg.installed
+
+git:
+  pkg.installed
+
+{% if django|length or devpi|length %}
 
 python-dev:
   pkg.installed:
@@ -16,11 +20,9 @@ python-dev:
 python-virtualenv:
   pkg.installed
 
-libpq-dev:
-  pkg.installed
+{% endif %}
 
-git:
-  pkg.installed
+{% if django|length %}
 
 {# for pillow #}
 libjpeg62-dev:

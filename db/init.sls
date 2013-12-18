@@ -29,6 +29,9 @@ mysqld:
 
 {% set postgres_settings = pillar.get('postgres_settings', {}) %}
 
+libpq-dev:
+  pkg.installed
+
 postgresql:
   pkg:
     - installed

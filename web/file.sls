@@ -1,8 +1,7 @@
-{# get sites data from the pillar #}
-{% set sites = pillar.get('sites', {}) %}
+{% set django = pillar.get('django', {}) %}
+{% if django|length %}
 
-{# Only set-up the script if we have a site #}
-{% if sites|length %}
+{% set sites = pillar.get('sites', {}) %}
 
 /home/web/opt:
   file.directory:

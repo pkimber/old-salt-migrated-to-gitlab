@@ -1,4 +1,3 @@
-{# pillar data #}
 {% set devpi = pillar.get('devpi', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 
@@ -73,7 +72,7 @@
     - require:
       - file.directory: /home/web/repo/files
 
-{# 'project' folder is for the python code #}
+{# 'project' folder is for the code #}
 /home/web/repo/project/{{ site }}:
   file.directory:
     - user: web

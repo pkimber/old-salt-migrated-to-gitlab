@@ -45,7 +45,7 @@ php5-mysql:
       site: {{ site }}
     - require:
       - pkg: php5-fpm
-{% endfor -%}
 {% endif %}
+{% endfor -%}
 
 {% endif %}

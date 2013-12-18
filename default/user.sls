@@ -89,10 +89,11 @@
     - mode: 755
     - makedirs: True
 
-/root/repo/temp/config:
+/root/repo/temp/config.report:
   file:
     - managed
     - source: salt://default/config.report
+    - template: jinja
 
 /root/.bashrc:
   file:

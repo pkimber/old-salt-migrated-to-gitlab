@@ -1,6 +1,41 @@
-{% set django = pillar.get('django', {}) %}
-{% if django %}
+{% set django = pillar.get('django', None) -%}
+{% if django -%}
 django              Yes
-{% else %}
+{% else -%}
 django              No
-{% endif %}
+{% endif -%}
+
+{% set php = pillar.get('php', None) -%}
+{% if php -%}
+php                 Yes
+{% else -%}
+php                 No
+{% endif -%}
+
+{% set solr = pillar.get('solr', None) -%}
+{% if solr -%}
+solr                Yes
+{% else -%}
+solr                No
+{% endif -%}
+
+{% set mysql_server = pillar.get('mysql_server', None) -%}
+{% if mysql_server -%}
+mysql_server        Yes
+{% else -%}
+mysql_server        No
+{% endif -%}
+
+{% set postgres_server = pillar.get('postgres_server', None) -%}
+{% if postgres_server -%}
+postgres_server     Yes
+{% else -%}
+postgres_server     No
+{% endif -%}
+
+{% set nginx = pillar.get('nginx', None) -%}
+{% if nginx -%}
+nginx               Yes
+{% else -%}
+nginx               No
+{% endif -%}

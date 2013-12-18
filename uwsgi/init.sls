@@ -1,5 +1,5 @@
 {# Only set-up uwsgi if we are using Django #}
-{% set django = pillar.get('django', {}) %}
+{% set django = pillar.get('django', None) %}
 
 {% if django %}
 

@@ -1,5 +1,5 @@
-{% set devpi = pillar.get('devpi', {}) %}
-{% set django = pillar.get('django', {}) %}
+{% set devpi = pillar.get('devpi', None) %}
+{% set django = pillar.get('django', None) %}
 
 {% if devpi or django %}
 

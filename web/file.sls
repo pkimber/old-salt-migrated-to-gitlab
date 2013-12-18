@@ -1,4 +1,4 @@
-{% set django = pillar.get('django', {}) %}
+{% set django = pillar.get('django', None) %}
 {% if django %}
 
 {% set sites = pillar.get('sites', {}) %}

@@ -1,7 +1,8 @@
-{% set php = pillar.get('php', {}) %}
+{% set php = pillar.get('php', None) %}
+{% if php %}
+
 {% set sites = pillar.get('sites', {}) %}
 
-{% if php %}
 php5-fpm:
   pkg:
     - installed

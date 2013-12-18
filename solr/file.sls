@@ -1,4 +1,4 @@
-{% set solr = pillar.get('solr', {}) %}
+{% set solr = pillar.get('solr', None) %}
 {% if solr %}
 
 {% set sites = pillar.get('sites', {}) %}

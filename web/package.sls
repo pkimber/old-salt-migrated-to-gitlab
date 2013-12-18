@@ -1,7 +1,7 @@
-{% set django = pillar.get('django', {}) %}
-{% set php = pillar.get('php', {}) %}
+{% set django = pillar.get('django', None) %}
+{% set php = pillar.get('php', None) %}
 
-{% set devpi = pillar.get('devpi', {}) %}
+{% set devpi = pillar.get('devpi', None) %}
 {% set sites = pillar.get('sites', {}) %}
 
 build-essential:

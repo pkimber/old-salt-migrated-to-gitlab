@@ -39,3 +39,10 @@ nginx               Yes
 {% else -%}
 nginx               No
 {% endif -%}
+
+{% set devpi = pillar.get('devpi', None) %}
+{% if devpi -%}
+devpi               Yes
+{% else -%}
+devpi               No
+{% endif -%}

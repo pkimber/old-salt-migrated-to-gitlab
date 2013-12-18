@@ -89,6 +89,11 @@
     - mode: 755
     - makedirs: True
 
+/root/repo/temp/config:
+  file:
+    - managed
+    - source: salt://default/config.report
+
 /root/.bashrc:
   file:
     - managed

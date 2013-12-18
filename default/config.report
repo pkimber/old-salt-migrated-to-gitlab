@@ -1,0 +1,6 @@
+{% set django = pillar.get('django', {}) %}
+{% if django %}
+django              Yes
+{% else %}
+django              No
+{% endif %}

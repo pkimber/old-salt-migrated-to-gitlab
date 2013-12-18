@@ -1,12 +1,11 @@
 {% set devpi = pillar.get('devpi', {}) %}
 {% set django = pillar.get('django', {}) %}
+{% set nginx = pillar.get('nginx', {}) %}
 {% set php = pillar.get('php', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 
+{% if nginx|length %}
 
-{% if sites|length or devpi|length %}
-
-{% set nginx = pillar.get('nginx', {}) %}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
 
 nginx:

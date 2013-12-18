@@ -1,4 +1,6 @@
 {% set php = pillar.get('php', {}) %}
+{% set sites = pillar.get('sites', {}) %}
+
 {% if php|length %}
 php5-fpm:
   pkg:
@@ -27,7 +29,7 @@ php5-mysql:
     - require:
       - pkg: php5-fpm
 
-{% for site, settings in php.iteritems() -%}
+{% for site, settings in sites.iteritems() -%}
 {% set domain = settings.get('domain') -%}
 
 /etc/php5/fpm/pool.d/{{ site }}.conf:

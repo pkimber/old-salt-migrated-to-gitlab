@@ -1,10 +1,9 @@
 {% set devpi = pillar.get('devpi', {}) %}
-{% set php = pillar.get('php', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 {% set users = pillar.get('users', {}) %}
 
 {# Only set-up web user if we have a site or a service (devpi) #}
-{% if sites|length or devpi|length or php|length %}
+{% if sites|length or devpi|length %}
 
 web-group:
   group.present:

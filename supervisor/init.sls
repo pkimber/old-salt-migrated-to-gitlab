@@ -5,7 +5,7 @@
 uwsgi:
   supervisord:
     - running
-    - restart: False
+    - restart: True
     - require:
       - pkg: supervisor
 

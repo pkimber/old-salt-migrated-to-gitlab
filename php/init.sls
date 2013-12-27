@@ -15,6 +15,12 @@ php5:
     - require:
       - pkg: php5-fpm
 
+php5-gd:
+  pkg:
+    - installed
+    - require:
+      - pkg: php5
+
 php5-mysql:
   pkg:
     - installed

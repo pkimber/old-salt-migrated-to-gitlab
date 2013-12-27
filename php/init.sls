@@ -38,9 +38,9 @@ php5-mysql:
 
 {% for site, settings in sites.iteritems() -%}
 {% set domain = settings.get('domain') -%}
-{% set site_is_php = settings.get('php', None) -%}
+{% set profile = settings.get('profile') -%}
 
-{% if site_is_php %}
+{% if profile == 'php' %}
 /etc/php5/fpm/pool.d/{{ site }}.conf:
   file.managed:
     - user: root

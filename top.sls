@@ -1,5 +1,6 @@
 base:
   '*':
+    - apache
     - db
     - default.package
     - default.user

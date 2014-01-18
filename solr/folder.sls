@@ -45,5 +45,13 @@
     - require:
       - file.directory: /var/data/solr/multicore
 
+/var/data/solr/multicore/{{ site }}/conf:
+  file.directory:
+    - user: tomcat7
+    - group: tomcat7
+    - mode: 755
+    - require:
+      - file.directory: /var/data/solr/multicore/{{ site }}
+
 {% endfor %}
 {% endif %}

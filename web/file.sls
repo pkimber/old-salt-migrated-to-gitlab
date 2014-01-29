@@ -1,4 +1,5 @@
 {% set django = pillar.get('django', None) %}
+{% set solr = pillar.get('solr', None) %}
 {% if django %}
 
 {% set sites = pillar.get('sites', {}) %}
@@ -45,6 +46,7 @@
       - file.directory: /home/web/opt
       - user: web
 
+{% if solr %}
 /etc/cron.d/{{ site }}_update_index:
   file:
     - managed
@@ -55,6 +57,7 @@
     - template: jinja
     - context:
       site: {{ site }}
+{% endif %}
 
 {% endfor %}
 

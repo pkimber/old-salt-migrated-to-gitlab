@@ -87,7 +87,7 @@
   /home/{{ site }}/site:
     file.directory:
       - user: {{ site }}
-      - group: {{ site }}
+      - group: web
       - require:
         - user: {{ site }}
       - mode: 2755
@@ -95,7 +95,7 @@
   /home/{{ site }}/site/static:
     file.directory:
       - user: {{ site }}
-      - group: {{ site }}
+      - group: web
       - require:
         - file.directory: /home/{{ site }}/site
       - mode: 2755
@@ -103,7 +103,7 @@
   /home/{{ site }}/site/templates:
     file.directory:
       - user: {{ site }}
-      - group: {{ site }}
+      - group: web
       - require:
         - file.directory: /home/{{ site }}/site
       - mode: 2755
@@ -111,7 +111,7 @@
   /home/{{ site }}/site/templates/templatepages:
     file.directory:
       - user: {{ site }}
-      - group: {{ site }}
+      - group: web
       - require:
         - file.directory: /home/{{ site }}/site/templates
       - mode: 2755

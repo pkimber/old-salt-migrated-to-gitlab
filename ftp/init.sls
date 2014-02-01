@@ -90,7 +90,7 @@
       - group: {{ site }}
       - require:
         - user: {{ site }}
-      - mode: 755
+      - mode: 2755
 
   /home/{{ site }}/site/static:
     file.directory:
@@ -98,7 +98,7 @@
       - group: {{ site }}
       - require:
         - file.directory: /home/{{ site }}/site
-      - mode: 755
+      - mode: 2755
 
   /home/{{ site }}/site/templates:
     file.directory:
@@ -106,7 +106,7 @@
       - group: {{ site }}
       - require:
         - file.directory: /home/{{ site }}/site
-      - mode: 755
+      - mode: 2755
 
   /home/{{ site }}/site/templates/templatepages:
     file.directory:
@@ -114,7 +114,7 @@
       - group: {{ site }}
       - require:
         - file.directory: /home/{{ site }}/site/templates
-      - mode: 755
+      - mode: 2755
 
   {# symlink uploads to site folder #}
   /home/web/repo/ftp/{{ site }}/site:

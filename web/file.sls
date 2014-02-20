@@ -30,6 +30,7 @@
 
 
 {% for site, settings in sites.iteritems() %}
+{% set cron = settings.get('cron', {}) -%}
 
 /home/web/opt/{{ site }}.sh:
   file:
@@ -46,7 +47,8 @@
       - file.directory: /home/web/opt
       - user: web
 
-{% if solr %}
+{# create cron.d file even if it is empty... #}
+{# or we won't be able to remove items from it #}
 /etc/cron.d/{{ site }}:
   file:
     - managed
@@ -56,8 +58,9 @@
     - mode: 755
     - template: jinja
     - context:
+      cron: {{ cron }}
       site: {{ site }}
-{% endif %}
+      solr: {{ solr }}
 
 {% endfor %}
 

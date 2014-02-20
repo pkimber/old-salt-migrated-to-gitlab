@@ -47,10 +47,10 @@
       - user: web
 
 {% if solr %}
-/etc/cron.d/{{ site }}_update_index:
+/etc/cron.d/{{ site }}:
   file:
     - managed
-    - source: salt://web/cron_update_index
+    - source: salt://web/cron_for_site
     - user: root
     - group: root
     - mode: 755

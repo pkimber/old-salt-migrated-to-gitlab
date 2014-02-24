@@ -12,6 +12,12 @@ git:
 
 {% if django or devpi %}
 
+python3:
+  pkg.installed
+
+python3-dev:
+  pkg.installed
+
 python-dev:
   pkg.installed:
     - require:

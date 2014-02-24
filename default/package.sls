@@ -1,3 +1,6 @@
+python3:
+  pkg.installed
+
 tmux:
   pkg.installed
 

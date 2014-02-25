@@ -2,7 +2,7 @@
 {% if django -%}
 {% set python_version = django.get('python_version') -%}
 django              Yes
-python_version      {{ python_version }}
+  python_version    {{ python_version }}
 {% else -%}
 django              No
 {% endif -%}

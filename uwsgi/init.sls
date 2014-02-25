@@ -4,6 +4,7 @@
 {% if django %}
 
 {% set postgres_settings = pillar.get('postgres_settings') -%}
+{% set python_version = django.get('python_version') -%}
 {% set sites = pillar.get('sites', {}) %}
 
 /home/web/repo/uwsgi:
@@ -51,7 +52,14 @@
 /home/web/repo/uwsgi/venv_uwsgi:
   virtualenv.manage:
     - no_site_packages: True
-    - requirements: salt://uwsgi/requirements.txt   # install uwsgi into the virtualenv
+    {% if python_version == 2 %}
+    - requirements: salt://uwsgi/requirements2.txt   # install uwsgi into the virtualenv
+    {% elif python_version == 3 %}
+    - requirements: salt://uwsgi/requirements3.txt   # install uwsgi into the virtualenv
+    - python: /usr/bin/python3
+    {% else %}
+    python_version must be 2 or 3
+    {% endif %}
     - require:                              # requisite declaration
       - pkg: python-virtualenv              # requisite reference
   file.directory:

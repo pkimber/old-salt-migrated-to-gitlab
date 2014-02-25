@@ -10,6 +10,9 @@ build-essential:
 git:
   pkg.installed
 
+mercurial:
+  pkg.installed
+
 {% if django or devpi %}
 
 python3:

@@ -9,7 +9,7 @@
     - group: root
     - mode: 755
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/data/solr:
   file.directory:
@@ -25,7 +25,7 @@
     - group: tomcat7
     - mode: 755
     - require:
-      - file.directory: /var/data/solr
+      - file: /var/data/solr
 
 /var/data/solr/multicore:
   file.directory:
@@ -33,7 +33,7 @@
     - group: tomcat7
     - mode: 755
     - require:
-      - file.directory: /var/data/solr
+      - file: /var/data/solr
 
 {% for site, settings in sites.iteritems() %}
 
@@ -43,7 +43,7 @@
     - group: tomcat7
     - mode: 755
     - require:
-      - file.directory: /var/data/solr/multicore
+      - file: /var/data/solr/multicore
 
 /var/data/solr/multicore/{{ site }}/conf:
   file.directory:
@@ -51,7 +51,7 @@
     - group: tomcat7
     - mode: 755
     - require:
-      - file.directory: /var/data/solr/multicore/{{ site }}
+      - file: /var/data/solr/multicore/{{ site }}
 
 {% endfor %}
 {% endif %}

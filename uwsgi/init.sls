@@ -13,7 +13,7 @@
     - group: web
     - mode: 755
     - require:
-      - file.directory: /home/web/repo
+      - file: /home/web/repo
 
 /home/web/repo/uwsgi/log:
   file.directory:
@@ -21,7 +21,7 @@
     - group: web
     - mode: 755
     - require:
-      - file.directory: /home/web/repo/uwsgi
+      - file: /home/web/repo/uwsgi
 
 /home/web/repo/uwsgi/vassals:
   file.directory:
@@ -29,7 +29,7 @@
     - group: web
     - mode: 755
     - require:
-      - file.directory: /home/web/repo/uwsgi
+      - file: /home/web/repo/uwsgi
 
 {% for site, settings in sites.iteritems() %}
 
@@ -45,7 +45,7 @@
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
     - require:
-      - file.directory: /home/web/repo/uwsgi/vassals
+      - file: /home/web/repo/uwsgi/vassals
 
 {% endfor %}
 
@@ -71,7 +71,7 @@
       - user
       - group
     - require:
-      - file.directory: /home/web/repo/uwsgi
+      - file: /home/web/repo/uwsgi
 
 /home/web/opt/runinenv.sh:                  # ID declaration
   file:                                     # state declaration
@@ -82,7 +82,7 @@
     - require:                              # requisite declaration
       - pkg: python-virtualenv              # requisite reference
     - require:
-      - file.directory: /home/web/opt
+      - file: /home/web/opt
       - user: web
 
 {% endif %}

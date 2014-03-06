@@ -26,7 +26,7 @@
       - group
       - mode
     - require:
-      - file.directory: /home/web/repo
+      - file: /home/web/repo
 
 /home/web/repo/project:
   file.directory:
@@ -39,7 +39,7 @@
       - group
       - mode
     - require:
-      - file.directory: /home/web/repo
+      - file: /home/web/repo
 
 {% for site, settings in sites.iteritems() %}
 
@@ -54,7 +54,7 @@
       - user
       - group
     - require:
-      - file.directory: /home/web/repo/files
+      - file: /home/web/repo/files
 
 {# 'files/site/private' folder is for private attachments #}
 /home/web/repo/files/{{ site }}/private:
@@ -67,7 +67,7 @@
       - user
       - group
     - require:
-      - file.directory: /home/web/repo/files
+      - file: /home/web/repo/files
 
 {# 'project' folder is for the code #}
 /home/web/repo/project/{{ site }}:
@@ -80,7 +80,7 @@
       - user
       - group
     - require:
-      - file.directory: /home/web/repo/project
+      - file: /home/web/repo/project
 
 {% endfor %}
 {% endif %}

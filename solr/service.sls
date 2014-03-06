@@ -7,6 +7,6 @@ tomcat-service:
     - name: tomcat7
     - enable: True
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 {% endif %}

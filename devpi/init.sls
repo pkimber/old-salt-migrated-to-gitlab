@@ -8,7 +8,7 @@
     - group: web
     - mode: 755
     - require:
-      - file.directory: /home/web/repo
+      - file: /home/web/repo
 
 /home/web/repo/devpi/data:
   file.directory:
@@ -16,7 +16,7 @@
     - group: web
     - mode: 755
     - require:
-      - file.directory: /home/web/repo/devpi
+      - file: /home/web/repo/devpi
 
 /home/web/repo/devpi/venv_devpi:
   virtualenv.manage:
@@ -24,6 +24,6 @@
     - requirements: salt://devpi/requirements.txt
     - require:
       - pkg: python-virtualenv
-      - file.directory: /home/web/repo/devpi
+      - file: /home/web/repo/devpi
 
 {% endif %}

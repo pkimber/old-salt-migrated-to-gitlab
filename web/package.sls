@@ -15,7 +15,7 @@ git:
 python-dev:
   pkg.installed:
     - require:
-      - pkg.installed: build-essential
+      - pkg: build-essential
 
 python-virtualenv:
   pkg.installed

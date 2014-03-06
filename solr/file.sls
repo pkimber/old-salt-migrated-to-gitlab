@@ -10,7 +10,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/conf/Catalina/localhost/solr.xml:
   file.managed:
@@ -19,7 +19,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/shared/jcl-over-slf4j-1.6.6.jar:
   file.managed:
@@ -28,7 +28,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/shared/jul-to-slf4j-1.6.6.jar:
   file.managed:
@@ -37,7 +37,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/shared/log4j-1.2.16.jar:
   file.managed:
@@ -46,7 +46,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/shared/log4j.properties:
   file.managed:
@@ -55,7 +55,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/shared/slf4j-api-1.6.6.jar:
   file.managed:
@@ -64,7 +64,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/lib/tomcat7/shared/slf4j-log4j12-1.6.6.jar:
   file.managed:
@@ -73,7 +73,7 @@
     - group: root
     - mode: 644
     - require:
-      - pkg.installed: tomcat7
+      - pkg: tomcat7
 
 /var/data/solr/war/solr.war:
   file.managed:
@@ -82,7 +82,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/war
+      - file: /var/data/solr/war
 
 /var/data/solr/multicore/solr.xml:
   file.managed:
@@ -92,7 +92,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/multicore
+      - file: /var/data/solr/multicore
 
 /var/data/solr/multicore/zoo.cfg:
   file.managed:
@@ -101,7 +101,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/multicore
+      - file: /var/data/solr/multicore
 
 {% for site, settings in sites.iteritems() %}
 
@@ -112,7 +112,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/multicore/{{ site }}
+      - file: /var/data/solr/multicore/{{ site }}
 
 /var/data/solr/multicore/{{ site }}/conf/solrconfig.xml:
   file.managed:
@@ -124,7 +124,7 @@
     - context:
       site: {{ site }}
     - require:
-      - file.directory: /var/data/solr/multicore/{{ site }}
+      - file: /var/data/solr/multicore/{{ site }}
 
 /var/data/solr/multicore/{{ site }}/conf/stopwords.txt:
   file.managed:
@@ -133,7 +133,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/multicore/{{ site }}
+      - file: /var/data/solr/multicore/{{ site }}
 
 /var/data/solr/multicore/{{ site }}/conf/stopwords_en.txt:
   file.managed:
@@ -142,7 +142,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/multicore/{{ site }}
+      - file: /var/data/solr/multicore/{{ site }}
 
 /var/data/solr/multicore/{{ site }}/conf/synonyms.txt:
   file.managed:
@@ -151,7 +151,7 @@
     - group: tomcat7
     - mode: 644
     - require:
-      - file.directory: /var/data/solr/multicore/{{ site }}
+      - file: /var/data/solr/multicore/{{ site }}
 
 {% endfor %}
 {% endif %}

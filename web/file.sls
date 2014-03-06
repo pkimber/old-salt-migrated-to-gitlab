@@ -24,7 +24,7 @@
     - mode: 755
     - makedirs: True
     - require:
-      - file.directory: /home/web/opt
+      - file: /home/web/opt
       - user: web
 
 
@@ -42,7 +42,7 @@
     - context:
       site: {{ site }}
     - require:
-      - file.directory: /home/web/opt
+      - file: /home/web/opt
       - user: web
 
 /etc/cron.d/{{ site }}_update_index:

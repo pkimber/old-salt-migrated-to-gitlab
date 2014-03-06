@@ -29,7 +29,7 @@
       - group: root
       - mode: 644
       - require:
-        - pkg.installed: vsftpd
+        - pkg: vsftpd
 
   /etc/vsftpd.userlist:
     file:
@@ -50,7 +50,7 @@
         - user
         - group
       - require:
-        - file.directory: /home/web/repo
+        - file: /home/web/repo
 {% endif %}
 
 {% for site, settings in sites.iteritems() %}
@@ -65,7 +65,7 @@
         - user
         - group
       - require:
-        - file.directory: /home/web/repo/ftp
+        - file: /home/web/repo/ftp
 
   ftp_group_{{ site }}:
     group.present:
@@ -97,7 +97,7 @@
       - user: {{ site }}
       - group: {{ site }}
       - require:
-        - file.directory: /home/{{ site }}/site
+        - file: /home/{{ site }}/site
       - mode: 755
 
   /home/{{ site }}/site/templates:
@@ -105,7 +105,7 @@
       - user: {{ site }}
       - group: {{ site }}
       - require:
-        - file.directory: /home/{{ site }}/site
+        - file: /home/{{ site }}/site
       - mode: 755
 
   /home/{{ site }}/site/templates/templatepages:
@@ -113,7 +113,7 @@
       - user: {{ site }}
       - group: {{ site }}
       - require:
-        - file.directory: /home/{{ site }}/site/templates
+        - file: /home/{{ site }}/site/templates
       - mode: 755
 
   {# symlink uploads to site folder #}
@@ -121,8 +121,8 @@
     file.symlink:
       - target: /home/{{ site }}/site
       - require:
-        - file.directory: /home/web/repo/ftp/{{ site }}
-        - file.directory: /home/{{ site }}/site
+        - file: /home/web/repo/ftp/{{ site }}
+        - file: /home/{{ site }}/site
 
 {% endif %}
 {% endfor %}

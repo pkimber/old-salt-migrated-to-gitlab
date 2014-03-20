@@ -60,18 +60,9 @@
     {% else %}
     python_version must be 2 or 3
     {% endif %}
+    - user: web
     - require:                              # requisite declaration
       - pkg: python-virtualenv              # requisite reference
-  file.directory:
-    - user: web
-    - group: web
-    - mode: 755
-    - makedirs: False
-    - recurse:
-      - user
-      - group
-    - require:
-      - file: /home/web/repo/uwsgi
 
 /home/web/opt/runinenv.sh:                  # ID declaration
   file:                                     # state declaration

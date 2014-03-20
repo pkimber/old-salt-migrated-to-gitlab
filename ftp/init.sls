@@ -137,6 +137,16 @@
       - requirements: salt://uwsgi/requirements2.txt
       - require:
         - pkg: python-virtualenv
+    file.directory:
+      - user: {{ site }}
+      - group: web
+      - mode: 755
+      - makedirs: False
+      - recurse:
+        - user
+        - group
+      - require:
+        - file: /home/{{ site }}/opt/
 
   {# watch files created in the site folder and set correct mode #}
   /home/{{ site }}/opt/watch_ftp_folder.py:

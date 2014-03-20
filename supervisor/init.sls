@@ -55,7 +55,7 @@ supervisor:
     - source: salt://supervisor/watch_ftp_folder.conf
     - template: jinja
     - context:
-      devpi: {{ site }}
+      site: {{ site }}
     - require:
       - pkg: supervisor
 {% endif %}

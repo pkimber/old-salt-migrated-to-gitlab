@@ -21,10 +21,6 @@
     - group: web
     - mode: 755
     - makedirs: False
-    - recurse:
-      - user
-      - group
-      - mode
     - require:
       - file: /home/web/repo
 
@@ -34,10 +30,6 @@
     - group: web
     - mode: 755
     - makedirs: False
-    - recurse:
-      - user
-      - group
-      - mode
     - require:
       - file: /home/web/repo
 
@@ -50,9 +42,6 @@
     - group: web
     - mode: 755
     - makedirs: True
-    - recurse:
-      - user
-      - group
     - require:
       - file: /home/web/repo/files
 
@@ -63,9 +52,6 @@
     - group: web
     - mode: 755
     - makedirs: True
-    - recurse:
-      - user
-      - group
     - require:
       - file: /home/web/repo/files
 
@@ -76,9 +62,6 @@
     - group: web
     - mode: 755
     - makedirs: True
-    - recurse:
-      - user
-      - group
     - require:
       - file: /home/web/repo/project
 

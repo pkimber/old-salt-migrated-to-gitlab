@@ -134,7 +134,7 @@
   /home/{{ site }}/opt/venv_watch_ftp_folder:
     virtualenv.manage:
       - system_site_packages: False
-      - requirements: salt://uwsgi/requirements2.txt
+      - requirements: salt://ftp/requirements2.txt
       - user: {{ site }}
       - require:
         - pkg: python-virtualenv

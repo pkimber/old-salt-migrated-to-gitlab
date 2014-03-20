@@ -1,5 +1,6 @@
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
+{% set sites = pillar.get('sites', {}) %}
 
 {% if django or devpi %}
 uwsgi:
@@ -44,4 +45,19 @@ supervisor:
     - source: salt://supervisor/uwsgi.conf  # function arg
     - require:                              # requisite declaration
       - pkg: supervisor                     # requisite reference
+
+
+{% for site, settings in sites.iteritems() %}
+{% if settings.get('ftp', None) %}
+/etc/supervisor/conf.d/{{ site }}_watch_ftp_folder.conf:
+  file:
+    - managed
+    - source: salt://supervisor/watch_ftp_folder.conf
+    - template: jinja
+    - context:
+      devpi: {{ site }}
+    - require:
+      - pkg: supervisor
+{% endif %}
+{% endfor %}
 {% endif %}

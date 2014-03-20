@@ -90,7 +90,7 @@
       - group: web
       - require:
         - user: {{ site }}
-      - mode: 2755
+      - mode: 755
 
   /home/{{ site }}/site/static:
     file.directory:
@@ -98,7 +98,7 @@
       - group: web
       - require:
         - file: /home/{{ site }}/site
-      - mode: 2755
+      - mode: 755
 
   /home/{{ site }}/site/templates:
     file.directory:
@@ -106,7 +106,7 @@
       - group: web
       - require:
         - file: /home/{{ site }}/site
-      - mode: 2755
+      - mode: 755
 
   /home/{{ site }}/site/templates/templatepages:
     file.directory:
@@ -114,7 +114,7 @@
       - group: web
       - require:
         - file: /home/{{ site }}/site/templates
-      - mode: 2755
+      - mode: 755
 
   {# symlink uploads to site folder #}
   /home/web/repo/ftp/{{ site }}/site:
@@ -123,6 +123,23 @@
       - require:
         - file: /home/web/repo/ftp/{{ site }}
         - file: /home/{{ site }}/site
+
+  /home/{{ site }}/opt:
+    file.directory:
+      - user: {{ site }}
+      - group: web
+      - mode: 755
+      - makedirs: False
+
+  {# watch files created in the site folder and set correct mode #}
+  /home/{{ site }}/opt/watch_ftp_folder.py:
+    file:
+      - managed
+      - source: salt://ftp/watch_ftp_folder.py
+      - user: {{ site }}
+      - group: web
+      - mode: 755
+      - makedirs: False
 
 {% endif %}
 {% endfor %}

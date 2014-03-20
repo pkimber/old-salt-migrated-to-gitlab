@@ -10,9 +10,6 @@
     - group: web
     - mode: 755
     - makedirs: False
-    - recurse:
-      - user
-      - group
     - require:
       - user: web
 

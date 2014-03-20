@@ -46,9 +46,6 @@
       - user: web
       - group: web
       - mode: 755
-      - recurse:
-        - user
-        - group
       - require:
         - file: /home/web/repo
 {% endif %}
@@ -61,9 +58,6 @@
       - user: web
       - group: web
       - mode: 755
-      - recurse:
-        - user
-        - group
       - require:
         - file: /home/web/repo/ftp
 

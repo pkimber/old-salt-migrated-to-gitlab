@@ -15,11 +15,19 @@ class MyHandler(FileSystemEventHandler):
 
     def _chown(self, event):
         if event.is_directory:
-            print 'is_directory: {}'.format(event.src_path)
-            os.chmod(event.src_path, stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
+            print('is_directory: {}'.format(event.src_path))
+            try:
+                os.chmod(event.src_path, stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH)
+            except OSError as e:
+                print(e)
+                pass
         else:
             print 'NOT event.is_directory: {}'.format(event.src_path)
-            os.chmod(event.src_path, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
+            try:
+                os.chmod(event.src_path, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
+            except OSError as e:
+                print(e)
+                pass
 
     def on_created(self, event):
         self._chown(event)

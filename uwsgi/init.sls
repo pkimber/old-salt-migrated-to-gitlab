@@ -51,7 +51,7 @@
 
 /home/web/repo/uwsgi/venv_uwsgi:
   virtualenv.manage:
-    - no_site_packages: True
+    - system_site_packages: False
     {% if python_version == 2 %}
     - requirements: salt://uwsgi/requirements2.txt   # install uwsgi into the virtualenv
     {% elif python_version == 3 %}

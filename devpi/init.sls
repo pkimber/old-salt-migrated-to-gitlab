@@ -20,7 +20,7 @@
 
 /home/web/repo/devpi/venv_devpi:
   virtualenv.manage:
-    - no_site_packages: True
+    - system_site_packages: False
     - requirements: salt://devpi/requirements.txt
     - require:
       - pkg: python-virtualenv

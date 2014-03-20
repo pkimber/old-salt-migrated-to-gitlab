@@ -133,20 +133,11 @@
 
   /home/{{ site }}/opt/venv_watch_ftp_folder:
     virtualenv.manage:
-      - no_site_packages: True
+      - system_site_packages: False
       - requirements: salt://uwsgi/requirements2.txt
+      - user: {{ site }}
       - require:
         - pkg: python-virtualenv
-    file.directory:
-      - user: {{ site }}
-      - group: web
-      - mode: 755
-      - makedirs: False
-      - recurse:
-        - user
-        - group
-      - require:
-        - file: /home/{{ site }}/opt/
 
   {# watch files created in the site folder and set correct mode #}
   /home/{{ site }}/opt/watch_ftp_folder.py:

@@ -21,7 +21,7 @@
     - require:
       - pkg: tomcat7
 
-/var/lib/tomcat7/shared/jcl-over-slf4j-1.6.6.jar:
+/usr/share/tomcat7/lib/jcl-over-slf4j-1.6.6.jar:
   file.managed:
     - source: salt://solr/jcl-over-slf4j-1.6.6.jar
     - user: root
@@ -30,7 +30,7 @@
     - require:
       - pkg: tomcat7
 
-/var/lib/tomcat7/shared/jul-to-slf4j-1.6.6.jar:
+/usr/share/tomcat7/lib/jul-to-slf4j-1.6.6.jar:
   file.managed:
     - source: salt://solr/jul-to-slf4j-1.6.6.jar
     - user: root
@@ -39,7 +39,7 @@
     - require:
       - pkg: tomcat7
 
-/var/lib/tomcat7/shared/log4j-1.2.16.jar:
+/usr/share/tomcat7/lib/log4j-1.2.16.jar:
   file.managed:
     - source: salt://solr/log4j-1.2.16.jar
     - user: root
@@ -48,7 +48,7 @@
     - require:
       - pkg: tomcat7
 
-/var/lib/tomcat7/shared/log4j.properties:
+/usr/share/tomcat7/lib/log4j.properties:
   file.managed:
     - source: salt://solr/log4j.properties
     - user: root
@@ -57,7 +57,7 @@
     - require:
       - pkg: tomcat7
 
-/var/lib/tomcat7/shared/slf4j-api-1.6.6.jar:
+/usr/share/tomcat7/lib/slf4j-api-1.6.6.jar:
   file.managed:
     - source: salt://solr/slf4j-api-1.6.6.jar
     - user: root
@@ -66,7 +66,7 @@
     - require:
       - pkg: tomcat7
 
-/var/lib/tomcat7/shared/slf4j-log4j12-1.6.6.jar:
+/usr/share/tomcat7/lib/slf4j-log4j12-1.6.6.jar:
   file.managed:
     - source: salt://solr/slf4j-log4j12-1.6.6.jar
     - user: root
@@ -77,7 +77,7 @@
 
 /var/data/solr/war/solr.war:
   file.managed:
-    - source: salt://solr/solr-4.3.0.war
+    - source: salt://solr/solr-4.7.2.war
     - user: tomcat7
     - group: tomcat7
     - mode: 644

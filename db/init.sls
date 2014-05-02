@@ -67,6 +67,17 @@ postgresql:
     - require:
       - pkg: postgresql
 
+
+{# symlink to snakeoil cert #}
+/var/lib/postgresql/9.3/main/server.crt:
+  file.symlink:
+    - target: /etc/ssl/certs/ssl-cert-snakeoil.pem
+
+/var/lib/postgresql/9.3/main/server.key:
+  file.symlink:
+    - target: /etc/ssl/private/ssl-cert-snakeoil.key
+
+
 {% set block_storage_folder = postgres_server.get('block_storage_folder', None) %}
 {% if block_storage_folder %}
 # data on Rackspace cloud block storage

@@ -38,13 +38,13 @@ postgresql:
   service:
     - running
     - watch:
-      - file: /etc/postgresql/9.1/main/postgresql.conf
-      - file: /etc/postgresql/9.1/main/pg_hba.conf
+      - file: /etc/postgresql/9.3/main/postgresql.conf
+      - file: /etc/postgresql/9.3/main/pg_hba.conf
 
-/etc/postgresql/9.1/main/pg_hba.conf:
+/etc/postgresql/9.3/main/pg_hba.conf:
   file:
-    - managed                               # function
-    - source: salt://db/pg_hba.conf         # function arg
+    - managed
+    - source: salt://db/pg_hba.9.3.conf
     - user: postgres
     - group: postgres
     - mode: 644
@@ -54,10 +54,10 @@ postgresql:
     - require:
       - pkg: postgresql
 
-/etc/postgresql/9.1/main/postgresql.conf:
+/etc/postgresql/9.3/main/postgresql.conf:
   file:
-    - managed                               # function
-    - source: salt://db/postgresql.conf     # function arg
+    - managed
+    - source: salt://db/postgresql.9.3.conf
     - user: postgres
     - group: postgres
     - mode: 644

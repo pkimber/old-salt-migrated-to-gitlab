@@ -44,7 +44,7 @@ postgresql:
 /etc/postgresql/9.3/main/pg_hba.conf:
   file:
     - managed
-    - source: salt://db/pg_hba.9.3.conf
+    - source: salt://db/pg_hba.conf
     - user: postgres
     - group: postgres
     - mode: 644
@@ -57,7 +57,7 @@ postgresql:
 /etc/postgresql/9.3/main/postgresql.conf:
   file:
     - managed
-    - source: salt://db/postgresql.9.3.conf
+    - source: salt://db/postgresql.conf
     - user: postgres
     - group: postgres
     - mode: 644

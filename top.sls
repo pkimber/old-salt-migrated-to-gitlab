@@ -8,10 +8,7 @@ base:
     - ftp
     - nginx
     - php
-    - solr.file
-    - solr.folder
-    - solr.package
-    - solr.service
+    - search
     - ssh.ssh
     - supervisor
     - uwsgi

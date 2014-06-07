@@ -36,3 +36,37 @@ oracle-java7-installer:
     - installed
     - require:
       - pkgrepo: oracle-ppa
+
+# From
+# https://github.com/saltstack-formulas/elasticsearch-logstash-kibana-formula/blob/master/kibana/init.sls
+
+elastic_repos_key:
+  file.managed:
+    - name: /root/elastic_repo.key
+    - name: /root/repo/temp/elastic_repo.key
+    - source: salt://search/GPG-KEY-elasticsearch.txt
+  cmd.run:
+    - name: cat /root/repo/temp/elastic_repo.key | apt-key add -
+    - require:
+      - file: elastic_repos_key
+
+elasticsearch_repo:
+  file.managed:
+    - name: /etc/apt/sources.list.d/elasticsearch.list
+    - require:
+      - cmd: elastic_repos_key
+    - contents: deb http://packages.elasticsearch.org/elasticsearch/1.2/debian stable main
+
+elasticsearch_soft:
+  pkg.installed:
+    - name: elasticsearch
+    - require:
+      - file: elasticsearch_repo
+      - pkg: oracle-java7-installer
+
+elastic_service:
+  service.running:
+    - name: elasticsearch
+    - enable: True
+    - require:
+      - pkg: elasticsearch_soft

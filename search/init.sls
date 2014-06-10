@@ -1,3 +1,5 @@
+{% set search = pillar.get('search', None) %}
+{% if search %}
 # https://gist.github.com/renoirb/6722890
 #
 # How to install automatically Oracle Java 7 under Salt Stack
@@ -70,3 +72,4 @@ elastic_service:
     - enable: True
     - require:
       - pkg: elasticsearch_soft
+{% endif %}

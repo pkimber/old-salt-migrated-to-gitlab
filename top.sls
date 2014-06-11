@@ -2,6 +2,7 @@ base:
   '*':
     - apache
     - db
+    - default
     - default.package
     - default.user
     - devpi

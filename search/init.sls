@@ -66,10 +66,23 @@ elasticsearch_soft:
       - file: elasticsearch_repo
       - pkg: oracle-java7-installer
 
+
+/etc/default/elasticsearch:
+  file.managed:
+    - source: salt://search/elasticsearch
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: elasticsearch_soft
+
 elastic_service:
   service.running:
     - name: elasticsearch
     - enable: True
     - require:
       - pkg: elasticsearch_soft
+      - file: /etc/default/elasticsearch
+    - watch:
+      - file: /etc/default/elasticsearch
 {% endif %}

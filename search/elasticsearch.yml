@@ -104,11 +104,11 @@
 
 # Set the number of shards (splits) of an index (5 by default):
 #
-#index.number_of_shards: 5
+index.number_of_shards: 1
 
 # Set the number of replicas (additional copies) of an index (1 by default):
 #
-#index.number_of_replicas: 1
+index.number_of_replicas: 0
 
 # Note, that for development on a local machine, with small indices, it usually
 # makes sense to "disable" the distributed features:
@@ -210,6 +210,7 @@ bootstrap.mlockall: true
 # Set both 'bind_host' and 'publish_host':
 #
 #network.host: 192.168.0.1
+network.host: 127.0.0.1
 
 # Set a custom port for the node to node communication (9300 by default):
 #
@@ -375,3 +376,8 @@ bootstrap.mlockall: true
 #monitor.jvm.gc.old.warn: 10s
 #monitor.jvm.gc.old.info: 5s
 #monitor.jvm.gc.old.debug: 2s
+
+# from http://blog.lavoie.sl/2012/09/configure-elasticsearch-on-a-single-host.html
+index.term_index_interval: 256
+index.term_index_divisor: 5
+network.tcp.block: true

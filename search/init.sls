@@ -76,6 +76,24 @@ elasticsearch_soft:
     - require:
       - pkg: elasticsearch_soft
 
+/etc/security/limits.conf:
+  file.managed:
+    - source: salt://search/limits.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: elasticsearch_soft
+
+/etc/elasticsearch/elasticsearch.yml:
+  file.managed:
+    - source: salt://search/elasticsearch.yml
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: elasticsearch_soft
+
 elastic_service:
   service.running:
     - name: elasticsearch

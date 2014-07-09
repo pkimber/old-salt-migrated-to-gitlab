@@ -9,6 +9,7 @@ base:
     - ftp
     - nginx
     - php
+    - redis
     - search
     - ssh.ssh
     - supervisor

@@ -39,6 +39,7 @@ supervisor:
 
 
 {% if django %}
+
 /etc/supervisor/conf.d/uwsgi.conf:          # ID declaration
   file:                                     # state declaration
     - managed                               # function
@@ -46,6 +47,7 @@ supervisor:
     - require:                              # requisite declaration
       - pkg: supervisor                     # requisite reference
 
+{% set postgres_settings = pillar.get('postgres_settings') -%}
 
 {% for site, settings in sites.iteritems() %}
 

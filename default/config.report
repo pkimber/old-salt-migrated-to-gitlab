@@ -2,7 +2,7 @@
 {% if django -%}
 {% set python_version = django.get('python_version') -%}
 django              Yes
-  python_version    {{ python_version }}
+- python_version    {{ python_version }}
 {% else -%}
 django              No
 {% endif -%}
@@ -43,7 +43,7 @@ postgres_server     No
 {% endif -%}
 
 {% set redis = pillar.get('redis', None) -%}
-{% if redis %}
+{% if redis -%}
 redis               Yes
 {% else -%}
 redis               No
@@ -63,19 +63,19 @@ devpi               Yes
 devpi               No
 {% endif -%}
 
-{% set sites = pillar.get('sites', {}) -%}
+{% set sites = pillar.get('sites', {}) %}
 {% for site, settings in sites.iteritems() -%}
 
 {{ site }}
 {% if settings.get('celery', None) -%}
-  celery            Yes
+- celery            Yes
 {% else -%}
-  celery            No
+- celery            No
 {% endif -%}
 {% if settings.get('ftp', None) -%}
-  ftp               Yes
+- ftp               Yes
 {% else -%}
-  ftp               No
+- ftp               No
 {% endif -%}
 
 {% endfor -%}

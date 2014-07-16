@@ -42,7 +42,7 @@ postgres_server     Yes
 postgres_server     No
 {% endif -%}
 
-{% set redis = pillar.get('redis', None) %}
+{% set redis = pillar.get('redis', None) -%}
 {% if redis %}
 redis               Yes
 {% else -%}
@@ -63,20 +63,19 @@ devpi               Yes
 devpi               No
 {% endif -%}
 
-{% set sites = pillar.get('sites', {}) %}
-{% for site, settings in sites.iteritems() %}
+{% set sites = pillar.get('sites', {}) -%}
+{% for site, settings in sites.iteritems() -%}
 
 {{ site }}
-{% if settings.get('celery', None) %}
+{% if settings.get('celery', None) -%}
   celery            Yes
 {% else -%}
   celery            No
 {% endif -%}
-{% if settings.get('ftp', None) %}
+{% if settings.get('ftp', None) -%}
   ftp               Yes
 {% else -%}
   ftp               No
 {% endif -%}
 
-{% endif %}
-{% endfor %}
+{% endfor -%}

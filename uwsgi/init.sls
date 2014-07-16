@@ -45,6 +45,20 @@
       settings: {{ settings }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
+
+/home/web/repo/uwsgi/vassals/{{ site }}_celery_worker.ini:
+  file:
+    - managed
+    - source: salt://uwsgi/vassal_celery_worker.ini
+    - user: web
+    - group: web
+    - template: jinja
+    - context:
+      site: {{ site }}
+      postgres_settings: {{ postgres_settings }}
+      settings: {{ settings }}
+    - require:
+      - file: /home/web/repo/uwsgi/vassals
 {% endfor %}
 
 /home/web/repo/uwsgi/venv_uwsgi:

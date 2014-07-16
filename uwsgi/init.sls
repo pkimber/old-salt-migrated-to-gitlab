@@ -47,6 +47,19 @@
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
+{% if settings.get('celery', None) %}
+/home/web/repo/uwsgi/vassals/{{ site }}_celery_worker.ini:
+  file:
+    - managed
+    - source: salt://uwsgi/celery_worker.conf
+    - user: web
+    - group: web
+    - template: jinja
+    - context:
+      site: {{ site }}
+    - require:
+      - file: /home/web/repo/uwsgi/vassals
+{% endif %}
 {% endfor %}
 
 /home/web/repo/uwsgi/venv_uwsgi:

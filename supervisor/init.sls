@@ -48,6 +48,29 @@ supervisor:
 
 
 {% for site, settings in sites.iteritems() %}
+
+{% if settings.get('celery', None) %}
+/etc/supervisor/conf.d/{{ site }}_celery_worker.conf:
+  file:
+    - managed
+    - source: salt://supervisor/celery_worker.conf
+    - template: jinja
+    - context:
+      site: {{ site }}
+    - require:
+      - pkg: supervisor
+
+/etc/supervisor/conf.d/{{ site }}_celery_beat.conf:
+  file:
+    - managed
+    - source: salt://supervisor/celery_beat.conf
+    - template: jinja
+    - context:
+      site: {{ site }}
+    - require:
+      - pkg: supervisor
+{% endif %}
+
 {% if settings.get('ftp', None) %}
 /etc/supervisor/conf.d/{{ site }}_watch_ftp_folder.conf:
   file:

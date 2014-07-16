@@ -60,13 +60,17 @@ supervisor:
     - require:
       - pkg: supervisor
 
-/etc/supervisor/conf.d/{{ site }}_celery_beat.conf:
+/home/web/repo/script/{{ site }}_celery_worker.sh:
   file:
     - managed
-    - source: salt://supervisor/celery_beat.conf
+    - source: salt://supervisor/celery_worker.sh
+    - user: web
+    - group: web
     - template: jinja
     - context:
       site: {{ site }}
+      postgres_settings: {{ postgres_settings }}
+      settings: {{ settings }}
     - require:
       - pkg: supervisor
 {% endif %}

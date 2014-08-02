@@ -21,6 +21,7 @@
 /home/web/repo/devpi/venv_devpi:
   virtualenv.manage:
     - system_site_packages: False
+    - index_url: https://pypi.python.org/simple/
     - requirements: salt://devpi/requirements.txt
     - python: /usr/bin/python3
     - user: web

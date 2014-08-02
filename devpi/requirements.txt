@@ -1,1 +1,2 @@
 devpi-server==2.0.1
+pytest==2.6.0

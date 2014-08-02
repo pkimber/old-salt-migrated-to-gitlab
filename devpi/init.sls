@@ -22,6 +22,7 @@
   virtualenv.manage:
     - system_site_packages: False
     - requirements: salt://devpi/requirements.txt
+    - python: /usr/bin/python3
     - user: web
     - require:
       - pkg: python-virtualenv

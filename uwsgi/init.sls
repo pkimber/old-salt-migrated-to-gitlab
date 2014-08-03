@@ -46,6 +46,7 @@
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
+{% if settings.get('celery', None) %}
 /home/web/repo/uwsgi/vassals/{{ site }}_celery_beat.ini:
   file:
     - managed
@@ -73,6 +74,7 @@
       settings: {{ settings }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
+{% endif %}
 {% endfor %}
 
 /home/web/repo/uwsgi/venv_uwsgi:

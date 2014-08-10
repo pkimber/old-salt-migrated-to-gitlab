@@ -1,5 +1,6 @@
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
+{% set monitor = pillar.get('monitor', None) %}
 {% set php = pillar.get('php', None) %}
 
 {% set users = pillar.get('users', {}) %}

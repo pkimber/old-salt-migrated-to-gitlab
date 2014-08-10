@@ -44,4 +44,16 @@
     - require:
       - pkg: python-virtualenv
 
+/home/web/repo/uwsgi/vassals/graphite.ini:
+  file:
+    - managed
+    - source: salt://monitor/vassal.ini
+    - user: web
+    - group: web
+    - template: jinja
+    - context:
+      monitor: {{ monitor }}
+    - require:
+      - file: /home/web/repo/uwsgi/vassals
+
 {% endif %}

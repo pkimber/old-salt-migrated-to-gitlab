@@ -3,6 +3,18 @@
 #
 # Additional customizations to Django settings can be added to this file as well
 
+def get_env_variable(key):
+    """
+    Get the environment variable or return exception
+    Copied from Django two scoops book
+    """
+    try:
+        return os.environ[key]
+    except KeyError:
+        error_msg = "Set the {} env variable".format(key)
+        print('ImproperlyConfigured: {}'.format(error_msg))
+        raise ImproperlyConfigured(error_msg)
+
 #####################################
 # General Configuration #
 #####################################
@@ -11,6 +23,7 @@
 # CRSF middleware, cookie storage, etc. This should be set identically among
 # instances if used behind a load balancer.
 #SECRET_KEY = 'UNSAFE_DEFAULT'
+SECRET_KEY = get_env_variable('SECRET_KEY')
 
 # In Django 1.5+ set this to the list of hosts your graphite instances is
 # accessible as. See:
@@ -21,6 +34,8 @@
 # If your graphs appear to be offset by a couple hours then this probably
 # needs to be explicitly set to your local timezone.
 #TIME_ZONE = 'America/Los_Angeles'
+TIME_ZONE = 'Europe/London'
+LANGUAGE_CODE = 'en-gb'
 
 # Override this to provide documentation specific to your Graphite deployment
 #DOCUMENTATION_URL = "http://graphite.readthedocs.org/"
@@ -120,7 +135,7 @@
 # See http://www.python-ldap.org/ for further details on these options.
 
 ## REMOTE_USER authentication. See: https://docs.djangoproject.com/en/dev/howto/auth-remote-user/
-#USE_REMOTE_USER_AUTHENTICATION = True
+USE_REMOTE_USER_AUTHENTICATION = True
 
 # Override the URL for the login link (e.g. for django_openid_auth)
 #LOGIN_URL = '/account/login'
@@ -147,17 +162,16 @@
 # The default is 'django.db.backends.sqlite3' with file 'graphite.db'
 # located in STORAGE_DIR
 #
-#DATABASES = {
-#    'default': {
-#        'NAME': '/opt/graphite/storage/graphite.db',
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'USER': '',
-#        'PASSWORD': '',
-#        'HOST': '',
-#        'PORT': ''
-#    }
-#}
-#
+DATABASES = {
+    'default': {
+        'NAME': 'graphite',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'USER': 'graphite',
+        'PASSWORD': get_env_variable('DB_PASS'),
+        'HOST': '',
+        'PORT': ''
+    }
+}
 
 
 #########################

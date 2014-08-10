@@ -1,4 +1,5 @@
 {% set django = pillar.get('django', None) %}
+{% set monitor = pillar.get('monitor', None) %}
 {% set php = pillar.get('php', None) %}
 
 {% set devpi = pillar.get('devpi', None) %}
@@ -13,7 +14,7 @@ git:
 mercurial:
   pkg.installed
 
-{% if django or devpi %}
+{% if django or devpi or monitor %}
 
 python3:
   pkg.installed

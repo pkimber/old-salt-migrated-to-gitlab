@@ -1,3 +1,4 @@
+{% set monitor = pillar.get('monitor', None) %}
 {% if monitor %}
 
 /opt/graphite:

@@ -5,7 +5,7 @@
 {% set users = pillar.get('users', {}) %}
 
 {# Only set-up web user if we have a site or a service (devpi) #}
-{% if django or php or devpi %}
+{% if django or php or devpi or monitor %}
 
 web-group:
   group.present:

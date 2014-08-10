@@ -1,0 +1,7 @@
+carbon
+django
+django-tagging
+graphite-web
+simplejson
+uwsgi
+whisper

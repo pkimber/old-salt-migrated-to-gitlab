@@ -1,14 +1,12 @@
 {# Only set-up uwsgi if we are using Django (including Graphite) #}
 {% set django = pillar.get('django', None) %}
 {% set monitor = pillar.get('monitor', None) %}
+{% set sites = pillar.get('sites', {}) %}
 
 {% if django or monitor %}
 
 {% if django %}
 {% set postgres_settings = pillar.get('postgres_settings') -%}
-{% set sites = pillar.get('sites', {}) %}
-{% else %}
-{% set sites = {} %}
 {% endif %}
 
 /home/web/repo/uwsgi:

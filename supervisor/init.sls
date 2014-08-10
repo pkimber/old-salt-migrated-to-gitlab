@@ -1,8 +1,9 @@
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
+{% set monitor = pillar.get('monitor', None) %}
 {% set sites = pillar.get('sites', {}) %}
 
-{% if django or devpi %}
+{% if django or devpi or monitor %}
 uwsgi:
   supervisord:
     - running
@@ -38,7 +39,7 @@ supervisor:
 {% endif %}
 
 
-{% if django %}
+{% if django or monitor %}
 
 /etc/supervisor/conf.d/uwsgi.conf:          # ID declaration
   file:                                     # state declaration
@@ -47,7 +48,9 @@ supervisor:
     - require:                              # requisite declaration
       - pkg: supervisor                     # requisite reference
 
+{% if django %}
 {% set postgres_settings = pillar.get('postgres_settings') -%}
+{% endif %}
 
 {% for site, settings in sites.iteritems() %}
 {% if settings.get('ftp', None) %}
@@ -62,4 +65,5 @@ supervisor:
       - pkg: supervisor
 {% endif %}
 {% endfor %}
+
 {% endif %}

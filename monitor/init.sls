@@ -36,6 +36,15 @@
     - require:
       - user: web
 
+/opt/graphite/conf/graphite.wsgi:
+  file:
+    - managed
+    - source: salt://monitor/graphite.wsgi
+    - user: web
+    - group: web
+    - require:
+      - user: web
+
 /opt/graphite/venv_graphite:
   virtualenv.manage:
     - system_site_packages: False

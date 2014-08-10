@@ -65,4 +65,19 @@
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
+/home/web/opt/graphite.sh:
+  file:
+    - managed
+    - source: salt://monitor/manage.sh
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - makedirs: True
+    - context:
+      monitor: {{ monitor }}
+    - require:
+      - file: /home/web/opt
+      - user: web
+
 {% endif %}

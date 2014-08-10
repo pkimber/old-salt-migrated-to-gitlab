@@ -20,7 +20,7 @@ supervisor:
       {% if devpi %}
       - file: /etc/supervisor/conf.d/devpi.conf
       {% endif %}
-      {% if django %}
+      {% if django or monitor %}
       - file: /etc/supervisor/conf.d/uwsgi.conf
       {% endif %}
 {% endif %}

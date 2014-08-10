@@ -1,6 +1,7 @@
 {% set django = pillar.get('django', None) %}
+{% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
-{% if django %}
+{% if django or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
 

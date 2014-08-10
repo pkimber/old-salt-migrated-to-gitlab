@@ -36,7 +36,7 @@
     - require:
       - user: web
 
-/opt/graphite/conf/graphite.wsgi:
+/opt/graphite/webapp/graphite/wsgi.py:
   file:
     - managed
     - source: salt://monitor/graphite.wsgi

@@ -3,6 +3,9 @@
 #
 # Additional customizations to Django settings can be added to this file as well
 
+import os
+from django.core.exceptions import ImproperlyConfigured
+
 def get_env_variable(key):
     """
     Get the environment variable or return exception

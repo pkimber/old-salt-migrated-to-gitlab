@@ -27,6 +27,15 @@
     - require:
       - user: web
 
+/opt/graphite/webapp/graphite/local_settings.py:
+  file:
+    - managed
+    - source: salt://monitor/local_settings.py
+    - user: web
+    - group: web
+    - require:
+      - user: web
+
 /opt/graphite/venv_graphite:
   virtualenv.manage:
     - system_site_packages: False

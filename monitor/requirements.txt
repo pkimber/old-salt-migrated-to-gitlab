@@ -1,5 +1,5 @@
 carbon
-django
+django==1.5.8
 django-tagging
 graphite-web
 psycopg2==2.5.2

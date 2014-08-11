@@ -1,8 +1,6 @@
 {% set django = pillar.get('django', None) -%}
 {% if django -%}
-{% set python_version = django.get('python_version') -%}
 django              Yes
-- python_version    {{ python_version }}
 {% else -%}
 django              No
 {% endif -%}
@@ -47,6 +45,13 @@ mysql_server        No
 postgres_server     Yes
 {% else -%}
 postgres_server     No
+{% endif -%}
+
+{% set postgres_settings = pillar.get('postgres_settings', {}) %}
+{% if postgres_settings -%}
+postgres_settings   Yes
+{% else -%}
+postgres_settings   No
 {% endif -%}
 
 {% set redis = pillar.get('redis', None) -%}

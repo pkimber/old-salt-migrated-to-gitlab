@@ -53,6 +53,13 @@
     - require:
       - pkg: python-virtualenv
 
+python-cairo:
+  pkg.installed
+
+/opt/graphite/venv_graphite/lib/python2.7/site-packages/cairo:
+  file.symlink:
+    - target: /usr/lib/python2.7/dist-packages/cairo
+
 /home/web/repo/uwsgi/vassals/graphite.ini:
   file:
     - managed

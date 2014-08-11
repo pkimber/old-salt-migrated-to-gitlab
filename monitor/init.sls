@@ -53,6 +53,8 @@
     - require:
       - pkg: python-virtualenv
 
+# cairo in a virtual environment (not)
+# http://blog.mapado.com/graphite-virtualenv-apache-symfony/
 python-cairo:
   pkg.installed
 

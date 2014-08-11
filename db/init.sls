@@ -23,14 +23,15 @@ mysqld:
 
 {% endif %}
 
-
 {% set postgres_server = pillar.get('postgres_server', {}) -%}
-{% if postgres_server %}
-
 {% set postgres_settings = pillar.get('postgres_settings', {}) %}
 
+{% if postgres_server or postgres_settings %}
 libpq-dev:
   pkg.installed
+{% endif %}
+
+{% if postgres_server %}
 
 postgresql:
   pkg:

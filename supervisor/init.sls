@@ -38,6 +38,15 @@ supervisor:
       - pkg: supervisor
 {% endif %}
 
+{% if monitor %}
+/etc/supervisor/conf.d/carbon.conf:
+  file:
+    - managed
+    - source: salt://supervisor/carbon.conf
+    - template: jinja
+    - require:
+      - pkg: supervisor
+{% endif %}
 
 {% if django or monitor %}
 

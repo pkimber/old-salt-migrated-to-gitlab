@@ -1,8 +1,9 @@
 carbon
-django==1.5.8
 django-tagging
+django==1.5.8
 graphite-web
 psycopg2==2.5.2
 simplejson
+Twisted==11.1.0
 uwsgi
 whisper

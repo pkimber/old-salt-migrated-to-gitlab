@@ -104,19 +104,17 @@
       - file: /home/web/opt
       - user: web
 
-uwsgi_build:
-  git:
-    - name: git://github.com:unbit/uwsgi.git
+git://github.com/unbit/uwsgi.git:
+  git.latest:
     - target: /opt/uwsgi
     - rev: 2.0.6
+    - ranas: web
     - unless: test -d /opt/uwsgi
-  cmd:
-    - wait
-    - name: python3 uwsgiconfig.py --build core && python3 uwsgiconfig.py --plugin plugins/stats_pusher_statsd core
+
+python3 uwsgiconfig.py --build core && python3 uwsgiconfig.py --plugin plugins/stats_pusher_statsd core:
+  cmd.wait:
     - cwd: /opt/uwsgi
-    - stateful: false
     - watch:
-      - git: uwsgi_build
-    - unless: test -d /opt/uwsgi
+      - git: git://github.com/unbit/uwsgi.git
 
 {% endif %}

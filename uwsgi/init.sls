@@ -79,30 +79,30 @@
 {% endif %}
 {% endfor %}
 
-/home/web/repo/uwsgi/venv_uwsgi:
-  virtualenv.manage:
-    - system_site_packages: False
-    {% if django %}
-    - python: /usr/bin/python3
-    {% if monitor %}
-    django uses python 3, graphite uses python 2.  I cannot get them working together.
-    {% endif %}
-    {% endif %}
-    - user: web
-    - require:                              # requisite declaration
-      - pkg: python-virtualenv              # requisite reference
-
-/home/web/opt/runinenv.sh:                  # ID declaration
-  file:                                     # state declaration
-    - managed                               # function
-    - source: salt://uwsgi/runinenv.sh      # function arg
-    - user: web
-    - group: web
-    - require:                              # requisite declaration
-      - pkg: python-virtualenv              # requisite reference
-    - require:
-      - file: /home/web/opt
-      - user: web
+#/home/web/repo/uwsgi/venv_uwsgi:
+#  virtualenv.manage:
+#    - system_site_packages: False
+#    {% if django %}
+#    - python: /usr/bin/python3
+#    {% if monitor %}
+#    django uses python 3, graphite uses python 2.  I cannot get them working together.
+#    {% endif %}
+#    {% endif %}
+#    - user: web
+#    - require:                              # requisite declaration
+#      - pkg: python-virtualenv              # requisite reference
+#
+#/home/web/opt/runinenv.sh:                  # ID declaration
+#  file:                                     # state declaration
+#    - managed                               # function
+#    - source: salt://uwsgi/runinenv.sh      # function arg
+#    - user: web
+#    - group: web
+#    - require:                              # requisite declaration
+#      - pkg: python-virtualenv              # requisite reference
+#    - require:
+#      - file: /home/web/opt
+#      - user: web
 
 git://github.com/unbit/uwsgi.git:
   git.latest:
@@ -111,10 +111,22 @@ git://github.com/unbit/uwsgi.git:
     - ranas: web
     - unless: test -d /opt/uwsgi
 
-python3 uwsgiconfig.py --build core && python3 uwsgiconfig.py --plugin plugins/stats_pusher_statsd core:
-  cmd.wait:
+salt://uwsgi/uwsgi-build.sh:
+  cmd.wait_script:
     - cwd: /opt/uwsgi
     - watch:
       - git: git://github.com/unbit/uwsgi.git
+
+#/home/web/repo/uwsgi/venv_uwsgi/bin/uwsgi:
+#  file.symlink:
+#    - target: /opt/uwsgi/uwsgi
+#    - require:
+#      - virtualenv: /home/web/repo/uwsgi/venv_uwsgi
+#
+#/home/web/repo/uwsgi/venv_uwsgi/bin/python_plugin.so:
+#  file.symlink:
+#    - target: /opt/uwsgi/python_plugin.so
+#    - require:
+#      - virtualenv: /home/web/repo/uwsgi/venv_uwsgi
 
 {% endif %}

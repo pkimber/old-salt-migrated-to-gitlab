@@ -82,11 +82,10 @@
 /home/web/repo/uwsgi/venv_uwsgi:
   virtualenv.manage:
     - system_site_packages: False
-    - requirements: salt://uwsgi/requirements.txt   # install uwsgi into the virtualenv
     {% if django %}
     - python: /usr/bin/python3
     {% if monitor %}
-    django uses python 3, graphite python 2.  I cannot get them working together.
+    django uses python 3, graphite uses python 2.  I cannot get them working together.
     {% endif %}
     {% endif %}
     - user: web
@@ -104,5 +103,20 @@
     - require:
       - file: /home/web/opt
       - user: web
+
+uwsgi_build:
+  git:
+    - name: git://github.com:unbit/uwsgi.git
+    - target: /opt/uwsgi
+    - rev: 2.0.6
+    - unless: test -d /opt/uwsgi
+  cmd:
+    - wait
+    - name: python3 uwsgiconfig.py --build core && python3 uwsgiconfig.py --plugin plugins/stats_pusher_statsd core
+    - cwd: /opt/uwsgi
+    - stateful: false
+    - watch:
+      - git: uwsgi_build
+    - unless: test -d /opt/uwsgi
 
 {% endif %}

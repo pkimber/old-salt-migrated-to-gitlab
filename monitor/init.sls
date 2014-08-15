@@ -48,6 +48,15 @@ git://github.com/etsy/statsd.git:
     - require:
       - user: web
 
+/opt/graphite/conf/storage-aggregation.conf:
+  file:
+    - managed
+    - source: salt://monitor/storage-aggregation.conf
+    - user: web
+    - group: web
+    - require:
+      - user: web
+
 /opt/graphite/conf/storage-schemas.conf:
   file:
     - managed

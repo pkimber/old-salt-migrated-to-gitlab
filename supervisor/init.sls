@@ -58,6 +58,14 @@ supervisor:
       - pkg: supervisor                     # requisite reference
 
 {% if django %}
+
+/etc/supervisor/conf.d/statsd.conf:
+  file:
+    - managed
+    - source: salt://supervisor/statsd.conf
+    - require:
+      - pkg: supervisor
+
 {% set postgres_settings = pillar.get('postgres_settings') -%}
 {% endif %}
 

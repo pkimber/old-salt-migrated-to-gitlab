@@ -1,3 +1,18 @@
+# monitor client - if using a django web app - install statsd
+{% set django = pillar.get('django', None) %}
+{% if django %}
+npm:
+  pkg.installed
+
+statsd@0.7.1:
+  npm.installed:
+    - user: web
+    - require:
+      - user: web
+{% endif %}
+
+
+# monitor server
 {% set monitor = pillar.get('monitor', None) %}
 {% if monitor %}
 

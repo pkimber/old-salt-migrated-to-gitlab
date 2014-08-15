@@ -1,14 +1,29 @@
 # monitor client - if using a django web app - install statsd
 {% set django = pillar.get('django', None) %}
 {% if django %}
-npm:
+
+nodejs:
   pkg.installed
 
-statsd@0.7.1:
-  npm.installed:
-    - user: web
+# not sure we need this package
+#npm:
+#  pkg.installed:
+#    - require:
+#      - pkg: nodejs
+
+git://github.com/etsy/statsd.git:
+  git.latest:
+    - target: /opt/statsd
+    - rev: v0.7.1
+    - ranas: web
+    - unless: test -d /opt/statsd
+
+/opt/statsd/localConfig.js:
+  file.managed:
+    - source: salt://monitor/localConfig.js
     - require:
-      - user: web
+      - git: git://github.com/etsy/statsd.git
+
 {% endif %}
 
 

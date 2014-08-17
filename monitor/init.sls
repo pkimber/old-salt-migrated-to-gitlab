@@ -21,6 +21,9 @@ git://github.com/etsy/statsd.git:
 /opt/statsd/localConfig.js:
   file.managed:
     - source: salt://monitor/localConfig.js
+    - template: jinja
+    - context:
+      django: {{ django }}
     - require:
       - git: git://github.com/etsy/statsd.git
 

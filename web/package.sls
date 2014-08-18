@@ -30,7 +30,7 @@ python-dev:
 python-virtualenv:
   pkg.installed
 
-{% endif %}
+{% endif %} # django or devpi or monitor
 
 {% if django %}
 
@@ -50,4 +50,4 @@ libfreetype6-dev:
 liblcms1-dev:
   pkg.installed
 
-{% endif %}
+{% endif %} # django

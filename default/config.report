@@ -1,3 +1,10 @@
+{% set testing = pillar.get('testing', None) -%}
+{% if testing -%}
+testing             Yes
+{% else -%}
+testing             No
+{% endif -%}
+
 {% set django = pillar.get('django', None) -%}
 {% if django -%}
 django              Yes
@@ -78,6 +85,13 @@ devpi               No
 {% set sites = pillar.get('sites', {}) %}
 {% for site, settings in sites.iteritems() -%}
 
+{% set domain = settings.get('domain') -%}
+{% set test = settings.get('test', {}) -%}
+{% if testing and test -%}
+{% set domain = test.get('domain') -%}
+{% endif -%}
+
+{% if not testing or testing and test -%}
 {{ site }}
 {% if settings.get('celery', None) -%}
 - celery            Yes
@@ -88,6 +102,8 @@ devpi               No
 - ftp               Yes
 {% else -%}
 - ftp               No
+{% endif -%}
+- domain            {{ domain }}
 {% endif -%}
 
 {% endfor -%}

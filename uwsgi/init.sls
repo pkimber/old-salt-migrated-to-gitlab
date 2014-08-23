@@ -2,6 +2,7 @@
 {% set django = pillar.get('django', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set sites = pillar.get('sites', {}) %}
+{% set testing = pillar.get('testing', None) -%}
 
 {% if django or monitor %}
 
@@ -40,6 +41,9 @@ uwsgi-plugin-python3:
       - file: /home/web/repo/uwsgi
 
 {% for site, settings in sites.iteritems() %}
+{% set test = settings.get('test', {}) -%}
+
+{% if not testing or testing and test -%}
 /home/web/repo/uwsgi/vassals/{{ site }}.ini:
   file:
     - managed
@@ -51,6 +55,7 @@ uwsgi-plugin-python3:
       site: {{ site }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
+      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
@@ -83,6 +88,7 @@ uwsgi-plugin-python3:
     - require:
       - file: /home/web/repo/uwsgi/vassals
 {% endif %} # celery
+{% endif %} # not testing or testing and test
 {% endfor %} # site, settings
 
 #/home/web/repo/uwsgi/venv_uwsgi:

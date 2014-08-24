@@ -23,6 +23,7 @@ nginx.conf:
       nginx: {{ nginx }}
       nginx_services: {{ nginx_services }}
       sites: {{ sites }}
+      testing: {{ testing }}
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference
 
@@ -45,6 +46,7 @@ nginx.conf:
     - context:
       site: {{ site }}
       settings: {{ settings }}
+      testing: {{ testing }}
     - require:
       - file: /etc/nginx/include
 

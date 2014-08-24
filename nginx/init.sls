@@ -25,10 +25,26 @@ nginx.conf:
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference
 
+/etc/nginx/include/:
+  file.directory:
+    - mode: 755
+    - require:
+      - pkg: nginx
+
 {% for site, settings in sites.iteritems() %}
 
 # Folder for certificates
 # http://library.linode.com/web-servers/nginx/configuration/ssl
+
+/etc/nginx/include/{{ site }}.conf:
+    - managed
+    - source: salt://nginx/nginx-site-include.conf
+    - template: jinja
+    - context:
+      site: {{ site }}
+      settings: {{ settings }}
+    - require:
+      - file: /etc/nginx/include
 
 /srv/ssl/{{ site }}/:
   file.directory:
@@ -39,8 +55,8 @@ nginx.conf:
     - recurse:
       - user
       - group
-    - require:                              # requisite declaration
-      - pkg: nginx                          # requisite reference
+    - require:
+      - pkg: nginx
 
 {% endfor %}
 

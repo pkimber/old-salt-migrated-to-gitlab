@@ -1,6 +1,8 @@
 {% set django = pillar.get('django', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
+{% set testing = pillar.get('testing', None) -%}
+
 {% if django or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
@@ -29,7 +31,9 @@
 
 {% for site, settings in sites.iteritems() %}
 {% set cron = settings.get('cron', {}) -%}
+{% set test = settings.get('test', {}) -%}
 
+{% if not testing or testing and test -%}
 /home/web/opt/{{ site }}.sh:
   file:
     - managed
@@ -60,6 +64,7 @@
       site: {{ site }}
       solr: {{ solr }}
 
-{% endfor %}
+{% endif %} # not testing or testing and test
+{% endfor %} # site, settings
 
 {% endif %}

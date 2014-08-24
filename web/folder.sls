@@ -1,6 +1,7 @@
 {% set devpi = pillar.get('devpi', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set django = pillar.get('django', None) %}
+{% set testing = pillar.get('testing', None) -%}
 
 {% if devpi or django or monitor %}
 
@@ -35,7 +36,9 @@
       - file: /home/web/repo
 
 {% for site, settings in sites.iteritems() %}
+{% set test = settings.get('test', {}) -%}
 
+{% if not testing or testing and test -%}
 {# 'files/site/public' folder is for public uploads #}
 /home/web/repo/files/{{ site }}/public:
   file.directory:
@@ -66,5 +69,6 @@
     - require:
       - file: /home/web/repo/project
 
-{% endfor %}
-{% endif %}
+{% endif %} # not testing or testing and test
+{% endfor %} # site, settings
+{% endif %} # devpi or django or monitor

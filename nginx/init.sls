@@ -3,6 +3,7 @@
 
 {% set sites = pillar.get('sites', {}) %}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
+{% set testing = pillar.get('testing', None) -%}
 
 nginx:
   pkg.installed: []
@@ -32,9 +33,9 @@ nginx.conf:
       - pkg: nginx
 
 {% for site, settings in sites.iteritems() %}
+{% set test = settings.get('test', {}) -%}
 
-# Folder for certificates
-# http://library.linode.com/web-servers/nginx/configuration/ssl
+{% if not testing or testing and test -%}
 
 /etc/nginx/include/{{ site }}.conf:
   file:
@@ -47,6 +48,8 @@ nginx.conf:
     - require:
       - file: /etc/nginx/include
 
+# Folder for certificates
+# http://library.linode.com/web-servers/nginx/configuration/ssl
 /srv/ssl/{{ site }}/:
   file.directory:
     - user: www-data
@@ -59,6 +62,7 @@ nginx.conf:
     - require:
       - pkg: nginx
 
-{% endfor %}
+{% endif %} # not testing or testing and test
+{% endfor %} # site, settings
 
 {% endif %}

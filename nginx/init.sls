@@ -25,7 +25,7 @@ nginx.conf:
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference
 
-/etc/nginx/include/:
+/etc/nginx/include:
   file.directory:
     - mode: 755
     - require:
@@ -37,6 +37,7 @@ nginx.conf:
 # http://library.linode.com/web-servers/nginx/configuration/ssl
 
 /etc/nginx/include/{{ site }}.conf:
+  file:
     - managed
     - source: salt://nginx/nginx-site-include.conf
     - template: jinja

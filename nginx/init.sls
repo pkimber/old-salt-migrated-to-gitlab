@@ -3,7 +3,7 @@
 
 {% set sites = pillar.get('sites', {}) %}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
-{% set testing = pillar.get('testing', None) -%}
+{% set testing = pillar.get('testing', False) -%}
 
 nginx:
   pkg.installed: []

@@ -1,7 +1,7 @@
 {% set django = pillar.get('django', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
-{% set testing = pillar.get('testing', None) -%}
+{% set testing = pillar.get('testing', False) -%}
 
 {% if django or monitor %}
 
@@ -33,8 +33,13 @@
 {% set cron = settings.get('cron', {}) -%}
 {% set test = settings.get('test', {}) -%}
 
+{% set script_name = site %}
+{% if testing and test %}
+{% set script_name = script_name + '_test' %}
+{% endif %}
+
 {% if not testing or testing and test -%}
-/home/web/opt/{{ site }}.sh:
+/home/web/opt/{{ script_name }}.sh:
   file:
     - managed
     - source: salt://web/manage.sh

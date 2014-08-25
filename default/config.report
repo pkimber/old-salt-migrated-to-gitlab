@@ -1,4 +1,4 @@
-{% set testing = pillar.get('testing', None) -%}
+{% set testing = pillar.get('testing', False) -%}
 {% if testing -%}
 testing             Yes
 {% else -%}

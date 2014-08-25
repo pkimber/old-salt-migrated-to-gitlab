@@ -1,7 +1,7 @@
 {% set devpi = pillar.get('devpi', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set django = pillar.get('django', None) %}
-{% set testing = pillar.get('testing', None) -%}
+{% set testing = pillar.get('testing', False) -%}
 
 {% if devpi or django or monitor %}
 

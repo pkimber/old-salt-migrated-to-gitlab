@@ -34,7 +34,15 @@ nginx.conf:
       - pkg: nginx
 
 {% for site, settings in sites.iteritems() %}
-{% set test = settings.get('test', {}) -%}
+{% set test = settings.get('test', {}) %}
+
+{% if testing and test -%}
+{% set domain = test.get('domain') %}
+{% set domain_www = domain %}
+{% else -%}
+{% set domain = settings.get('domain') %}
+{% set domain_www = 'www.' + domain %}
+{% endif %}
 
 {% if not testing or testing and test -%}
 
@@ -44,6 +52,8 @@ nginx.conf:
     - source: salt://nginx/nginx-site-include.conf
     - template: jinja
     - context:
+      domain: {{ domain }}
+      domain_www: {{ domain_www }}
       site: {{ site }}
       settings: {{ settings }}
       testing: {{ testing }}
@@ -52,7 +62,7 @@ nginx.conf:
 
 # Folder for certificates
 # http://library.linode.com/web-servers/nginx/configuration/ssl
-/srv/ssl/{{ site }}/:
+/srv/ssl/{{ domain }}/:
   file.directory:
     - user: www-data
     - group: www-data

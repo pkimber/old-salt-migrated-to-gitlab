@@ -71,6 +71,7 @@ uwsgi-plugin-python3:
       site: {{ site }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
+      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
@@ -85,6 +86,7 @@ uwsgi-plugin-python3:
       site: {{ site }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
+      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 {% endif %} # celery

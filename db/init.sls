@@ -29,6 +29,9 @@ mysqld:
 {% if postgres_server or postgres_settings %}
 libpq-dev:
   pkg.installed
+
+postgresql-client-9.3:
+  pkg.installed
 {% endif %}
 
 {% if postgres_server %}

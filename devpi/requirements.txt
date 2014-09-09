@@ -1,2 +1,2 @@
-devpi-server==2.0.1
+devpi-server==2.0.6
 pytest==2.6.0

@@ -8,9 +8,6 @@ HOME=/home/web/
 # |       |       |       month of the year (1-12),
 # |       |       |       |       day of the week (0-6 with 0=Sunday).
 # |       |       |       |       |       user        commands
-{% if solr -%}
-  */10    *       *       *       *       web         . /home/web/opt/{{ site }}.sh update_index 2>&1 | /usr/bin/logger -t {{ site }}_update_index
-{% endif -%}
 {% for name, settings in cron.iteritems() -%}
   {{ settings['schedule'] }}              web         . /home/web/opt/{{ site }}.sh {{ name }} 2>&1 | /usr/bin/logger -t {{ site }}_{{ name }}
 {% endfor -%}

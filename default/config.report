@@ -54,7 +54,7 @@ postgres_server     Yes
 postgres_server     No
 {% endif -%}
 
-{% set postgres_settings = pillar.get('postgres_settings', {}) %}
+{% set postgres_settings = pillar.get('postgres_settings', {}) -%}
 {% if postgres_settings -%}
 postgres_settings   Yes
 {% else -%}
@@ -75,7 +75,7 @@ nginx               Yes
 nginx               No
 {% endif -%}
 
-{% set devpi = pillar.get('devpi', None) %}
+{% set devpi = pillar.get('devpi', None) -%}
 {% if devpi -%}
 devpi               Yes
 {% else -%}

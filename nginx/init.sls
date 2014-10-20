@@ -1,8 +1,10 @@
 {% set nginx = pillar.get('nginx', None) %}
 {% if nginx %}
 
-{% set sites = pillar.get('sites', {}) %}
+{% set devpi = pillar.get('devpi', None) -%}
+{% set monitor = pillar.get('monitor', None) -%}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
+{% set sites = pillar.get('sites', {}) %}
 {% set testing = pillar.get('testing', False) -%}
 
 nginx:
@@ -49,7 +51,7 @@ nginx.conf:
 /etc/nginx/include/{{ site }}.conf:
   file:
     - managed
-    - source: salt://nginx/nginx-site-include.conf
+    - source: salt://nginx/include-site.conf
     - template: jinja
     - context:
       domain: {{ domain }}
@@ -76,5 +78,29 @@ nginx.conf:
 
 {% endif %} # not testing or testing and test
 {% endfor %} # site, settings
+
+{% if devpi -%}
+/etc/nginx/include/devpi.conf:
+  file:
+    - managed
+    - source: salt://nginx/include-devpi.conf
+    - template: jinja
+    - context:
+      domain: {{ devpi }}
+    - require:
+      - file: /etc/nginx/include
+{% endif %} # devpi
+
+{% if monitor -%}
+/etc/nginx/include/monitor.conf:
+  file:
+    - managed
+    - source: salt://nginx/include-monitor.conf
+    - template: jinja
+    - context:
+      domain: {{ monitor }}
+    - require:
+      - file: /etc/nginx/include
+{% endif %} # monitor
 
 {% endif %}

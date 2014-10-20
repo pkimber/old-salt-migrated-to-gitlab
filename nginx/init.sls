@@ -1,8 +1,8 @@
 {% set nginx = pillar.get('nginx', None) %}
 {% if nginx %}
 
-{% set devpi = pillar.get('devpi', None) -%}
-{% set monitor = pillar.get('monitor', None) -%}
+{% set devpi = pillar.get('devpi', False) -%}
+{% set monitor = pillar.get('monitor', False) -%}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 {% set testing = pillar.get('testing', False) -%}
@@ -22,6 +22,8 @@ nginx.conf:
     - source: salt://nginx/nginx.conf
     - template: jinja
     - context:
+      devpi: {{ devpi }}
+      monitor: {{ monitor }}
       nginx: {{ nginx }}
       nginx_services: {{ nginx_services }}
       sites: {{ sites }}
@@ -54,10 +56,8 @@ nginx.conf:
     - source: salt://nginx/include-site.conf
     - template: jinja
     - context:
-      devpi: {{ devpi }}
       domain: {{ domain }}
       domain_www: {{ domain_www }}
-      monitor: {{ monitor }}
       site: {{ site }}
       settings: {{ settings }}
       testing: {{ testing }}

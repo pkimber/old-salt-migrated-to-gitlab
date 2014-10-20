@@ -54,8 +54,10 @@ nginx.conf:
     - source: salt://nginx/include-site.conf
     - template: jinja
     - context:
+      devpi: {{ devpi }}
       domain: {{ domain }}
       domain_www: {{ domain_www }}
+      monitor: {{ monitor }}
       site: {{ site }}
       settings: {{ settings }}
       testing: {{ testing }}
@@ -86,7 +88,7 @@ nginx.conf:
     - source: salt://nginx/include-devpi.conf
     - template: jinja
     - context:
-      domain: {{ devpi }}
+      devpi: {{ devpi }}
     - require:
       - file: /etc/nginx/include
 {% endif %} # devpi
@@ -98,7 +100,7 @@ nginx.conf:
     - source: salt://nginx/include-monitor.conf
     - template: jinja
     - context:
-      domain: {{ monitor }}
+      monitor: {{ monitor }}
     - require:
       - file: /etc/nginx/include
 {% endif %} # monitor

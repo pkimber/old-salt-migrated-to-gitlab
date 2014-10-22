@@ -3,3 +3,6 @@ tmux:
 
 vim:
   pkg.installed
+
+duplicity:
+  pkg.installed

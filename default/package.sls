@@ -6,3 +6,6 @@ vim:
 
 duplicity:
   pkg.installed
+
+python-paramiko:
+  pkg.installed

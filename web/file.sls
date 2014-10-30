@@ -75,6 +75,8 @@
 
 {% if gpg %}
 
+{# TODO Don't create these files if they have already been imported #}
+
 /home/web/repo/temp/pub.gpg:
   file:
     - managed

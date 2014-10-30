@@ -82,6 +82,13 @@ devpi               Yes
 devpi               No
 {% endif -%}
 
+{% set gpg = pillar.get('gpg', None) -%}
+{% if gpg -%}
+gpg                 Yes
+{% else -%}
+gpg                 No
+{% endif -%}
+
 {% set sites = pillar.get('sites', {}) %}
 {% for site, settings in sites.iteritems() -%}
 

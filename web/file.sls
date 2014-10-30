@@ -1,4 +1,5 @@
 {% set django = pillar.get('django', None) %}
+{% set gpg = pillar.get('gpg', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
 {% set testing = pillar.get('testing', False) -%}
@@ -72,4 +73,24 @@
 {% endif %} # not testing or testing and test
 {% endfor %} # site, settings
 
-{% endif %}
+{% if gpg %}
+
+/home/web/repo/temp/pub.gpg:
+  file:
+    - managed
+    - user: web
+    - group: web
+    - mode: 755
+    - contents_pillar: gpg:rsync:public
+
+/home/web/repo/temp/sec.gpg:
+  file:
+    - managed
+    - user: web
+    - group: web
+    - mode: 755
+    - contents_pillar: gpg:rsync:secret
+
+{% endif %} # gpg
+
+{% endif %} # django or monitor

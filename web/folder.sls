@@ -35,6 +35,15 @@
     - require:
       - file: /home/web/repo
 
+/home/web/repo/temp:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: False
+    - require:
+      - file: /home/web/repo
+
 {% for site, settings in sites.iteritems() %}
 {% set test = settings.get('test', {}) -%}
 

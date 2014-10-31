@@ -6,7 +6,8 @@ set -u
 # backup {{ site }}
 {% set rsync = gpg['rsync'] -%}
 
-pg_dump -U postgres {{ site_name }} -f /home/web/repo/backup/{{ site }}/$(date +%Y%m%d_%H%M).sql
+DUMP_FILE=/home/web/repo/backup/{{ site }}/$(date +"%Y%m%d_%H%M").sql
+pg_dump -U postgres {{ site_name }} -f $DUMP_FILE
 echo "{{ site_name }}.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 
@@ -27,3 +28,6 @@ echo "{{ site_name }}.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 #   echo "{{ site_name }}.backup.full:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 #   PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files /home/web/repo/files/{{ site }}
 #   echo "{{ site_name }}.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
+echo $DUMP_FILE
+mv $DUMP_FILE /home/web/repo/temp/

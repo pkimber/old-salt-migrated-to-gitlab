@@ -17,6 +17,15 @@
     - require:
       - user: web
 
+/home/web/repo/backup:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: False
+    - require:
+      - file: /home/web/repo
+
 /home/web/repo/files:
   file.directory:
     - user: web
@@ -48,6 +57,15 @@
 {% set test = settings.get('test', {}) -%}
 
 {% if not testing or testing and test -%}
+/home/web/repo/backup/{{ site }}:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: /home/web/repo/backup
+
 {# 'files/site/public' folder is for public uploads #}
 /home/web/repo/files/{{ site }}/public:
   file.directory:

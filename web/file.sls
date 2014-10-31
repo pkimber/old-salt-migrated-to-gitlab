@@ -34,13 +34,13 @@
 {% set cron = settings.get('cron', {}) -%}
 {% set test = settings.get('test', {}) -%}
 
-{% set script_name = site %}
+{% set site_name = site %}
 {% if testing and test %}
-{% set script_name = script_name + '_test' %}
+{% set site_name = site_name + '_test' %}
 {% endif %}
 
 {% if not testing or testing and test -%}
-/home/web/opt/{{ script_name }}.sh:
+/home/web/opt/{{ site_name }}.sh:
   file:
     - managed
     - source: salt://web/manage.sh
@@ -56,7 +56,7 @@
       - user: web
 
 {% if gpg %}
-/home/web/opt/backup_{{ script_name }}.sh:
+/home/web/opt/backup_{{ site_name }}.sh:
   file:
     - managed
     - source: salt://web/backup.sh
@@ -69,6 +69,7 @@
       gpg: {{ gpg }}
       django: {{ django }}
       site: {{ site }}
+      site_name: {{ site_name }}
     - require:
       - file: /home/web/opt
       - user: web

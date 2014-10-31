@@ -67,6 +67,7 @@
     - makedirs: True
     - context:
       gpg: {{ gpg }}
+      django: {{ django }}
       site: {{ site }}
     - require:
       - file: /home/web/opt

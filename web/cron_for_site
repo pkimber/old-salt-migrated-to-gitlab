@@ -2,6 +2,10 @@ SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 HOME=/home/web/
 
+{% if gpg -%}
+{% set rsync = gpg['rsync'] %}
+{% endif -%}
+
 # minute  (0-59),
 # |       hour (0-23),
 # |       |       day of the month (1-31),
@@ -11,3 +15,6 @@ HOME=/home/web/
 {% for name, settings in cron.iteritems() -%}
   {{ settings['schedule'] }}              web         . /home/web/opt/{{ site }}.sh {{ name }} 2>&1 | /usr/bin/logger -t {{ site }}_{{ name }}
 {% endfor -%}
+{% if gpg %}
+  0       1       *       *       *       web         . /home/web/opt/backup_{{ site }}.sh 2>&1 | /usr/bin/logger -t backup_{{ site }}
+{% endif %}

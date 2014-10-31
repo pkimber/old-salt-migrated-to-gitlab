@@ -55,6 +55,24 @@
       - file: /home/web/opt
       - user: web
 
+{% if gpg %}
+/home/web/opt/backup_{{ script_name }}.sh:
+  file:
+    - managed
+    - source: salt://web/backup.sh
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - makedirs: True
+    - context:
+      gpg: {{ gpg }}
+      site: {{ site }}
+    - require:
+      - file: /home/web/opt
+      - user: web
+{% endif %} # gpg
+
 {# create cron.d file even if it is empty... #}
 {# or we won't be able to remove items from it #}
 /etc/cron.d/{{ site }}:
@@ -67,6 +85,7 @@
     - template: jinja
     - context:
       cron: {{ cron }}
+      gpg: {{ gpg }}
       site: {{ site }}
       solr: {{ solr }}
 

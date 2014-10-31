@@ -29,17 +29,19 @@ echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }
 echo "duplicity backup (including database)"
 duplicity --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 echo "{{ site_name }}.rsync.backup:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
-echo "duplicity backup verify (including database)"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup /home/web/repo/backup/{{ site }}
-echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+# Not sure that verify this way is a good idea.  Lots of bandwidth etc.
+# echo "duplicity backup verify (including database)"
+# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup /home/web/repo/backup/{{ site }}
+# echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 # backup files
 echo "duplicity files"
 duplicity --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
-echo "duplicity files - verify"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files /home/web/repo/files/{{ site }}
-echo "{{ site_name }}.rsync.files.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+# Not sure that verify this way is a good idea.  Lots of bandwidth etc.
+# echo "duplicity files - verify"
+# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files /home/web/repo/files/{{ site }}
+# echo "{{ site_name }}.rsync.files.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 # remove database dump
 echo "remove: $DUMP_FILE"

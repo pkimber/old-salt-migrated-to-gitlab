@@ -1,5 +1,5 @@
 {% set django = pillar.get('django', None) %}
-{% set gpg = pillar.get('gpg', None) %}
+{% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
 {% set testing = pillar.get('testing', False) -%}
@@ -89,7 +89,6 @@
       cron: {{ cron }}
       gpg: {{ gpg }}
       site: {{ site }}
-      solr: {{ solr }}
 
 {% endif %} # not testing or testing and test
 {% endfor %} # site, settings

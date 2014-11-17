@@ -37,7 +37,7 @@ then
     # Runs an full backup on the 1st or 15th
     duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Delete incremental backups older than the 2nd to last full backup
-    duplicity remove-all-inc-of-but-2-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    duplicity remove-all-inc-of-but-n-full 2 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 else
     echo "incremental backup"
     # Runs an incremental backup on days other than the 1st or 15th
@@ -61,7 +61,7 @@ then
     # Runs an full backup on the 1st
     duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Delete incremental backups older than the last full backup
-    duplicity remove-all-inc-of-but-1-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    duplicity remove-all-inc-of-but-n-full 1 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 else
     echo "incremental backup"
     # Runs an incremental backup on days other than the 1st

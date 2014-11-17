@@ -27,7 +27,7 @@ echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }
 
 # backup database
 echo "duplicity database backup (including any files within the backup folder)"
-if [[ `date +%d` == "01" ] || [ `date +%d` == "15" ]
+if [ `date +%d` == "01" ] || [ `date +%d` == "15" ]
 then
     echo "full backup"
     # Delete extraneous duplicity files

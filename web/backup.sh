@@ -31,13 +31,13 @@ if [ `date +%d` == "01" ] || [ `date +%d` == "15" ]
 then
     echo "full backup"
     # Delete extraneous duplicity files
-    duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Delete all full and incremental backup sets older than 12 months
     duplicity remove-older-than 12M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Runs an full backup on the 1st or 15th
     duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Delete incremental backups older than the 2nd to last full backup
-    duplicity --remove-all-inc-of-but-2-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    duplicity remove-all-inc-of-but-2-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 else
     echo "incremental backup"
     # Runs an incremental backup on days other than the 1st or 15th
@@ -55,7 +55,7 @@ if [ `date +%d` == "01" ]
 then
     echo "full backup"
     # Delete extraneous duplicity files
-    duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Delete all full and incremental backup sets older than 3 months
     duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Runs an full backup on the 1st

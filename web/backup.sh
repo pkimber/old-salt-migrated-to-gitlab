@@ -31,17 +31,17 @@ if [ `date +%d` == "01" ] || [ `date +%d` == "15" ]
 then
     echo "full backup"
     # Delete extraneous duplicity files
-    duplicity --cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Delete all full and incremental backup sets older than 12 months
-    duplicity --remove-older-than 12M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    duplicity remove-older-than 12M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Runs an full backup on the 1st or 15th
-    duplicity --full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Delete incremental backups older than the 2nd to last full backup
     duplicity --remove-all-inc-of-but-2-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 else
     echo "incremental backup"
     # Runs an incremental backup on days other than the 1st or 15th
-    duplicity --incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 fi
 echo "{{ site_name }}.rsync.backup:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
@@ -55,17 +55,17 @@ if [ `date +%d` == "01" ]
 then
     echo "full backup"
     # Delete extraneous duplicity files
-    duplicity --cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Delete all full and incremental backup sets older than 3 months
-    duplicity --remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Runs an full backup on the 1st
-    duplicity --full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Delete incremental backups older than the last full backup
-    duplicity --remove-all-inc-of-but-1-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    duplicity remove-all-inc-of-but-1-full --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 else
     echo "incremental backup"
     # Runs an incremental backup on days other than the 1st
-    duplicity --incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 fi
 echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 

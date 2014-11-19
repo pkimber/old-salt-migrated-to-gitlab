@@ -10,11 +10,11 @@ set -u
 if [ -z ${1+x} ]
 #if it is unset
 then
-#create a variable called VAR1 and set it to ""
+    #create a variable called VAR1 and set it to ""
     VAR1=""
 #if it is set
 else
-#create a variable called VAR1 and set it to = $1
+    #create a variable called VAR1 and set it to = $1
     VAR1=$1
 fi
 
@@ -38,10 +38,12 @@ pg_dump -U postgres {{ site_name }} -f $DUMP_FILE
 echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 # backup database
+echo "===================="
 echo "duplicity database backup (including any files within the backup folder)"
-if [ `date +%d` == "01" ] || [ `date +%d` == "15" ] || [ $VAR1 == "full" ]
+if [ `date +%d` == "01" ] || [ `date +%d` == "15" ] || [ "$VAR1" == "full" ]
 then
     echo "full backup"
+    echo "===================="
     # Delete extraneous duplicity files
     PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
     # Delete all full and incremental backup sets older than 12 months
@@ -52,6 +54,7 @@ then
     duplicity remove-all-inc-of-but-n-full 2 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 else
     echo "incremental backup"
+    echo "===================="
     # Runs an incremental backup on days other than the 1st or 15th
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 fi
@@ -62,10 +65,12 @@ PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ r
 echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 # backup files
-echo "duplicity files"
-if [ `date +%d` == "01" ] || [ $VAR1 == "full" ] 
+echo "===================="
+echo "duplicity files backup"
+if [ `date +%d` == "01" ] || [ "$VAR1" == "full" ] 
 then
     echo "full backup"
+    echo "===================="
     # Delete extraneous duplicity files
     PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
     # Delete all full and incremental backup sets older than 3 months
@@ -76,6 +81,7 @@ then
     duplicity remove-all-inc-of-but-n-full 1 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 else
     echo "incremental backup"
+    echo "===================="
     # Runs an incremental backup on days other than the 1st
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 fi

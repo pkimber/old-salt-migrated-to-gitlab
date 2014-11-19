@@ -6,6 +6,18 @@ set -u
 # backup {{ site }}
 {% set rsync = gpg['rsync'] -%}
 
+#check if the $1 variable is unset
+if [ -z ${1+x} ]
+#if it is unset
+then
+#create a variable called VAR1 and set it to ""
+    VAR1=""
+#if it is set
+else
+#create a variable called VAR1 and set it to = $1
+    VAR1=$1
+fi
+
 # dump database
 DUMP_FILE=/home/web/repo/backup/{{ site }}/$(date +"%Y%m%d_%H%M").sql
 echo "dump database: $DUMP_FILE"
@@ -27,7 +39,7 @@ echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }
 
 # backup database
 echo "duplicity database backup (including any files within the backup folder)"
-if [ `date +%d` == "01" ] || [ `date +%d` == "15" ]
+if [ `date +%d` == "01" ] || [ `date +%d` == "15" ] || [ $VAR1 == "full" ]
 then
     echo "full backup"
     # Delete extraneous duplicity files
@@ -51,7 +63,7 @@ echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor']
 
 # backup files
 echo "duplicity files"
-if [ `date +%d` == "01" ] 
+if [ `date +%d` == "01" ] || [ $VAR1 == "full" ] 
 then
     echo "full backup"
     # Delete extraneous duplicity files

@@ -6,6 +6,18 @@ set -u
 # backup {{ site }}
 {% set rsync = gpg['rsync'] -%}
 
+#check if the $1 variable is unset
+if [ -z ${1+x} ]
+#if it is unset
+then
+    #create a variable called VAR1 and set it to ""
+    VAR1=""
+#if it is set
+else
+    #create a variable called VAR1 and set it to = $1
+    VAR1=$1
+fi
+
 # dump database
 DUMP_FILE=/home/web/repo/backup/{{ site }}/$(date +"%Y%m%d_%H%M").sql
 echo "dump database: $DUMP_FILE"
@@ -26,18 +38,55 @@ pg_dump -U postgres {{ site_name }} -f $DUMP_FILE
 echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 # backup database
-echo "duplicity backup (including database)"
-duplicity --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+echo "===================="
+echo "duplicity database backup (including any files within the backup folder)"
+if [ `date +%d` == "01" ] || [ `date +%d` == "15" ] || [ "$VAR1" == "full" ]
+then
+    echo "full backup"
+    echo "===================="
+    # Delete extraneous duplicity files
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    # Delete all full and incremental backup sets older than 12 months
+    duplicity remove-older-than 12M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    # Runs an full backup on the 1st or 15th
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+    # Delete incremental backups older than the 2nd to last full backup
+    duplicity remove-all-inc-of-but-n-full 2 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+else
+    echo "incremental backup"
+    echo "===================="
+    # Runs an incremental backup on days other than the 1st or 15th
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
+fi
 echo "{{ site_name }}.rsync.backup:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
-# Not sure that verify this way is a good idea.  Lots of bandwidth etc.
-# echo "duplicity backup verify (including database)"
-# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup /home/web/repo/backup/{{ site }}
-# echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
+echo "duplicity database backup verify (including any files within the backup folder)"
+PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup /home/web/repo/backup/{{ site }}
+echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
 
 # backup files
-echo "duplicity files"
-duplicity --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+echo "===================="
+echo "duplicity files backup"
+if [ `date +%d` == "01" ] || [ "$VAR1" == "full" ] 
+then
+    echo "full backup"
+    echo "===================="
+    # Delete extraneous duplicity files
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    # Delete all full and incremental backup sets older than 3 months
+    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    # Runs an full backup on the 1st
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+    # Delete incremental backups older than the last full backup
+    duplicity remove-all-inc-of-but-n-full 1 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+else
+    echo "incremental backup"
+    echo "===================="
+    # Runs an incremental backup on days other than the 1st
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
+fi
 echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
 # Not sure that verify this way is a good idea.  Lots of bandwidth etc.
 # echo "duplicity files - verify"
 # PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files /home/web/repo/files/{{ site }}

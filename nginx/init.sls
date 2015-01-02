@@ -86,6 +86,7 @@ nginx.conf:
   file:
     - managed
     - source: salt://nginx/include-default.conf
+    - template: jinja
     - require:
       - file: /etc/nginx/include
 
@@ -131,7 +132,7 @@ nginx.conf:
     - source: salt://nginx/index.html
     - user: www-data
     - group: www-data
-    - mode: 755
+    - mode: 400
     - makedirs: False
     - require:
       - file: /srv/www/default

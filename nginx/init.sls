@@ -81,6 +81,62 @@ nginx.conf:
 {% endif %} # not testing or testing and test
 {% endfor %} # site, settings
 
+# default site
+/etc/nginx/include/default.conf:
+  file:
+    - managed
+    - source: salt://nginx/include-default.conf
+    - require:
+      - file: /etc/nginx/include
+
+/srv/ssl/default:
+  file.directory:
+    - user: www-data
+    - group: www-data
+    - mode: 755
+    - makedirs: True
+
+/srv/ssl/default/default.crt:
+  file:
+    - managed
+    - user: www-data
+    - group: www-data
+    - mode: 400
+    - makedirs: False
+    - contents_pillar: nginx:ssl:crt
+    - require:
+      - file: /srv/ssl/default
+
+/srv/ssl/default/default.key:
+  file:
+    - managed
+    - user: www-data
+    - group: www-data
+    - mode: 400
+    - contents_pillar: nginx:ssl:key
+    - makedirs: False
+    - require:
+      - file: /srv/ssl/default/default.crt
+
+/srv/www/default:
+  file.directory:
+    - user: www-data
+    - group: www-data
+    - mode: 755
+    - makedirs: True
+
+/srv/www/default/index.html:
+  file:
+    - managed
+    - source: salt://nginx/index.html
+    - user: www-data
+    - group: www-data
+    - mode: 755
+    - makedirs: False
+    - require:
+      - file: /srv/www/default
+
+# devpi
 {% if devpi -%}
 /etc/nginx/include/devpi.conf:
   file:

@@ -50,4 +50,12 @@ libfreetype6-dev:
 liblcms1-dev:
   pkg.installed
 
+{# for element tree #}
+libxml2-dev:
+  pkg.installed
+
+{# for element tree #}
+libxslt1-dev:
+  pkg.installed
+
 {% endif %} # django

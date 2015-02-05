@@ -100,6 +100,12 @@ gpg                 No
 
 {% if not testing or testing and test -%}
 {{ site }}
+{% set db_type = settings['db_type'] -%}
+{% if db_type %}
+- database          Yes ({{ db_type }})
+{% else %}
+- database          No
+{% endif -%}
 {% if settings.get('celery', None) -%}
 - celery            Yes
 {% else -%}
@@ -112,5 +118,4 @@ gpg                 No
 {% endif -%}
 - domain            {{ domain }}
 {% endif -%}
-
-{% endfor -%}
+{% endfor %}

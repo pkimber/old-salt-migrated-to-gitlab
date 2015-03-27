@@ -93,6 +93,44 @@
 {% endif %} # not testing or testing and test
 {% endfor %} # site, settings
 
+
+{% if dropbox %}
+/home/web/opt/backup_dropbox.sh:
+  file:
+    - managed
+    - source: salt://web/backup.sh
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - makedirs: True
+    - context:
+      dropbox: True
+      gpg: {{ gpg }}
+      site: dropbox
+      site_name: dropbox
+    - require:
+      - file: /home/web/opt
+      - user: web
+{% endif %} # gpg
+
+/etc/cron.d/dropbox:
+  file:
+    - managed
+    - source: salt://web/cron_for_site
+    - user: root
+    - group: root
+    - mode: 755
+    - template: jinja
+    - context:
+      cron: {{ cron }}
+      dropbox: True
+      gpg: {{ gpg }}
+      site: dropbox
+
+{% endif %} # dropbox
+
+
 {% if gpg %}
 
 {# TODO Don't create these files if they have already been imported #}

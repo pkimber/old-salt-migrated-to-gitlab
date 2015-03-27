@@ -1,10 +1,10 @@
 {% set devpi = pillar.get('devpi', None) %}
-{% set gpg = pillar.get('gpg', False) %}
+{% set dropbox = pillar.get('dropbox', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set django = pillar.get('django', None) %}
 {% set testing = pillar.get('testing', False) -%}
 
-{% if devpi or django or gpg or monitor %}
+{% if devpi or django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
 

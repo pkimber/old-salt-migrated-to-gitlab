@@ -1,10 +1,11 @@
 {% set django = pillar.get('django', None) %}
+{% set dropbox = pillar.get('dropbox', False) %}
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
 {% set testing = pillar.get('testing', False) -%}
 
-{% if django or gpg or monitor %}
+{% if django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
 

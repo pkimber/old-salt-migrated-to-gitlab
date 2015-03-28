@@ -98,6 +98,23 @@
 
 {% if dropbox %}
 {% set empty_dict = {} %}
+
+{% for account in dropbox.accounts %}
+/home/web/opt/dropbox-init-{{ account }}.sh:
+  file:
+    - managed
+    - source: salt://web/dropbox-init.sh
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - context:
+      account: {{ account }}
+    - require:
+      - file: /home/web/opt
+      - user: web
+{% endfor %}
+
 /home/web/opt/backup_dropbox.sh:
   file:
     - managed

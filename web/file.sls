@@ -99,6 +99,22 @@
 {% if dropbox %}
 {% set empty_dict = {} %}
 
+/etc/init.d/dropbox:
+  file:
+    - managed
+    - source: salt://web/web/dropbox-init.d
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - context:
+      dropbox: {{ dropbox }}
+    - require:
+      - file: /home/web/opt
+      - user: web
+
+
+
 {% for account in dropbox.accounts %}
 /home/web/opt/dropbox-init-{{ account }}.sh:
   file:
@@ -146,6 +162,10 @@
       cron: {{ empty_dict }}
       gpg: {{ gpg }}
       site: dropbox
+
+
+
+
 {% endif %} # dropbox
 
 

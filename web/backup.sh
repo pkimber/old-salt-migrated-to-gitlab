@@ -22,6 +22,7 @@ fi
 DUMP_FILE=/home/web/repo/backup/{{ site }}/$(date +"%Y%m%d_%H%M").sql
 echo "dump database: $DUMP_FILE"
 pg_dump -U postgres {{ site_name }} -f $DUMP_FILE
+
 # Send a metric to statsd from bash
 # nstielau / send_metric_to_statsd.sh
 # https://gist.github.com/nstielau/966835
@@ -35,7 +36,9 @@ pg_dump -U postgres {{ site_name }} -f $DUMP_FILE
 # netcat options:
 #   -w timeout If a connection and stdin are idle for more than timeout seconds, then the connection is silently closed.
 #   -u         Use UDP instead of the default option of TCP.
-echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+{% if 'monitor' in django %}
+echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django.monitor }} 2003
+{% endif %}
 
 # backup database
 echo "===================="
@@ -58,11 +61,17 @@ else
     # Runs an incremental backup on days other than the 1st or 15th
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 fi
-echo "{{ site_name }}.rsync.backup:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
+{% if 'monitor' in django %}
+echo "{{ site_name }}.rsync.backup:1|c" | nc -w 1 -u {{ django.monitor }} 2003
+{% endif %}
 
 echo "duplicity database backup verify (including any files within the backup folder)"
 PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup /home/web/repo/backup/{{ site }}
-echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
+{% if 'monitor' in django %}
+echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
+{% endif %}
 
 # backup files
 echo "===================="
@@ -85,12 +94,18 @@ else
     # Runs an incremental backup on days other than the 1st
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 fi
-echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
+{% if 'monitor' in django %}
+echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django.monitor }} 2003
+{% endif %}
 
 # Not sure that verify this way is a good idea.  Lots of bandwidth etc.
 # echo "duplicity files - verify"
 # PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files /home/web/repo/files/{{ site }}
-# echo "{{ site_name }}.rsync.files.verify:1|c" | nc -w 1 -u {{ django['monitor'] }} 2003
+
+{% if 'monitor' in django %}
+# echo "{{ site_name }}.rsync.files.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
+{% endif %}
 
 # remove database dump
 echo "remove: $DUMP_FILE"

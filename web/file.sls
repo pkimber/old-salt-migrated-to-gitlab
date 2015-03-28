@@ -96,6 +96,7 @@
 
 
 {% if dropbox %}
+{% set empty_dict = {} %}
 /home/web/opt/backup_dropbox.sh:
   file:
     - managed
@@ -106,14 +107,13 @@
     - template: jinja
     - makedirs: True
     - context:
-      dropbox: True
+      django: {{ empty_dict }}
       gpg: {{ gpg }}
       site: dropbox
       site_name: dropbox
     - require:
       - file: /home/web/opt
       - user: web
-{% endif %} # gpg
 
 /etc/cron.d/dropbox:
   file:
@@ -124,11 +124,9 @@
     - mode: 755
     - template: jinja
     - context:
-      cron: {{ cron }}
-      dropbox: True
+      cron: {{ empty_dict }}
       gpg: {{ gpg }}
       site: dropbox
-
 {% endif %} # dropbox
 
 

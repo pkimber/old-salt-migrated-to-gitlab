@@ -1,5 +1,5 @@
 {% set django = pillar.get('django', None) %}
-{% set dropbox = pillar.get('dropbox', False) %}
+{% set dropbox = pillar.get('dropbox', None) %}
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
@@ -69,6 +69,7 @@
     - context:
       gpg: {{ gpg }}
       django: {{ django }}
+      dropbox: {{ dropbox }}
       site: {{ site }}
       site_name: {{ site_name }}
     - require:
@@ -108,6 +109,7 @@
     - makedirs: True
     - context:
       django: {{ empty_dict }}
+      dropbox: {{ dropbox }}
       gpg: {{ gpg }}
       site: dropbox
       site_name: dropbox

@@ -36,7 +36,7 @@ pg_dump -U postgres {{ site_name }} -f $DUMP_FILE
 # netcat options:
 #   -w timeout If a connection and stdin are idle for more than timeout seconds, then the connection is silently closed.
 #   -u         Use UDP instead of the default option of TCP.
-{% if 'monitor' in django %}
+{% if django %}
 echo "{{ site_name }}.rsync.backup.dump:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 {% endif %}
 
@@ -62,14 +62,14 @@ else
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup
 fi
 
-{% if 'monitor' in django %}
+{% if django %}
 echo "{{ site_name }}.rsync.backup:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 {% endif %}
 
 echo "duplicity database backup verify (including any files within the backup folder)"
 PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/backup /home/web/repo/backup/{{ site }}
 
-{% if 'monitor' in django %}
+{% if django %}
 echo "{{ site_name }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 {% endif %}
 
@@ -95,7 +95,7 @@ else
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ site }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files
 fi
 
-{% if 'monitor' in django %}
+{% if django %}
 echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 {% endif %}
 
@@ -103,7 +103,7 @@ echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 # echo "duplicity files - verify"
 # PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ site_name }}/files /home/web/repo/files/{{ site }}
 
-{% if 'monitor' in django %}
+{% if django %}
 # echo "{{ site_name }}.rsync.files.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 {% endif %}
 

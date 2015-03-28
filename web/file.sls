@@ -102,9 +102,9 @@
 /etc/init.d/dropbox:
   file:
     - managed
-    - source: salt://web/web/dropbox-init.d
-    - user: web
-    - group: web
+    - source: salt://web/dropbox-init.d
+    - user: root
+    - group: root
     - mode: 755
     - template: jinja
     - context:
@@ -113,7 +113,10 @@
       - file: /home/web/opt
       - user: web
 
-
+dropbox:
+  service.enabled:
+    - require:
+      - file: /etc/init.d/dropbox
 
 {% for account in dropbox.accounts %}
 /home/web/opt/dropbox-init-{{ account }}.sh:

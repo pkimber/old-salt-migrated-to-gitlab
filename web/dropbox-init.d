@@ -12,43 +12,41 @@
 # -K stop
 # -S start
 
-DROPBOX_USERS="[USER]"
-DROPBOX_USERS="{% for account in dropbox.accounts %}{{ account }}{% endfor %}"
- 
+DROPBOX_USERS="{% for account in dropbox.accounts %}{{ account }} {% endfor %}"
+
 DAEMON=/home/web/.dropbox-dist/dropboxd
- 
+
 start() {
    echo "Starting dropbox..."
    for dbuser in $DROPBOX_USERS; do
-       HOMEDIR=/home/web/repo/files/dropbox/{{ $dbuser }}
+       HOMEDIR=/home/web/repo/files/dropbox/$dbuser
        if [ -x $DAEMON ]; then
-           HOME="$HOMEDIR" start-stop-daemon -b -o -c web -S -u user -x $DAEMON
+           HOME="$HOMEDIR" start-stop-daemon -b -o -c web -S -u web -x $DAEMON
        fi
    done
 }
- 
+
 stop() {
    echo "Stopping dropbox..."
    for dbuser in $DROPBOX_USERS; do
-       HOMEDIR=/home/web/repo/files/dropbox/{{ $dbuser }}
+       HOMEDIR=/home/web/repo/files/dropbox/$dbuser
        if [ -x $DAEMON ]; then
            start-stop-daemon -o -c web -K -u web -x $DAEMON
        fi
    done
 }
- 
+
 status() {
-   dbpid=`pgrep -u web dropboxd`
+   dbpid=`pgrep -u web dropbox`
    if [ -z $dbpid ] ; then
        echo "dropboxd for USER web: not running."
    else
        echo "dropboxd for USER web: running (pid $dbpid)"
    fi
-   done
 }
- 
+
 case "$1" in
- 
+
    start)
        start
        ;;
@@ -65,7 +63,7 @@ case "$1" in
    *)
        echo "Usage: /etc/init.d/dropbox {start|stop|reload|force-reload|restart|status}"
        exit 1
- 
+
 esac
- 
+
 exit 0

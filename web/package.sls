@@ -1,4 +1,5 @@
 {% set django = pillar.get('django', None) %}
+{% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set php = pillar.get('php', None) %}
 
@@ -59,3 +60,21 @@ libxslt1-dev:
   pkg.installed
 
 {% endif %} # django
+
+{% if dropbox %}
+
+{# copied from https://www.dropbox.com/install?os=lnx #}
+dropboxd:
+  cmd.run:
+    - unless: test -d /home/web/.dropbox-dist
+    - cwd: /home/web
+    {% if grains['cpuarch'] == 'x86' %}
+    - name: 'wget -O - "https://www.dropbox.com/download?plat=lnx.x86" | tar xzf -'
+    {% elif grains['cpuarch'] == 'x86_64' %}
+    - name: 'wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -'
+    {% else %}
+    I think 'cpuarch' can only be 'x86' or 'x86_64'
+    {% endif %}
+    - user: web
+
+{% endif %} # dropbox

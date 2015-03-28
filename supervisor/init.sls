@@ -1,10 +1,13 @@
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
+{% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set sites = pillar.get('sites', {}) %}
 {% set testing = pillar.get('testing', False) -%}
 
-{% if django or devpi or monitor %}
+{% if django or devpi or dropbox or monitor %}
+
+{# PJK 28/03/2015 why is the name of this state uwsgi #}
 uwsgi:
   supervisord:
     - running
@@ -24,8 +27,12 @@ supervisor:
       {% if django or monitor %}
       - file: /etc/supervisor/conf.d/uwsgi.conf
       {% endif %}
+      {% if dropbox %}
+      {% for account in dropbox.accounts %}
+      - file: /etc/supervisor/conf.d/dropbox-{{ account }}.conf:
+      {% endfor %}
+      {% endif %}
 {% endif %}
-
 
 {% if devpi %}
 /etc/supervisor/conf.d/devpi.conf:
@@ -37,6 +44,20 @@ supervisor:
       devpi: {{ devpi }}
     - require:
       - pkg: supervisor
+{% endif %}
+
+{% if dropbox %}
+{% for account in dropbox.accounts %}
+/etc/supervisor/conf.d/dropbox-{{ account }}.conf:
+  file:
+    - managed
+    - source: salt://supervisor/dropbox.conf
+    - template: jinja
+    - context:
+      account: {{ account }}
+    - require:
+      - pkg: supervisor
+{% endfor %}
 {% endif %}
 
 {% if monitor %}

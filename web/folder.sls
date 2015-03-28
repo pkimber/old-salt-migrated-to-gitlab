@@ -1,5 +1,5 @@
 {% set devpi = pillar.get('devpi', None) %}
-{% set dropbox = pillar.get('dropbox', False) %}
+{% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set django = pillar.get('django', None) %}
 {% set testing = pillar.get('testing', False) -%}
@@ -35,6 +35,17 @@
     - makedirs: False
     - require:
       - file: /home/web/repo
+
+{% if dropbox %}
+/home/web/repo/files/dropbox:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: False
+    - require:
+      - file: /home/web/repo/files
+{% endif %}
 
 /home/web/repo/project:
   file.directory:

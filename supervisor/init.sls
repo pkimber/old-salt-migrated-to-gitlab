@@ -7,13 +7,14 @@
 
 {% if django or devpi or dropbox or monitor %}
 
-{# PJK 28/03/2015 why is the name of this state uwsgi #}
+{% if django or monitor %}
 uwsgi:
   supervisord:
     - running
     - restart: True
     - require:
       - pkg: supervisor
+{% endif %}
 
 supervisor:
   pkg:

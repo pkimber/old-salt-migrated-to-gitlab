@@ -2,10 +2,6 @@ SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 HOME=/home/web/
 
-{% if gpg -%}
-{% set rsync = gpg['rsync'] %}
-{% endif -%}
-
 # minute  (0-59),
 # |       hour (0-23),
 # |       |       day of the month (1-31),
@@ -18,3 +14,6 @@ HOME=/home/web/
 {% if gpg %}
   0       1       *       *       *       web         . /home/web/opt/backup_{{ site }}.sh 2>&1 | /usr/bin/logger -t backup_{{ site }}
 {% endif %}
+{% for account in dropbox -%}
+  0       2       *       *       *       web         . /home/web/opt/backup_dropbox_{{ account }}.sh 2>&1 | /usr/bin/logger -t backup_dropbox_{{ account }}
+{% endfor %}

@@ -5,6 +5,9 @@
 {% set solr = pillar.get('solr', None) %}
 {% set testing = pillar.get('testing', False) -%}
 
+{# pass an empty parameter #}
+{% set empty_dict = {} %}
+
 {% if django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
@@ -69,7 +72,7 @@
     - context:
       gpg: {{ gpg }}
       django: {{ django }}
-      dropbox: {{ dropbox }}
+      dropbox_account: {{ empty_dict }}
       site: {{ site }}
       site_name: {{ site_name }}
     - require:
@@ -89,7 +92,7 @@
     - template: jinja
     - context:
       cron: {{ cron }}
-      gpg: {{ gpg }}
+      dropbox: {{ empty_dict }}
       site: {{ site }}
 
 {% endif %} # not testing or testing and test
@@ -97,44 +100,8 @@
 
 
 {% if dropbox %}
-{% set empty_dict = {} %}
-
-/etc/init.d/dropbox:
-  file:
-    - managed
-    - source: salt://web/dropbox-init.d
-    - user: root
-    - group: root
-    - mode: 755
-    - template: jinja
-    - context:
-      dropbox: {{ dropbox }}
-    - require:
-      - file: /home/web/opt
-      - user: web
-
-dropbox:
-  service.enabled:
-    - require:
-      - file: /etc/init.d/dropbox
-
 {% for account in dropbox.accounts %}
-/home/web/opt/dropbox-init-{{ account }}.sh:
-  file:
-    - managed
-    - source: salt://web/dropbox-init.sh
-    - user: web
-    - group: web
-    - mode: 755
-    - template: jinja
-    - context:
-      account: {{ account }}
-    - require:
-      - file: /home/web/opt
-      - user: web
-{% endfor %}
-
-/home/web/opt/backup_dropbox.sh:
+/home/web/opt/backup_dropbox_{{ account }}.sh:
   file:
     - managed
     - source: salt://web/backup.sh
@@ -145,14 +112,17 @@ dropbox:
     - makedirs: True
     - context:
       django: {{ empty_dict }}
-      dropbox: {{ dropbox }}
+      dropbox_account: {{ account }}
       gpg: {{ gpg }}
-      site: dropbox
-      site_name: dropbox
     - require:
       - file: /home/web/opt
       - user: web
+{% endfor %}
+{% endif %} # dropbox
 
+
+{# create cron.d file for dropbox even if it is empty... #}
+{# or we won't be able to remove items from it #}
 /etc/cron.d/dropbox:
   file:
     - managed
@@ -163,13 +133,8 @@ dropbox:
     - template: jinja
     - context:
       cron: {{ empty_dict }}
-      gpg: {{ gpg }}
+      dropbox: {{ dropbox }}
       site: dropbox
-
-
-
-
-{% endif %} # dropbox
 
 
 {% if gpg %}

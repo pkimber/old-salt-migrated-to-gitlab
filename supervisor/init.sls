@@ -29,7 +29,7 @@ supervisor:
       {% endif %}
       {% if dropbox %}
       {% for account in dropbox.accounts %}
-      - file: /etc/supervisor/conf.d/dropbox-{{ account }}.conf
+      - file: /etc/supervisor/conf.d/dropbox_{{ account }}.conf
       {% endfor %}
       {% endif %}
 {% endif %}
@@ -48,7 +48,7 @@ supervisor:
 
 {% if dropbox %}
 {% for account in dropbox.accounts %}
-/etc/supervisor/conf.d/dropbox-{{ account }}.conf:
+/etc/supervisor/conf.d/dropbox_{{ account }}.conf:
   file:
     - managed
     - source: salt://supervisor/dropbox.conf

@@ -115,7 +115,7 @@ then
     # Delete extraneous duplicity files
     PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
     # Delete all full and incremental backup sets older than 3 months
-    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}//dropbox/{{ dropbox_account }}
+    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
     # Runs an full backup on the 1st
     duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
     # Delete incremental backups older than the last full backup

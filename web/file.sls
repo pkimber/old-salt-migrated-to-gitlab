@@ -92,6 +92,7 @@
     - template: jinja
     - context:
       cron: {{ cron }}
+      django: {{ django }}
       dropbox: {{ empty_dict }}
       site: {{ site }}
 
@@ -133,8 +134,8 @@
     - template: jinja
     - context:
       cron: {{ empty_dict }}
+      django: {{ empty_dict }}
       dropbox: {{ dropbox }}
-      site: dropbox
 
 
 {% if gpg %}

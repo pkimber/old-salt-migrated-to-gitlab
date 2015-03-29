@@ -45,7 +45,18 @@
     - makedirs: False
     - require:
       - file: /home/web/repo/files
-{% endif %}
+
+{% for account in dropbox.accounts -%}
+/home/web/repo/files/dropbox/{{ account }}:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: False
+    - require:
+      - file: /home/web/repo/files/dropbox
+{% endfor -%}
+{% endif %} {# dropbox #}
 
 /home/web/repo/project:
   file.directory:

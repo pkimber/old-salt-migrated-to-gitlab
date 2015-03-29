@@ -11,9 +11,9 @@ HOME=/home/web/
 {% for name, settings in cron.iteritems() -%}
   {{ settings['schedule'] }}              web         . /home/web/opt/{{ site }}.sh {{ name }} 2>&1 | /usr/bin/logger -t {{ site }}_{{ name }}
 {% endfor -%}
-{% if gpg %}
+{% if django %}
   0       1       *       *       *       web         . /home/web/opt/backup_{{ site }}.sh 2>&1 | /usr/bin/logger -t backup_{{ site }}
 {% endif %}
-{% for account in dropbox -%}
+{% for account in dropbox.accounts -%}
   0       2       *       *       *       web         . /home/web/opt/backup_dropbox_{{ account }}.sh 2>&1 | /usr/bin/logger -t backup_dropbox_{{ account }}
-{% endfor %}
+{% endfor -%}

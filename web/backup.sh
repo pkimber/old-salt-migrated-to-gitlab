@@ -3,7 +3,7 @@
 set -e
 # treat unset variables as an error when substituting.
 set -u
-# backup {{ site }}
+# backup
 {% set rsync = gpg['rsync'] -%}
 
 #check if the $1 variable is unset

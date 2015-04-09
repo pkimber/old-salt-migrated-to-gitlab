@@ -14,6 +14,8 @@ HOME=/home/web/
 {% if django %}
   0       1       *       *       *       web         . /home/web/opt/backup_{{ site }}.sh 2>&1 | /usr/bin/logger -t backup_{{ site }}
 {% endif %}
+{% if dropbox %}
 {% for account in dropbox.accounts -%}
   0       2       *       *       *       web         . /home/web/opt/backup_dropbox_{{ account }}.sh 2>&1 | /usr/bin/logger -t backup_dropbox_{{ account }}
 {% endfor -%}
+{% endif %}

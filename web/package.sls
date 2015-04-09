@@ -68,7 +68,7 @@ dropboxd:
   cmd.run:
     - unless: test -d /home/web/.dropbox-dist
     - cwd: /home/web
-    {% if grains['cpuarch'] == 'x86' %}
+    {% if grains['cpuarch'] == 'i686' %}
     - name: 'wget -O - "https://www.dropbox.com/download?plat=lnx.x86" | tar xzf -'
     {% elif grains['cpuarch'] == 'x86_64' %}
     - name: 'wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -'

@@ -1,5 +1,5 @@
 {% set django = pillar.get('django', None) %}
-{% set dropbox = pillar.get('dropbox', None) %}
+{% set dropbox = pillar.get('dropbox', False) %}
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}

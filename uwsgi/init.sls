@@ -53,6 +53,7 @@ uwsgi-plugin-python3:
     - template: jinja
     - context:
       site: {{ site }}
+      monitor: {{ monitor }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
       testing: {{ testing }}
@@ -69,6 +70,7 @@ uwsgi-plugin-python3:
     - template: jinja
     - context:
       site: {{ site }}
+      monitor: {{ monitor }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
       testing: {{ testing }}
@@ -84,6 +86,7 @@ uwsgi-plugin-python3:
     - template: jinja
     - context:
       site: {{ site }}
+      monitor: {{ monitor }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
       testing: {{ testing }}

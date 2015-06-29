@@ -1,6 +1,7 @@
 {# Only set-up uwsgi if we are using Django (including Graphite) #}
 {% set django = pillar.get('django', None) %}
-{% set monitor = pillar.get('monitor', None) %}
+{% set monitor = pillar.get('monitor', False) %}
+{% set opbeat = pillar.get('opbeat', {}) %}
 {% set sites = pillar.get('sites', {}) %}
 {% set testing = pillar.get('testing', False) -%}
 
@@ -53,7 +54,7 @@ uwsgi-plugin-python3:
     - template: jinja
     - context:
       site: {{ site }}
-      monitor: {{ monitor }}
+      opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
       testing: {{ testing }}
@@ -70,7 +71,7 @@ uwsgi-plugin-python3:
     - template: jinja
     - context:
       site: {{ site }}
-      monitor: {{ monitor }}
+      opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
       testing: {{ testing }}
@@ -86,7 +87,7 @@ uwsgi-plugin-python3:
     - template: jinja
     - context:
       site: {{ site }}
-      monitor: {{ monitor }}
+      opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
       testing: {{ testing }}

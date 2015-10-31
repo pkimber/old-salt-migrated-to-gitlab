@@ -22,7 +22,7 @@ fi
 # dump database
 DUMP_FILE=/home/web/repo/backup/{{ domain }}/$(date +"%Y%m%d_%H%M").sql
 echo "dump database: $DUMP_FILE"
-pg_dump -U postgres {{ domain }} -f $DUMP_FILE
+pg_dump -U postgres {{ domain|replace('.', '_') }} -f $DUMP_FILE
 
 # Send a metric to statsd from bash
 # nstielau / send_metric_to_statsd.sh

@@ -2,7 +2,6 @@
 {% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set django = pillar.get('django', None) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {% if devpi or django or dropbox or monitor %}
 
@@ -76,11 +75,9 @@
     - require:
       - file: /home/web/repo
 
-{% for site, settings in sites.iteritems() %}
-{% set test = settings.get('test', {}) -%}
+{% for domain, settings in sites.iteritems() %}
 
-{% if not testing or testing and test -%}
-/home/web/repo/backup/{{ site }}:
+/home/web/repo/backup/{{ domain }}:
   file.directory:
     - user: web
     - group: web
@@ -90,7 +87,7 @@
       - file: /home/web/repo/backup
 
 {# 'files/site/public' folder is for public uploads #}
-/home/web/repo/files/{{ site }}/public:
+/home/web/repo/files/{{ domain }}/public:
   file.directory:
     - user: web
     - group: web
@@ -100,7 +97,7 @@
       - file: /home/web/repo/files
 
 {# 'files/site/private' folder is for private attachments #}
-/home/web/repo/files/{{ site }}/private:
+/home/web/repo/files/{{ domain }}/private:
   file.directory:
     - user: web
     - group: web
@@ -110,7 +107,7 @@
       - file: /home/web/repo/files
 
 {# 'project' folder is for the code #}
-/home/web/repo/project/{{ site }}:
+/home/web/repo/project/{{ domain }}:
   file.directory:
     - user: web
     - group: web
@@ -119,6 +116,5 @@
     - require:
       - file: /home/web/repo/project
 
-{% endif %} # not testing or testing and test
-{% endfor %} # site, settings
+{% endfor %} # domain, settings
 {% endif %} # devpi or django or monitor

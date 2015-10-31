@@ -89,21 +89,14 @@ gpg                 Yes
 gpg                 No
 {% endif -%}
 
+_________________________________________________________________________ sites
 {% set sites = pillar.get('sites', {}) %}
 {% for site, settings in sites.iteritems() -%}
-
-{% set domain = settings.get('domain') -%}
-{% set test = settings.get('test', {}) -%}
-{% if testing and test -%}
-{% set domain = test.get('domain') -%}
-{% endif -%}
-
-{% if not testing or testing and test -%}
 {{ site }}
 {% set db_type = settings['db_type'] -%}
 {% if db_type %}
 - database          Yes ({{ db_type }})
-{% else %}
+{% else -%}
 - database          No
 {% endif -%}
 {% if settings.get('celery', None) -%}
@@ -116,6 +109,6 @@ gpg                 No
 {% else -%}
 - ftp               No
 {% endif -%}
-- domain            {{ domain }}
-{% endif -%}
-{% endfor %}
+- domain            {{ site }}
+{% endfor -%}
+_______________________________________________________________________________

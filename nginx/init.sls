@@ -37,15 +37,15 @@ nginx.conf:
     - require:
       - pkg: nginx
 
-{% for site, settings in sites.iteritems() %}
+{% for domain, settings in sites.iteritems() %}
 
-/etc/nginx/include/{{ site }}.conf:
+/etc/nginx/include/{{ domain }}.conf:
   file:
     - managed
     - source: salt://nginx/include-site.conf
     - template: jinja
     - context:
-      site: {{ site }}
+      domain: {{ domain }}
       settings: {{ settings }}
       testing: {{ testing }}
     - require:
@@ -53,7 +53,7 @@ nginx.conf:
 
 # Folder for certificates
 # http://library.linode.com/web-servers/nginx/configuration/ssl
-/srv/ssl/{{ site }}/:
+/srv/ssl/{{ domain }}/:
   file.directory:
     - user: www-data
     - group: www-data
@@ -65,7 +65,7 @@ nginx.conf:
     - require:
       - pkg: nginx
 
-{% endfor %} # site, settings
+{% endfor %} # domain, settings
 
 # default site
 /etc/nginx/include/default.conf:

@@ -19,3 +19,5 @@ base:
     - web.folder
     - web.package
     - web.user
+  'typing-*':
+    - typingace

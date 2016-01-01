@@ -3,7 +3,6 @@
 {% set monitor = pillar.get('monitor', False) %}
 {% set opbeat = pillar.get('opbeat', {}) %}
 {% set sites = pillar.get('sites', {}) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {% if django or monitor %}
 
@@ -55,7 +54,6 @@ uwsgi-plugin-python3:
       opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
@@ -72,7 +70,6 @@ uwsgi-plugin-python3:
       opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
@@ -88,7 +85,6 @@ uwsgi-plugin-python3:
       opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 {% endif %} # celery

@@ -5,7 +5,6 @@
 {% set monitor = pillar.get('monitor', False) -%}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
 {% set sites = pillar.get('sites', {}) %}
-{% set testing = pillar.get('testing', False) -%}
 
 nginx:
   pkg.installed: []
@@ -27,7 +26,6 @@ nginx.conf:
       nginx: {{ nginx }}
       nginx_services: {{ nginx_services }}
       sites: {{ sites }}
-      testing: {{ testing }}
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference
 
@@ -47,7 +45,6 @@ nginx.conf:
     - context:
       domain: {{ domain }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /etc/nginx/include
 

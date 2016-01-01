@@ -3,7 +3,6 @@
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}

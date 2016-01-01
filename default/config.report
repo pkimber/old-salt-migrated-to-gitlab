@@ -86,8 +86,14 @@ _________________________________________________________________________ sites
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() -%}
 {{ domain }}
+{% set testing = settings.get('testing', None) -%}
+{% if testing -%}
+- testing           Yes
+{% else -%}
+- testing           No
+{% endif -%}
 {% set db_type = settings['db_type'] -%}
-{% if db_type %}
+{% if db_type -%}
 - database          Yes ({{ db_type }})
 {% else -%}
 - database          No
@@ -103,5 +109,17 @@ _________________________________________________________________________ sites
 - ftp               No
 {% endif -%}
 - domain            {{ domain }}
+{% set redirect = settings.get('redirect', None) -%}
+{% if redirect -%}
+- redirect          {{ redirect }} (nginx will redirect from '{{ redirect }}' to '{{ domain }}')
+{% else -%}
+- redirect          No (nginx will not rewrite or redirect to '{{ domain }}')
+{% endif -%}
+{% if settings.get('ssl', None) -%}
+- ssl               Yes
+{% else -%}
+- ssl               No
+{% endif -%}
 {% endfor -%}
 _______________________________________________________________________________
+

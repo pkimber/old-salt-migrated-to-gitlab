@@ -73,7 +73,7 @@
 
 {# create cron.d file even if it is empty... #}
 {# or we won't be able to remove items from it #}
-/etc/cron.d/{{ domain }}:
+/etc/cron.d/{{ domain|replace('.', '_') }}:
   file:
     - managed
     - source: salt://web/cron_for_site

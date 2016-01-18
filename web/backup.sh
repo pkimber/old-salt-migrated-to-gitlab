@@ -58,7 +58,7 @@ else
     echo "incremental backup"
     echo "===================="
     # Runs an incremental backup on days other than the 1st or 15th
-    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
 fi
 
 echo "{{ domain }}.rsync.backup:1|c" | nc -w 1 -u {{ django.monitor }} 2003
@@ -87,7 +87,7 @@ else
     echo "incremental backup"
     echo "===================="
     # Runs an incremental backup on days other than the 1st
-    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
 fi
 
 echo "{{ domain }}.rsync.files:1|c" | nc -w 1 -u {{ django.monitor }} 2003

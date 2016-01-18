@@ -52,7 +52,7 @@
       - user: web
 
 {% if gpg %}
-/home/web/opt/backup_{{ domain }}.sh:
+/home/web/opt/backup.{{ domain }}.sh:
   file:
     - managed
     - source: salt://web/backup.sh

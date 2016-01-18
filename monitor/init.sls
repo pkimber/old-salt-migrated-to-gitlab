@@ -15,7 +15,6 @@ git://github.com/etsy/statsd.git:
   git.latest:
     - target: /opt/statsd
     - rev: v0.7.1
-    - ranas: web
     - unless: test -d /opt/statsd
 
 /opt/statsd/localConfig.js:

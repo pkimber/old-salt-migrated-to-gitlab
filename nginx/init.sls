@@ -14,6 +14,12 @@ nginx:
        - pkg: nginx
        - file: /etc/nginx/nginx.conf
 
+# disable default site
+/etc/nginx/sites-enabled/default:
+  file.absent
+/etc/nginx/sites-available/default:
+  file.absent
+
 nginx.conf:
   file:                                         # state declaration
     - managed                                   # function

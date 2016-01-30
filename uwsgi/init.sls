@@ -58,7 +58,7 @@ uwsgi-plugin-python3:
       - file: /home/web/repo/uwsgi/vassals
 
 {% if settings.get('celery', None) %}
-/home/web/repo/uwsgi/vassals/{{ domain }}_celery_beat.ini:
+/home/web/repo/uwsgi/vassals/{{ domain }}.celery.beat.ini:
   file:
     - managed
     - source: salt://uwsgi/vassal_celery_beat.ini
@@ -73,7 +73,7 @@ uwsgi-plugin-python3:
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
-/home/web/repo/uwsgi/vassals/{{ domain }}_celery_worker.ini:
+/home/web/repo/uwsgi/vassals/{{ domain }}.celery.worker.ini:
   file:
     - managed
     - source: salt://uwsgi/vassal_celery_worker.ini

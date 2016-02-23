@@ -94,9 +94,8 @@ elasticsearch_soft:
       - pkg: elasticsearch_soft
 
 elastic_phonetic_plugin:
-    cmd:
-      -run
-      - name: bin/plugin -t 30s install analysis-phonetic
+    cmd.run:
+      - name: bin/plugin install analysis-phonetic
       - cwd: /usr/share/elasticsearch
       - unless: test -d /usr/share/elasticsearch/plugins/analysis-phonetic
       - require:

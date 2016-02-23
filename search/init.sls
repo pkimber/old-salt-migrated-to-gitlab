@@ -98,7 +98,7 @@ elastic_phonetic_plugin:
     - name: /usr/share/elasticsearch/plugins/analysis-phonetic/plugin-descriptor.properties
     - cmd.run:
       - name: bin/plugin analysis-phonetic
-	  - cwd: /usr/share/elasticsearch
+      - cwd: /usr/share/elasticsearch
       - require:
         - pkg: elasticsearch_soft
         - file: /etc/default/elasticsearch

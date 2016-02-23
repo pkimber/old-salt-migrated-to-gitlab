@@ -57,7 +57,7 @@ elasticsearch_repo:
     - name: /etc/apt/sources.list.d/elasticsearch.list
     - require:
       - cmd: elastic_repos_key
-    - contents: deb packages.elastic.co/elasticsearch/2.x/debian stable main
+    - contents: deb http://packages.elastic.co/elasticsearch/2.x/debian stable main
 elasticsearch_soft:
   pkg.installed:
     - name: elasticsearch

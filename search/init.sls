@@ -93,6 +93,16 @@ elasticsearch_soft:
     - require:
       - pkg: elasticsearch_soft
 
+elastic_phonetic_plugin:
+  file.managed:
+    - name: /usr/share/elasticsearch/plugins/analysis-phonetic/plugin-descriptor.properties
+    - cmd.run:
+      - name: bin/plugin analysis-phonetic
+	  - cwd: /usr/share/elasticsearch
+      - require:
+        - pkg: elasticsearch_soft
+        - file: /etc/default/elasticsearch
+
 elastic_service:
   service.running:
     - name: elasticsearch

@@ -47,24 +47,24 @@ then
     echo "full backup"
     echo "===================="
     # Delete extraneous duplicity files
-    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
     # Delete all full and incremental backup sets older than 12 months
-    duplicity remove-older-than 12M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
+    duplicity remove-older-than 12M --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
     # Runs an full backup on the 1st or 15th
-    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ domain }} sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
     # Delete incremental backups older than the 2nd to last full backup
-    duplicity remove-all-inc-of-but-n-full 2 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
+    duplicity remove-all-inc-of-but-n-full 2 --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
 else
     echo "incremental backup"
     echo "===================="
     # Runs an incremental backup on days other than the 1st or 15th
-    PASSPHRASE="{{ rsync['pass'] }}" duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/backup/{{ domain }} sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup
 fi
 
 echo "{{ domain }}.rsync.backup:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 
 echo "duplicity database backup verify (including any files within the backup folder)"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup /home/web/repo/backup/{{ domain }}
+PASSPHRASE="{{ rsync['pass'] }}" duplicity verify sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup /home/web/repo/backup/{{ domain }}
 
 echo "{{ domain }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 
@@ -76,25 +76,25 @@ then
     echo "full backup"
     echo "===================="
     # Delete extraneous duplicity files
-    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
     # Delete all full and incremental backup sets older than 3 months
-    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
+    duplicity remove-older-than 3M --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
     # Runs an full backup on the 1st
-    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ domain }} sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
     # Delete incremental backups older than the last full backup
-    duplicity remove-all-inc-of-but-n-full 1 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
+    duplicity remove-all-inc-of-but-n-full 1 --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
 else
     echo "incremental backup"
     echo "===================="
     # Runs an incremental backup on days other than the 1st
-    PASSPHRASE="{{ rsync['pass'] }}" duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ domain }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/{{ domain }} sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files
 fi
 
 echo "{{ domain }}.rsync.files:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 
 # Not sure that verify this way is a good idea.  Lots of bandwidth etc.
 # echo "duplicity files - verify"
-# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files /home/web/repo/files/{{ domain }}
+# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/files /home/web/repo/files/{{ domain }}
 
 # echo "{{ domain }}.rsync.files.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 
@@ -113,19 +113,19 @@ then
     echo "full backup"
     echo "===================="
     # Delete extraneous duplicity files
-    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
+    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
     # Delete all full and incremental backup sets older than 3 months
-    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
+    duplicity remove-older-than 3M --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
     # Runs an full backup on the 1st
-    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
+    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
     # Delete incremental backups older than the last full backup
-    duplicity remove-all-inc-of-but-n-full 1 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
+    duplicity remove-all-inc-of-but-n-full 1 --force sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
 else
     echo "incremental backup"
     echo "===================="
     # Runs an incremental backup on days other than the 1st
-    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
+    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
 fi
 echo "duplicity dropbox - verify"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }} /home/web/repo/files/dropbox/{{ dropbox_account }}
+PASSPHRASE="{{ rsync['pass'] }}" duplicity verify sftp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }} /home/web/repo/files/dropbox/{{ dropbox_account }}
 {% endif %} {# dropbox_account #}

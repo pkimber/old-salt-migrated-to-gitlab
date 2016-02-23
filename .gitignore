@@ -36,3 +36,7 @@ temp.db
 .mr.developer.cfg
 .project
 .pydevproject
+
+# typingace
+typingace/ilspa-branding.tar.gz
+typingace/intranet_demo_nosg.zip

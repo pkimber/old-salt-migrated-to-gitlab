@@ -3,7 +3,6 @@
 {% set monitor = pillar.get('monitor', False) %}
 {% set opbeat = pillar.get('opbeat', {}) %}
 {% set sites = pillar.get('sites', {}) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {% if django or monitor %}
 
@@ -55,12 +54,11 @@ uwsgi-plugin-python3:
       opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
 {% if settings.get('celery', None) %}
-/home/web/repo/uwsgi/vassals/{{ domain }}_celery_beat.ini:
+/home/web/repo/uwsgi/vassals/{{ domain }}.celery.beat.ini:
   file:
     - managed
     - source: salt://uwsgi/vassal_celery_beat.ini
@@ -72,11 +70,10 @@ uwsgi-plugin-python3:
       opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 
-/home/web/repo/uwsgi/vassals/{{ domain }}_celery_worker.ini:
+/home/web/repo/uwsgi/vassals/{{ domain }}.celery.worker.ini:
   file:
     - managed
     - source: salt://uwsgi/vassal_celery_worker.ini
@@ -88,7 +85,6 @@ uwsgi-plugin-python3:
       opbeat: {{ opbeat }}
       postgres_settings: {{ postgres_settings }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /home/web/repo/uwsgi/vassals
 {% endif %} # celery

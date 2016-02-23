@@ -12,7 +12,7 @@ HOME=/home/web/
   {{ settings['schedule'] }}              web         . /home/web/opt/{{ domain }}.sh {{ name }} 2>&1 | /usr/bin/logger -t {{ domain }}_{{ name }}
 {% endfor -%}
 {% if django %}
-  0       1       *       *       *       web         . /home/web/opt/backup_{{ domain }}.sh 2>&1 | /usr/bin/logger -t backup_{{ domain }}
+  0       1       *       *       *       web         . /home/web/opt/backup.{{ domain }}.sh 2>&1 | /usr/bin/logger -t backup_{{ domain }}
 {% endif %}
 {% if dropbox %}
 {% for account in dropbox.accounts -%}

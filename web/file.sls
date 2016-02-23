@@ -3,7 +3,6 @@
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}
@@ -53,7 +52,7 @@
       - user: web
 
 {% if gpg %}
-/home/web/opt/backup_{{ domain }}.sh:
+/home/web/opt/backup.{{ domain }}.sh:
   file:
     - managed
     - source: salt://web/backup.sh
@@ -74,7 +73,7 @@
 
 {# create cron.d file even if it is empty... #}
 {# or we won't be able to remove items from it #}
-/etc/cron.d/{{ domain }}:
+/etc/cron.d/{{ domain|replace('.', '_') }}:
   file:
     - managed
     - source: salt://web/cron_for_site

@@ -1,17 +1,32 @@
 {% set mysql_server = pillar.get('mysql_server', {}) -%}
 {% if mysql_server %}
 
-mysqld:
+{% set root_password_hash = mysql_server.get('root_password_hash', {}) -%}
+
+mysql-server:
   pkg:
     - installed
-    - name: mysql-server
+    - pkgs:
+      - mysql-server
+      - python-mysqldb
+
+mysql-service:
   service:
     - running
     - name: mysql
     - enable: True
     - watch:
-      - pkg: mysqld
-
+      - pkg: mysql-server
+{#
+ # This sets the password for the root user initially time but fails on each
+ # subsequent state.highstate
+  mysql_user.present:
+    - name: root
+    - password_hash: '{{ root_password_hash }}'
+    - require: 
+      - service: mysql
+      - pkg: python-mysqldb
+#}
 /etc/mysql/my.cnf:
   file.managed:
     - source: salt://db/my.cnf
@@ -19,7 +34,7 @@ mysqld:
     - group: root
     - mode: 644
     - require:
-      - pkg: mysqld
+      - pkg: mysql-server
 
 {% endif %}
 

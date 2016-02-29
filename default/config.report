@@ -19,6 +19,13 @@ php                 Yes
 php                 No
 {% endif -%}
 
+{% set opbeat_app_id = pillar.get('opbeat', None) -%}
+{% if opbeat_app_id -%}
+opbeat              Yes
+{% else -%}
+opbeat              No
+{% endif -%}
+
 {% set search = pillar.get('search', None) -%}
 {% if search -%}
 search              Yes
@@ -114,6 +121,11 @@ _________________________________________________________________________ sites
 - redirect          {{ redirect }} (nginx will redirect from '{{ redirect }}' to '{{ domain }}')
 {% else -%}
 - redirect          No (nginx will not rewrite or redirect to '{{ domain }}')
+{% endif -%}
+{% if settings.get('opbeat', None) -%}
+- opbeat            Yes
+{% else -%}
+- opbeat            No
 {% endif -%}
 {% if settings.get('ssl', None) -%}
 - ssl               Yes

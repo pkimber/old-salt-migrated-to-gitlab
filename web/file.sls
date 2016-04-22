@@ -105,15 +105,13 @@
 /home/web/opt/backup_dropbox_{{ account }}.sh:
   file:
     - managed
-    - source: salt://web/backup.sh
+    - source: salt://web/backup_dropbox.sh
     - user: web
     - group: web
     - mode: 755
     - template: jinja
     - makedirs: True
     - context:
-      django: {{ empty_dict }}
-      dropbox_account: {{ account }}
       gpg: {{ gpg }}
     - require:
       - file: /home/web/opt

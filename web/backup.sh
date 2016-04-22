@@ -18,7 +18,6 @@ else
     VAR1=$1
 fi
 
-{% if django %}
 # dump database
 DUMP_FILE=/home/web/repo/backup/{{ site }}/$(date +"%Y%m%d_%H%M").sql
 echo "dump database: $DUMP_FILE"
@@ -101,31 +100,3 @@ echo "{{ site_name }}.rsync.files:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 # remove database dump
 echo "remove: $DUMP_FILE"
 rm $DUMP_FILE
-{% endif %} {# django #}
-
-
-{% if dropbox_account %}
-# backup dropbox
-echo "===================="
-echo "duplicity dropbox backup"
-if [ `date +%d` == "01" ] || [ "$VAR1" == "full" ] 
-then
-    echo "full backup"
-    echo "===================="
-    # Delete extraneous duplicity files
-    PASSPHRASE="{{ rsync['pass'] }}" duplicity cleanup --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
-    # Delete all full and incremental backup sets older than 3 months
-    duplicity remove-older-than 3M --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
-    # Runs an full backup on the 1st
-    duplicity full --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
-    # Delete incremental backups older than the last full backup
-    duplicity remove-all-inc-of-but-n-full 1 --force scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
-else
-    echo "incremental backup"
-    echo "===================="
-    # Runs an incremental backup on days other than the 1st
-    duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
-fi
-echo "duplicity dropbox - verify"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }} /home/web/repo/files/dropbox/{{ dropbox_account }}
-{% endif %} {# dropbox_account #}

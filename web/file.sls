@@ -64,7 +64,6 @@
     - context:
       gpg: {{ gpg }}
       django: {{ django }}
-      dropbox_account: {{ empty_dict }}
       domain: {{ domain }}
     - require:
       - file: /home/web/opt
@@ -102,6 +101,7 @@
     - template: jinja
     - makedirs: True
     - context:
+      dropbox_account: {{ account }}
       gpg: {{ gpg }}
     - require:
       - file: /home/web/opt

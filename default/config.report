@@ -1,10 +1,3 @@
-{% set testing = pillar.get('testing', False) -%}
-{% if testing -%}
-testing             Yes
-{% else -%}
-testing             No
-{% endif -%}
-
 {% set django = pillar.get('django', None) -%}
 {% if django -%}
 django              Yes
@@ -24,6 +17,13 @@ monitor             No
 php                 Yes
 {% else -%}
 php                 No
+{% endif -%}
+
+{% set opbeat_app_id = pillar.get('opbeat', None) -%}
+{% if opbeat_app_id -%}
+opbeat              Yes
+{% else -%}
+opbeat              No
 {% endif -%}
 
 {% set search = pillar.get('search', None) -%}
@@ -89,21 +89,20 @@ gpg                 Yes
 gpg                 No
 {% endif -%}
 
+_________________________________________________________________________ sites
 {% set sites = pillar.get('sites', {}) %}
-{% for site, settings in sites.iteritems() -%}
-
-{% set domain = settings.get('domain') -%}
-{% set test = settings.get('test', {}) -%}
-{% if testing and test -%}
-{% set domain = test.get('domain') -%}
+{% for domain, settings in sites.iteritems() -%}
+{{ domain }}
+{% set testing = settings.get('testing', None) -%}
+{% if testing -%}
+- testing           Yes
+{% else -%}
+- testing           No
 {% endif -%}
-
-{% if not testing or testing and test -%}
-{{ site }}
 {% set db_type = settings['db_type'] -%}
-{% if db_type %}
+{% if db_type -%}
 - database          Yes ({{ db_type }})
-{% else %}
+{% else -%}
 - database          No
 {% endif -%}
 {% if settings.get('celery', None) -%}
@@ -117,5 +116,22 @@ gpg                 No
 - ftp               No
 {% endif -%}
 - domain            {{ domain }}
+{% set redirect = settings.get('redirect', None) -%}
+{% if redirect -%}
+- redirect          {{ redirect }} (nginx will redirect from '{{ redirect }}' to '{{ domain }}')
+{% else -%}
+- redirect          No (nginx will not rewrite or redirect to '{{ domain }}')
 {% endif -%}
-{% endfor %}
+{% if settings.get('opbeat', None) -%}
+- opbeat            Yes
+{% else -%}
+- opbeat            No
+{% endif -%}
+{% if settings.get('ssl', None) -%}
+- ssl               Yes
+{% else -%}
+- ssl               No
+{% endif -%}
+{% endfor -%}
+_______________________________________________________________________________
+

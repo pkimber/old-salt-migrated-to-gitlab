@@ -57,8 +57,7 @@ elasticsearch_repo:
     - name: /etc/apt/sources.list.d/elasticsearch.list
     - require:
       - cmd: elastic_repos_key
-    - contents: deb http://packages.elasticsearch.org/elasticsearch/1.2/debian stable main
-
+    - contents: deb http://packages.elastic.co/elasticsearch/2.x/debian stable main
 elasticsearch_soft:
   pkg.installed:
     - name: elasticsearch
@@ -93,6 +92,15 @@ elasticsearch_soft:
     - mode: 644
     - require:
       - pkg: elasticsearch_soft
+
+elastic_phonetic_plugin:
+    cmd.run:
+      - name: bin/plugin install analysis-phonetic
+      - cwd: /usr/share/elasticsearch
+      - unless: test -d /usr/share/elasticsearch/plugins/analysis-phonetic
+      - require:
+        - pkg: elasticsearch_soft
+        - file: /etc/default/elasticsearch
 
 elastic_service:
   service.running:

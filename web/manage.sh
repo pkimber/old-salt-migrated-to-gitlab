@@ -6,7 +6,7 @@
 # exit immediately if a command exits with a nonzero exit status.
 set -e
 
-cd /home/web/repo/project/{{ site }}/live/
-source /home/web/repo/project/{{ site }}/live/venv/bin/activate
-/home/web/repo/project/{{ site }}/live/venv/bin/python /home/web/opt/manage_env.py /home/web/repo/uwsgi/vassals/{{ site }}.ini $*
+cd /home/web/repo/project/{{ domain }}/live/
+source /home/web/repo/project/{{ domain }}/live/venv/bin/activate
+/home/web/repo/project/{{ domain }}/live/venv/bin/python /home/web/opt/manage_env.py /home/web/repo/uwsgi/vassals/{{ domain }}.ini $*
 deactivate

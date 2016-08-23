@@ -39,5 +39,6 @@ else
     # Runs an incremental backup on days other than the 1st
     duplicity incr --encrypt-key="{{ rsync['key'] }}" /home/web/repo/files/dropbox/{{ dropbox_account }} scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }}
 fi
-echo "duplicity dropbox - verify"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }} /home/web/repo/files/dropbox/{{ dropbox_account }}
+# PJK 22/04/2016 removed ref #1442
+# echo "duplicity dropbox - verify"
+# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/dropbox/{{ dropbox_account }} /home/web/repo/files/dropbox/{{ dropbox_account }}

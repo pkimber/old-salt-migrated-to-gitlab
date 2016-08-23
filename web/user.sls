@@ -3,11 +3,12 @@
 {% set dropbox = pillar.get('dropbox', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set php = pillar.get('php', None) %}
+{% set apache_php = pillar.get('apache_php', None) %}
 
 {% set users = pillar.get('users', {}) %}
 
 {# Only set-up web user if we have a site or a service (devpi or dropbox backup) #}
-{% if django or dropbox or php or devpi or monitor %}
+{% if django or dropbox or php or devpi or monitor or apache_php %}
 
 web-group:
   group.present:

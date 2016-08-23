@@ -3,7 +3,6 @@
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}
@@ -34,17 +33,10 @@
       - user: web
 
 
-{% for site, settings in sites.iteritems() %}
+{% for domain, settings in sites.iteritems() %}
 {% set cron = settings.get('cron', {}) -%}
-{% set test = settings.get('test', {}) -%}
 
-{% set site_name = site %}
-{% if testing and test %}
-{% set site_name = site_name + '_test' %}
-{% endif %}
-
-{% if not testing or testing and test -%}
-/home/web/opt/{{ site_name }}.sh:
+/home/web/opt/{{ domain }}.sh:
   file:
     - managed
     - source: salt://web/manage.sh
@@ -54,13 +46,13 @@
     - template: jinja
     - makedirs: True
     - context:
-      site: {{ site }}
+      domain: {{ domain }}
     - require:
       - file: /home/web/opt
       - user: web
 
 {% if gpg %}
-/home/web/opt/backup_{{ site }}.sh:
+/home/web/opt/backup.{{ domain }}.sh:
   file:
     - managed
     - source: salt://web/backup.sh
@@ -72,9 +64,7 @@
     - context:
       gpg: {{ gpg }}
       django: {{ django }}
-      dropbox_account: {{ empty_dict }}
-      site: {{ site }}
-      site_name: {{ site_name }}
+      domain: {{ domain }}
     - require:
       - file: /home/web/opt
       - user: web
@@ -82,7 +72,7 @@
 
 {# create cron.d file even if it is empty... #}
 {# or we won't be able to remove items from it #}
-/etc/cron.d/{{ site }}:
+/etc/cron.d/{{ domain|replace('.', '_') }}:
   file:
     - managed
     - source: salt://web/cron_for_site
@@ -94,10 +84,9 @@
       cron: {{ cron }}
       django: {{ django }}
       dropbox: {{ empty_dict }}
-      site: {{ site }}
+      domain: {{ domain }}
 
-{% endif %} # not testing or testing and test
-{% endfor %} # site, settings
+{% endfor %} # domain, settings
 
 
 {% if dropbox %}
@@ -112,6 +101,7 @@
     - template: jinja
     - makedirs: True
     - context:
+      dropbox_account: {{ account }}
       gpg: {{ gpg }}
     - require:
       - file: /home/web/opt

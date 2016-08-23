@@ -3,7 +3,6 @@
 {% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set sites = pillar.get('sites', {}) %}
-{% set testing = pillar.get('testing', False) -%}
 
 {% if django or devpi or dropbox or monitor %}
 
@@ -94,9 +93,6 @@ supervisor:
 
 {% for site, settings in sites.iteritems() %}
 
-{% set test = settings.get('test', {}) -%}
-{% if not testing or testing and test -%}
-
 {% if settings.get('ftp', None) %}
 /etc/supervisor/conf.d/{{ site }}_watch_ftp_folder.conf:
   file:
@@ -108,7 +104,6 @@ supervisor:
     - require:
       - pkg: supervisor
 {% endif %} # ftp
-{% endif %} # not testing or testing and test
 {% endfor %} # site, settings
 
 {% endif %}

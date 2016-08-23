@@ -5,7 +5,6 @@
 {% set monitor = pillar.get('monitor', False) -%}
 {% set nginx_services = pillar.get('nginx_services', {}) %}
 {% set sites = pillar.get('sites', {}) %}
-{% set testing = pillar.get('testing', False) -%}
 
 nginx:
   pkg.installed: []
@@ -14,6 +13,12 @@ nginx:
     - watch:
        - pkg: nginx
        - file: /etc/nginx/nginx.conf
+
+# disable default site
+/etc/nginx/sites-enabled/default:
+  file.absent
+/etc/nginx/sites-available/default:
+  file.absent
 
 nginx.conf:
   file:                                         # state declaration
@@ -27,7 +32,6 @@ nginx.conf:
       nginx: {{ nginx }}
       nginx_services: {{ nginx_services }}
       sites: {{ sites }}
-      testing: {{ testing }}
     - require:                                  # requisite declaration
       - pkg: nginx                              # requisite reference
 
@@ -37,30 +41,16 @@ nginx.conf:
     - require:
       - pkg: nginx
 
-{% for site, settings in sites.iteritems() %}
-{% set test = settings.get('test', {}) %}
+{% for domain, settings in sites.iteritems() %}
 
-{% if testing and test -%}
-{% set domain = test.get('domain') %}
-{% set domain_www = domain %}
-{% else -%}
-{% set domain = settings.get('domain') %}
-{% set domain_www = 'www.' + domain %}
-{% endif %}
-
-{% if not testing or testing and test -%}
-
-/etc/nginx/include/{{ site }}.conf:
+/etc/nginx/include/{{ domain }}.conf:
   file:
     - managed
     - source: salt://nginx/include-site.conf
     - template: jinja
     - context:
       domain: {{ domain }}
-      domain_www: {{ domain_www }}
-      site: {{ site }}
       settings: {{ settings }}
-      testing: {{ testing }}
     - require:
       - file: /etc/nginx/include
 
@@ -78,8 +68,7 @@ nginx.conf:
     - require:
       - pkg: nginx
 
-{% endif %} # not testing or testing and test
-{% endfor %} # site, settings
+{% endfor %} # domain, settings
 
 # default site
 /etc/nginx/include/default.conf:

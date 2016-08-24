@@ -1,3 +1,12 @@
+{% set mysql_client = pillar.get('mysql_client', None) %}
+{% if mysql_client %}
+
+libmysqlclient-dev:
+  pkg.installed
+
+{% endif %} # mysql_client
+
+
 {% set mysql_server = pillar.get('mysql_server', {}) -%}
 {% if mysql_server %}
 

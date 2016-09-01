@@ -59,6 +59,18 @@ libxml2-dev:
 libxslt1-dev:
   pkg.installed
 
+{# for letsencrypt #}
+bc:
+  pkg.installed
+
+letsencrypt-git:
+  git.latest:
+    - name: https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
+    - target: /opt/letsencrypt
+    - require:
+      - pkg: git
+      - pkg: bc
+
 {% endif %} # django
 
 {% if dropbox %}

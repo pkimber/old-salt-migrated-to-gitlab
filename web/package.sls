@@ -65,7 +65,7 @@ bc:
 
 letsencrypt-git:
   git.latest:
-    - name: https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
+    - name: https://github.com/letsencrypt/letsencrypt
     - target: /opt/letsencrypt
     - require:
       - pkg: git

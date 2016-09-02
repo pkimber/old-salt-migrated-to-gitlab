@@ -1,0 +1,12 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/home/web/
+
+# minute  (0-59),
+# |   hour (0-23),
+# |   |   day of the month (1-31),
+# |   |   |   month of the year (1-12),
+# |   |   |   |   day of the week (0-6 with 0=Sunday).
+# |   |   |   |   |   user    commands
+ 30   3   *   *   2   root    /opt/letsencrypt/letsencrypt-auto renew >> /var/log/letsencrypt-renew.log
+ 35   3   *   *   2   root    /etc/init.d/nginx reload

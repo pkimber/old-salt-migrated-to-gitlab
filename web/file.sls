@@ -3,6 +3,7 @@
 {% set gpg = pillar.get('gpg', False) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
+{% set letsencrypt = pillar.get('letsencrypt', None) %}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}
@@ -10,6 +11,15 @@
 {% if django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
+
+/etc/cron.d/letsencrypt:
+  file:
+    - managed
+    - source: salt://web/letsencrypt-cron
+    - user: root
+    - group: root
+    - mode: 700
+    - makedirs: True
 
 /home/web/opt:
   file.directory:

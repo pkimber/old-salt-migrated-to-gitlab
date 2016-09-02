@@ -41,6 +41,12 @@ nginx.conf:
     - require:
       - pkg: nginx
 
+{# strong Diffie-Hellman certificate #}
+/etc/ssl/certs/dhparam.pem:
+  cmd.run:
+    - name: openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    - unless: test -f /etc/ssl/certs/dhparam.pem
+
 {% for domain, settings in sites.iteritems() %}
 
 /etc/nginx/include/{{ domain }}.conf:
@@ -53,12 +59,6 @@ nginx.conf:
       settings: {{ settings }}
     - require:
       - file: /etc/nginx/include
-
-{# strong Diffie-Hellman certificate #}
-/etc/ssl/certs/dhparam.pem:
-  cmd.run:
-    - name: openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-    - unless: test -f /etc/ssl/certs/dhparam.pem
 
 # Folder for certificates
 # http://library.linode.com/web-servers/nginx/configuration/ssl

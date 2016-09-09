@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-HOME=/home/web/
+HOME=/root/
 
 # minute  (0-59),
 # |   hour (0-23),

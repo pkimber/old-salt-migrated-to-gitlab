@@ -42,6 +42,18 @@
       - file: /home/web/opt
       - user: web
 
+/home/web/opt/init-letsencrypt:
+  file:
+    - managed
+    - source: salt://web/init-letsencrypt
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: /home/web/opt
+      - user: web
+
 
 {% for domain, settings in sites.iteritems() %}
 {% set cron = settings.get('cron', {}) -%}

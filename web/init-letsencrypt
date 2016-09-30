@@ -1,0 +1,12 @@
+function print_usage() {
+    echo -e "\nUSAGE:\n\t`basename $0` <primary FQDN> [ <redirect FQDN> ]\n"
+    exit 1
+}
+
+if [ "$1" != "" -a "$2" != "" ]; then
+    primary="$1"
+    redirect="-d $2"
+    /opt/letsencrypt/letsencrypt-auto certonly -a webroot --webroot-path=/home/web/repo/files/${primary} -d ${primary} ${redirect}
+else
+    print_usage
+fi

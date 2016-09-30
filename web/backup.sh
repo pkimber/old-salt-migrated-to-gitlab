@@ -62,10 +62,10 @@ fi
 
 echo "{{ domain }}.rsync.backup:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 
-echo "duplicity database backup verify (including any files within the backup folder)"
-PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup /home/web/repo/backup/{{ domain }}
+# echo "duplicity database backup verify (including any files within the backup folder)"
+# PASSPHRASE="{{ rsync['pass'] }}" duplicity verify scp://{{ rsync['user'] }}@{{ rsync['server'] }}/{{ domain }}/backup /home/web/repo/backup/{{ domain }}
 
-echo "{{ domain }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
+# echo "{{ domain }}.rsync.backup.verify:1|c" | nc -w 1 -u {{ django.monitor }} 2003
 
 # backup files
 echo "===================="

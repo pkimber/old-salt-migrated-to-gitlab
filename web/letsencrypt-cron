@@ -8,5 +8,5 @@ HOME=/root/
 # |   |   |   month of the year (1-12),
 # |   |   |   |   day of the week (0-6 with 0=Sunday).
 # |   |   |   |   |   user    commands
- 30   3,9,15,21   *   *   *   root    /opt/letsencrypt/letsencrypt-auto renew --no-self-upgrade >> /var/log/letsencrypt-renew.log
- 35   3,9,15,21   *   *   *   root    /etc/init.d/nginx reload
+ 37   3,15   *   *   *   root    /opt/letsencrypt/letsencrypt-auto renew --no-self-upgrade >> /var/log/letsencrypt-renew.log
+ 42   3,15   *   *   *   root    /etc/init.d/nginx reload

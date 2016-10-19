@@ -202,6 +202,9 @@ bootstrap.mlockall: true
 #
 #network.bind_host: 192.168.0.1
 
+# TODO PJK, Set this as follows to allow access from other servers
+# network.bind_host: "0"
+
 # Set the address other nodes will use to communicate with this node. If not
 # set, it is automatically derived. It must point to an actual IP address.
 #

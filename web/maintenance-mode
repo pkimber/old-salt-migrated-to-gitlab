@@ -1,0 +1,62 @@
+#!/bin/bash
+
+function print_usage() {
+    echo -e "\nUsage:\n\t`basename $0` <domain> on | off\n"
+    exit 2
+}
+
+if [ "$EUID" -ne 0 ]; then
+    sudo $0 $@
+    exit 1
+fi
+
+if [ "$1" = "" -a "$2" = "" ]; then
+    print_usage
+fi
+
+DOMAIN=$1
+MODE=$2
+DOC_ROOT="/home/web/repo/files/${DOMAIN}"
+MAINT_PAGE="${DOC_ROOT}/maintenance.html"
+NO_MAINT_PAGE="${DOC_ROOT}/no-maintenance.html"
+
+if [ ! -d ${DOC_ROOT} ]; then
+    echo "The directory ${DOC_ROOT} does not exist"
+    exit
+fi
+
+if [ "${MODE}" = "on" ]; then
+    if [ -f ${MAINT_PAGE} ]; then
+        echo -e "\nSite ${DOMAIN} is already in maintenance mode\n"
+    elif [ ! -f ${NO_MAINT_PAGE} ];then
+        echo -e "\n***********************************************************************"
+        echo -e "*"
+        echo -e "*  The Maintence mode page not defined."
+        echo -e "*"
+        echo -e "*  Please create a file called:"
+        echo -e "*"
+        echo -e "*     ${NO_MAINT_PAGE}"
+        echo -e "*"
+        echo -e "*  This page will be displayed to users when you enter maintenance mode"
+        echo -e "*"
+        echo -e "*  To get started, copy"
+        echo -e "*"
+        echo -e "*     ${DOC_ROOT}/sample-maintenance.html"
+        echo -e "*  to"
+        echo -e "*     ${NO_MAINT_PAGE}"
+        echo -e "*"
+        echo -e "*  and modify as appropiate"
+        echo -e "*"
+        echo -e "***********************************************************************\n\n"
+    else
+        mv ${NO_MAINT_PAGE} ${MAINT_PAGE}
+    fi
+elif [ "${MODE}" = "off" ]; then
+    if [ ! -f ${MAINT_PAGE} ]; then
+        echo -e "\nSite ${DOMAIN} is not in maintenance mode\n"
+    else
+        mv ${MAINT_PAGE} ${NO_MAINT_PAGE}
+    fi
+else
+    print_usage
+fi

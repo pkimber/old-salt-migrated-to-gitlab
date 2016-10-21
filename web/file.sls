@@ -11,6 +11,7 @@
 {% if django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
+{% set users = pillar.get('users', {}) %}
 
 /etc/cron.d/letsencrypt:
   file:
@@ -67,6 +68,26 @@
       - file: /home/web/opt
       - user: web
 
+
+{% if users|length %}
+  {% for user in users %}
+    {% if user != "web" %}
+/home/{{ user }}/bin/maintenance-mode:
+  file.symlink:
+    - target: /home/web/opt/maintenance-mode
+    - require:
+      - file: /home/web/opt/maintenance-mode
+      - user: web
+
+/home/{{ user }}/bin/init-letsencrypt:
+  file.symlink:
+    - target: /home/web/opt/init-letsencrypt
+    - require:
+      - file: /home/web/opt/init-letsencrypt
+      - user: web
+    {% endif %}
+  {% endfor %}
+{% endif %}
 
 {% for domain, settings in sites.iteritems() %}
 {% set cron = settings.get('cron', {}) -%}

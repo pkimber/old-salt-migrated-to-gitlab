@@ -55,7 +55,7 @@
       - user: web
 
 
-/home/web/opt/maintenance-mode
+/home/web/opt/maintenance-mode:
   file:
     - managed
     - source: salt://web/maintenance-mode
@@ -98,7 +98,7 @@
     - context:
       domain: {{ domain }}
     - require:
-      - file: /home/web/repo/files/{{ domain }}
+      - file: /home/web/repo/files/{{ domain }}/public
       - user: web
 
 {% if gpg %}

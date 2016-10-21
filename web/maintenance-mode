@@ -19,6 +19,7 @@ MODE=$2
 DOC_ROOT="/home/web/repo/files/${DOMAIN}"
 MAINT_PAGE="${DOC_ROOT}/maintenance.html"
 NO_MAINT_PAGE="${DOC_ROOT}/no-maintenance.html"
+SAMPLE_MAINT_PAGE="${DOC_ROOT}/sample-maintenance.html"
 
 if [ ! -d ${DOC_ROOT} ]; then
     echo "The directory ${DOC_ROOT} does not exist"
@@ -38,16 +39,23 @@ if [ "${MODE}" = "on" ]; then
         echo -e "*     ${NO_MAINT_PAGE}"
         echo -e "*"
         echo -e "*  This page will be displayed to users when you enter maintenance mode"
-        echo -e "*"
-        echo -e "*  To get started, copy"
-        echo -e "*"
-        echo -e "*     ${DOC_ROOT}/sample-maintenance.html"
-        echo -e "*  to"
-        echo -e "*     ${NO_MAINT_PAGE}"
-        echo -e "*"
-        echo -e "*  and modify as appropiate"
-        echo -e "*"
         echo -e "***********************************************************************\n\n"
+
+        if [ -f ${SAMPLE_MAINT_PAGE} ]; then
+            OK=""
+
+            while [ "${OK}" != "y" -a "${OK}" != "Y" -a  "${OK}" != "n" -a  "${OK}" != "N" ]; do
+                echo -e "\rOk to clone the sample maintenance file (y/n) \c"
+                read OK
+            done
+
+            if [ "${OK}" = "y" -o "${OK}" = "Y" ]; then
+                cp ${SAMPLE_MAINT_PAGE} ${NO_MAINT_PAGE}
+                echo -e "\nThe maintenance page \n\n\t${NO_MAINT_PAGE}\n"
+                
+                echo -e "has been created.  Modify as appropriate an run this command again\n"
+            fi
+        fi
     else
         mv ${NO_MAINT_PAGE} ${MAINT_PAGE}
     fi

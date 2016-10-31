@@ -11,6 +11,7 @@
 {% if django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
+{% set users = pillar.get('users', {}) %}
 
 /etc/cron.d/letsencrypt:
   file:
@@ -55,6 +56,39 @@
       - user: web
 
 
+/home/web/opt/maintenance-mode:
+  file:
+    - managed
+    - source: salt://web/maintenance-mode
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: /home/web/opt
+      - user: web
+
+
+{% if users|length %}
+  {% for user in users %}
+    {% if user != "web" %}
+/home/{{ user }}/bin/maintenance-mode:
+  file.symlink:
+    - target: /home/web/opt/maintenance-mode
+    - require:
+      - file: /home/web/opt/maintenance-mode
+      - user: web
+
+/home/{{ user }}/bin/init-letsencrypt:
+  file.symlink:
+    - target: /home/web/opt/init-letsencrypt
+    - require:
+      - file: /home/web/opt/init-letsencrypt
+      - user: web
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 {% for domain, settings in sites.iteritems() %}
 {% set cron = settings.get('cron', {}) -%}
 
@@ -71,6 +105,21 @@
       domain: {{ domain }}
     - require:
       - file: /home/web/opt
+      - user: web
+
+/home/web/repo/files/{{ domain }}/sample-maintenance.html:
+  file:
+    - managed
+    - source: salt://web//sample-maintenance.html
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - makedirs: True
+    - context:
+      domain: {{ domain }}
+    - require:
+      - file: /home/web/repo/files/{{ domain }}/public
       - user: web
 
 {% if gpg %}

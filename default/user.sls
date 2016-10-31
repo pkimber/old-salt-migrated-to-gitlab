@@ -51,6 +51,15 @@
     - mode: 755
     - makedirs: True
 
+/home/{{ user }}/bin:
+  file.directory:
+    - user: {{ user }}
+    - group: {{ user }}
+    - require:
+      - user: {{ user }}
+    - mode: 755
+    - makedirs: True
+
 /home/{{ user }}/.bashrc:
   file:
     - managed

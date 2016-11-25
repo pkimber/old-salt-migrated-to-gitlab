@@ -42,7 +42,7 @@ oracle-java7-installer:
 
 {% if workflow %}
 
-tomcat8:
+tomcat7:
   pkg.installed
 
 {% endif %}

@@ -17,7 +17,7 @@
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() %}
 
-{% set workflow = settings.get('workflow', {}) -%}
+{% set work = settings.get('workflowxyz', {}) -%}
 
 /var/lib/tomcat7/webapps/activiti-app-{{ domain|replace('.', '-') }}.war:
   file.managed:
@@ -46,8 +46,7 @@
     - template: jinja
     - context:
       domain: {{ domain }}
-      user: {{ workflow['user'] }}
-      pass: {{ workflow['pass'] }}
+      settings: {{ settings }}
     - require:
       - pkg: tomcat7
 
@@ -60,8 +59,7 @@
     - template: jinja
     - context:
       domain: {{ domain }}
-      user: {{ workflow['user'] }}
-      pass: {{ workflow['pass'] }}
+      settings: {{ settings }}
     - require:
       - pkg: tomcat7
 

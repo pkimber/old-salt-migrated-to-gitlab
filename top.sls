@@ -7,6 +7,7 @@ base:
     - default.user
     - devpi
     - ftp
+    - java
     - monitor
     - nginx
     - php

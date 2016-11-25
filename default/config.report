@@ -89,6 +89,13 @@ gpg                 Yes
 gpg                 No
 {% endif -%}
 
+{% set workflow = pillar.get('workflow', None) -%}
+{% if search -%}
+workflow            Yes
+{% else -%}
+workflow            No
+{% endif -%}
+
 _________________________________________________________________________ sites
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() -%}
@@ -131,6 +138,11 @@ _________________________________________________________________________ sites
 - ssl               Yes
 {% else -%}
 - ssl               No
+{% endif -%}
+{% if settings.get('workflow', None) -%}
+- workflow          Yes
+{% else -%}
+- workflow          No
 {% endif -%}
 {% endfor -%}
 _______________________________________________________________________________

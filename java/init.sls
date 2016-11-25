@@ -40,4 +40,10 @@ oracle-java7-installer:
     - require:
       - pkgrepo: oracle-ppa
 
+{% if workflow %}
+
+tomcat8:
+  pkg.installed
+
+{% endif %}
 {% endif %}

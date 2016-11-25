@@ -90,7 +90,7 @@ gpg                 No
 {% endif -%}
 
 {% set workflow = pillar.get('workflow', None) -%}
-{% if search -%}
+{% if workflow -%}
 workflow            Yes
 {% else -%}
 workflow            No

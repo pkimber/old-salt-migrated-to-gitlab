@@ -1,5 +1,6 @@
 {% set search = pillar.get('search', None) %}
-{% if search %}
+{% set workflow = pillar.get('workflow', None) %}
+{% if search or workflow %}
 # https://gist.github.com/renoirb/6722890
 #
 # How to install automatically Oracle Java 7 under Salt Stack

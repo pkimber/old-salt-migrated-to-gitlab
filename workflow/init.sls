@@ -21,4 +21,13 @@
     - require:
       - pkg: tomcat7
 
+/usr/share/tomcat7/lib/postgresql-9.4.1208.jar:
+  file.managed:
+    - source: salt://workflow/postgresql-9.4.1208.jar
+    - user: root
+    - group: root
+    - mode: 644
+    - require:
+      - pkg: tomcat7
+
 {% endif %}

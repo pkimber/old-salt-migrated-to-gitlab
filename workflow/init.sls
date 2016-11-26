@@ -17,8 +17,6 @@
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() %}
 
-{% set work = settings.get('workflowxyz', {}) -%}
-
 /var/lib/tomcat7/webapps/activiti-app-{{ domain|replace('.', '-') }}.war:
   file.managed:
     - source: salt://workflow/activiti-app.war

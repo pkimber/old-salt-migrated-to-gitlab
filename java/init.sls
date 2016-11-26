@@ -43,7 +43,18 @@ oracle-java7-installer:
 {% if workflow %}
 
 tomcat7:
-  pkg.installed
+  pkg
+    - installed
+    - require:
+      - pkg: oracle-java7-installer
+
+/etc/default/tomcat7:
+  file.managed:
+    - source: salt://java/tomcat7
+    - user: root
+    - group: root
+    - require:
+      - pkg: tomcat7
 
 {% endif %}
 {% endif %}

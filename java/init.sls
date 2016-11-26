@@ -43,7 +43,7 @@ oracle-java7-installer:
 {% if workflow %}
 
 tomcat7:
-  pkg
+  pkg:
     - installed
     - require:
       - pkg: oracle-java7-installer

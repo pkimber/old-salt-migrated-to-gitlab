@@ -31,6 +31,18 @@ python-dev:
 python-virtualenv:
   pkg.installed
 
+{# for letsencrypt #}
+bc:
+  pkg.installed
+
+letsencrypt-git:
+  git.latest:
+    - name: https://github.com/letsencrypt/letsencrypt
+    - target: /opt/letsencrypt
+    - require:
+      - pkg: git
+      - pkg: bc
+
 {% endif %} # django or devpi or monitor
 
 {% if django %}
@@ -58,18 +70,6 @@ libxml2-dev:
 {# for element tree #}
 libxslt1-dev:
   pkg.installed
-
-{# for letsencrypt #}
-bc:
-  pkg.installed
-
-letsencrypt-git:
-  git.latest:
-    - name: https://github.com/letsencrypt/letsencrypt
-    - target: /opt/letsencrypt
-    - require:
-      - pkg: git
-      - pkg: bc
 
 {% endif %} # django
 

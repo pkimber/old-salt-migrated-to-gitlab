@@ -4,6 +4,7 @@
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
 {% set letsencrypt = pillar.get('letsencrypt', None) %}
+{% set devpi = pillar.get('devpi', None) %}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}

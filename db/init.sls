@@ -49,6 +49,7 @@ mysql-service:
 
 {% set postgres_server = pillar.get('postgres_server', {}) -%}
 {% set postgres_settings = pillar.get('postgres_settings', {}) %}
+{% set workflow = pillar.get('workflow', None) %}
 
 {% if postgres_server or postgres_settings %}
 libpq-dev:
@@ -79,6 +80,7 @@ postgresql:
     - template: jinja
     - context:
       postgres_server: {{ postgres_server }}
+      workflow: {{ workflow }}
     - require:
       - pkg: postgresql
 

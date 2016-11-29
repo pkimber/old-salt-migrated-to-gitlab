@@ -20,5 +20,6 @@ base:
     - web.folder
     - web.package
     - web.user
+    - workflow
   'typing-*':
     - typingace

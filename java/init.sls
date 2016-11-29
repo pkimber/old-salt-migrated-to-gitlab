@@ -1,5 +1,6 @@
 {% set search = pillar.get('search', None) %}
-{% if search %}
+{% set workflow = pillar.get('workflow', None) %}
+{% if search or workflow %}
 # https://gist.github.com/renoirb/6722890
 #
 # How to install automatically Oracle Java 7 under Salt Stack
@@ -39,4 +40,21 @@ oracle-java7-installer:
     - require:
       - pkgrepo: oracle-ppa
 
+{% if workflow %}
+
+tomcat7:
+  pkg:
+    - installed
+    - require:
+      - pkg: oracle-java7-installer
+
+/etc/default/tomcat7:
+  file.managed:
+    - source: salt://java/tomcat7
+    - user: root
+    - group: root
+    - require:
+      - pkg: tomcat7
+
+{% endif %}
 {% endif %}

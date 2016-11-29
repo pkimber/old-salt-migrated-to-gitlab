@@ -1,16 +1,25 @@
 function print_usage() {
-    echo -e "\nUSAGE:\n\t`basename $0` <primary FQDN> [ <redirect FQDN> ]\n"
+    echo -e "\nUSAGE:\n\t`basename $0` <primary FQDN> [<redirect FQDN>] [<webroot path>]\n"
+    echo -e "To specify a webroot path but no redirect use \"-\" as the second parameter\n"
     exit 1
 }
 
 if [ "$1" != "" ]; then
     primary="$1"
-    if [ "$2" != "" ]; then
+
+    if [ "$2" != "" -a "$2" != "-" ]; then
         redirect="-d $2"
     else
         redirect=""
     fi
-    /opt/letsencrypt/letsencrypt-auto certonly -a webroot --webroot-path=/home/web/repo/files/${primary} -d ${primary} ${redirect}
+
+    if [ "$3" != "" ]; then
+        webroot_path="$3"
+    else
+        webroot_path="/home/web/repo/files/${primary}"
+    fi
+
+    /opt/letsencrypt/letsencrypt-auto certonly -a webroot --webroot-path=${webroot_path} -d ${primary} ${redirect}
 else
     print_usage
 fi

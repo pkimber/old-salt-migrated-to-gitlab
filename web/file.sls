@@ -4,14 +4,14 @@
 {% set monitor = pillar.get('monitor', None) %}
 {% set solr = pillar.get('solr', None) %}
 {% set letsencrypt = pillar.get('letsencrypt', None) %}
+{% set devpi = pillar.get('devpi', None) %}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}
 
-{% if django or dropbox or monitor %}
-
-{% set sites = pillar.get('sites', {}) %}
 {% set users = pillar.get('users', {}) %}
+
+{% if devpi or django or dropbox or monitor %}
 
 /etc/cron.d/letsencrypt:
   file:
@@ -31,18 +31,6 @@
     - require:
       - user: web
 
-/home/web/opt/manage_env.py:
-  file:
-    - managed
-    - source: salt://web/manage_env.py
-    - user: web
-    - group: web
-    - mode: 755
-    - makedirs: True
-    - require:
-      - file: /home/web/opt
-      - user: web
-
 /home/web/opt/init-letsencrypt:
   file:
     - managed
@@ -55,6 +43,35 @@
       - file: /home/web/opt
       - user: web
 
+{% if users|length %}
+  {% for user in users %}
+    {% if user != "web" %}
+/home/{{ user }}/bin/init-letsencrypt:
+  file.symlink:
+    - target: /home/web/opt/init-letsencrypt
+    - require:
+      - file: /home/web/opt/init-letsencrypt
+      - user: web
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% endif %} # devpi or dropbox or monitor
+{% if django or dropbox or monitor %}
+
+{% set sites = pillar.get('sites', {}) %}
+
+/home/web/opt/manage_env.py:
+  file:
+    - managed
+    - source: salt://web/manage_env.py
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: /home/web/opt
+      - user: web
 
 /home/web/opt/maintenance-mode:
   file:

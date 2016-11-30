@@ -95,13 +95,6 @@
     - require:
       - file: /home/web/opt/maintenance-mode
       - user: web
-
-/home/{{ user }}/bin/init-letsencrypt:
-  file.symlink:
-    - target: /home/web/opt/init-letsencrypt
-    - require:
-      - file: /home/web/opt/init-letsencrypt
-      - user: web
     {% endif %}
   {% endfor %}
 {% endif %}

@@ -120,7 +120,22 @@
 /home/web/repo/files/{{ domain }}/sample-maintenance.html:
   file:
     - managed
-    - source: salt://web//sample-maintenance.html
+    - source: salt://web/sample-maintenance.html
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - makedirs: True
+    - context:
+      domain: {{ domain }}
+    - require:
+      - file: /home/web/repo/files/{{ domain }}/public
+      - user: web
+
+/home/web/repo/files/{{ domain }}/deny-robots.txt:
+  file:
+    - managed
+    - source: salt://web/deny-robots.txt
     - user: web
     - group: web
     - mode: 755

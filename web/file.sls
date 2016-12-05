@@ -132,7 +132,7 @@
       - file: /home/web/repo/files/{{ domain }}/public
       - user: web
 
-/home/web/repo/files/{{ domain }}/deny-robots.txt
+/home/web/repo/files/{{ domain }}/deny-robots.txt:
   file:
     - managed
     - source: salt://web/deny-robots.txt
@@ -144,7 +144,7 @@
     - context:
       domain: {{ domain }}
     - require:
-      - file: /home/web/repo/files/{{ domain }}
+      - file: /home/web/repo/files/{{ domain }}/public
       - user: web
 
 {% if gpg %}

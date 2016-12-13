@@ -49,7 +49,7 @@ mysql-service:
 
 {% set postgres_server = pillar.get('postgres_server', {}) -%}
 {% set postgres_settings = pillar.get('postgres_settings', {}) %}
-{% set workflow = pillar.get('workflow', None) %}
+{% set workflow = pillar.get('workflow', False) %}
 
 {% if postgres_server or postgres_settings %}
 libpq-dev:

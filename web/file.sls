@@ -5,13 +5,14 @@
 {% set solr = pillar.get('solr', None) %}
 {% set letsencrypt = pillar.get('letsencrypt', None) %}
 {% set devpi = pillar.get('devpi', None) %}
+{% set apache = pillar.get('apache', None) %}
 
 {# pass an empty parameter #}
 {% set empty_dict = {} %}
 
 {% set users = pillar.get('users', {}) %}
 
-{% if devpi or django or dropbox or monitor %}
+{% if devpi or django or dropbox or monitor or apache %}
 
 /etc/cron.d/letsencrypt:
   file:
@@ -56,7 +57,7 @@
   {% endfor %}
 {% endif %}
 
-{% endif %} # devpi or dropbox or monitor
+{% endif %} # devpi or dropbox or monitor or apache
 {% if django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}

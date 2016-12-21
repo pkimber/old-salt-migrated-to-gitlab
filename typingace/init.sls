@@ -92,6 +92,7 @@ Enable ssl module:
     - source: salt://typingace/virtualhost.conf
     - template: jinja
     - context:
+      settings: {{ settings }}
       domain: {{ domain }}
     - require:
       - pkg: apache2
@@ -154,6 +155,14 @@ ilspa-typingace-branding:
     - tar_options: vz
     - archive_format: tar
     - if_missing: /home/web/repo/project/{{ domain }}/live/.ilspa-branded
+
+zend-pdf-patch:
+  archive.extracted:
+    - name: /home/web/repo/project/{{ domain }}/live
+    - source: salt://typingace/zend-pdf-patch.tar.gz
+    - tar_options: vz
+    - archive_format: tar
+    - if_missing: /home/web/repo/project/{{ domain }}/live/.zend-pdf-patched
 {% endif %}
 {% endfor -%}
 

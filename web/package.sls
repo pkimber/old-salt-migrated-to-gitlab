@@ -2,6 +2,7 @@
 {% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set php = pillar.get('php', None) %}
+{% set apache = pillar.get('apache', None) %}
 
 {% set devpi = pillar.get('devpi', None) %}
 {% set sites = pillar.get('sites', {}) %}
@@ -15,7 +16,7 @@ git:
 mercurial:
   pkg.installed
 
-{% if django or devpi or monitor %}
+{% if django or devpi or monitor or apache %}
 
 python3:
   pkg.installed
@@ -43,7 +44,7 @@ letsencrypt-git:
       - pkg: git
       - pkg: bc
 
-{% endif %} # django or devpi or monitor
+{% endif %} # django or devpi or monitor or apache
 
 {% if django %}
 

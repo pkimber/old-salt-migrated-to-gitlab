@@ -21,6 +21,9 @@ TOMCAT7_GROUP=tomcat7
 # JAVA_OPTS="-Djava.awt.headless=true -Xms1024m -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC"
 JAVA_OPTS="-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC"
 
+# Fix for SecureRandom - this is not required if using Java 8 (from https://wiki.apache.org/tomcat/HowTo/FasterStartUp)
+JAVA_OPTS="${JAVA_OPTS} -Djava.security.egd=file:/dev/./random"
+
 # To enable remote debugging uncomment the following line.
 # You will then be able to use a java debugger on port 8000.
 #JAVA_OPTS="${JAVA_OPTS} -Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"

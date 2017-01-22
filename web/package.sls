@@ -91,6 +91,6 @@ dropboxd:
     {% else %}
     I think 'cpuarch' can only be 'x86' or 'x86_64'
     {% endif %}
-    - user: web
+    - runas: web
 
 {% endif %} # dropbox

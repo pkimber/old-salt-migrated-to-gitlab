@@ -45,7 +45,7 @@ web-ssh-keygen:
   cmd.run:
     - name: ssh-keygen -N "" -f /home/web/.ssh/id_rsa
     - unless: test -f /home/web/.ssh/id_rsa.pub
-    - user: web
+    - runas: web
     - require:
       - ssh_auth: web-ssh-key
 

@@ -29,7 +29,10 @@ python-dev:
     - require:
       - pkg: build-essential
 
-python-virtualenv:
+python3-virtualenv:
+  pkg.installed
+
+python3-venv:
   pkg.installed
 
 {# for letsencrypt #}

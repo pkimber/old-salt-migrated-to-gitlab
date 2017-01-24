@@ -1,3 +1,10 @@
+{% set chat = pillar.get('chat', False) %}
+{% if chat -%}
+chat                Yes
+{% else -%}
+chat                No
+{% endif -%}
+
 {% set django = pillar.get('django', None) -%}
 {% if django -%}
 django              Yes

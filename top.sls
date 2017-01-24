@@ -1,6 +1,7 @@
 base:
   '*':
     - apache
+    - chat
     - db
     - default
     - default.package

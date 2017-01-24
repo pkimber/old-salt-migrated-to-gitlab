@@ -4,6 +4,15 @@
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() %}
 
+/home/web/repo/project/{{ domain }}/live/config:
+  file.directory:
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: /home/web/repo/project/{{ domain }}
+
 /home/web/repo/project/{{ domain }}/live/config/config.json:
   file:
     - managed
@@ -15,7 +24,7 @@
       domain: {{ domain }}
       settings: {{ settings }}
     - require:
-      - file: /home/web/repo/project/{{ domain }}/live
+      - file: /home/web/repo/project/{{ domain }}/live/config
 
 {% endfor %} # domain, settings
 

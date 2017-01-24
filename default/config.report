@@ -1,10 +1,3 @@
-{% set chat = pillar.get('chat', False) %}
-{% if chat -%}
-chat                Yes
-{% else -%}
-chat                No
-{% endif -%}
-
 {% set django = pillar.get('django', None) -%}
 {% if django -%}
 django              Yes
@@ -80,6 +73,13 @@ redis               No
 nginx               Yes
 {% else -%}
 nginx               No
+{% endif -%}
+
+{% set chat = pillar.get('chat', False) %}
+{% if chat -%}
+chat                Yes
+{% else -%}
+chat                No
 {% endif -%}
 
 {% set devpi = pillar.get('devpi', None) -%}

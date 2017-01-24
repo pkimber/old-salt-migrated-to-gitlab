@@ -1,10 +1,11 @@
+{% set chat = pillar.get('chat', False) %}
 {% set devpi = pillar.get('devpi', None) %}
 {% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set django = pillar.get('django', None) %}
 {% set apache_php = pillar.get('apache_php', None) %}
 
-{% if devpi or django or dropbox or monitor or apache_php %}
+{% if chat or devpi or django or dropbox or monitor or apache_php %}
 
 {% set sites = pillar.get('sites', {}) %}
 

@@ -18,6 +18,7 @@
     - require:
       - file: /home/web/repo/devpi
 
+{# https://www.kbsoftware.co.uk/docs/issues.html#virtualenv-managed #}
 /home/web/repo/devpi/venv_devpi:
   virtualenv.managed:
     - index_url: https://pypi.python.org/simple/

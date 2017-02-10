@@ -9,7 +9,7 @@ HOME=/home/web/
 # |       |       |       |       day of the week (0-6 with 0=Sunday).
 # |       |       |       |       |       user        commands
 {% for name, settings in cron.iteritems() -%}
-  {{ settings['schedule'] }}              web         . /home/web/opt/{{ domain }}.sh {{ name }} 2>&1 | /usr/bin/logger -t {{ domain }}_{{ name }}
+  {{ settings['schedule'] }}              web         . /home/web/opt/{{ name }}.sh 2>&1 | /usr/bin/logger -t {{ domain }}_{{ name }}
 {% endfor -%}
 {% if django %}
   0       1       *       *       *       web         . /home/web/opt/backup.{{ domain }}.sh 2>&1 | /usr/bin/logger -t backup_{{ domain }}

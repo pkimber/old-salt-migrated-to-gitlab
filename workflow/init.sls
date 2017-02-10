@@ -1,6 +1,12 @@
 {% set workflow = pillar.get('workflow', None) %}
 {% if workflow %}
 
+{# http://askubuntu.com/questions/519082/how-to-install-libre-office-without-gui #}
+libreoffice-core:
+  pkg.installed:
+    - install_recommends: False
+
+
 {# java and tomcat installed using 'java/init.sls' #}
 
 /usr/share/tomcat7/lib/postgresql-9.4.1212.jre7.jar:
@@ -11,7 +17,6 @@
     - mode: 644
     - require:
       - pkg: tomcat7
-
 
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() %}

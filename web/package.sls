@@ -63,10 +63,6 @@ zlib1g-dev:
 libfreetype6-dev:
   pkg.installed
 
-{# for pillow #}
-liblcms1-dev:
-  pkg.installed
-
 {# for element tree #}
 libxml2-dev:
   pkg.installed

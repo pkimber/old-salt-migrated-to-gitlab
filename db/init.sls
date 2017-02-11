@@ -55,7 +55,7 @@ mysql-service:
 libpq-dev:
   pkg.installed
 
-postgresql-client-9.3:
+postgresql-client-9.5:
   pkg.installed
 {% endif %}
 
@@ -67,10 +67,10 @@ postgresql:
   service:
     - running
     - watch:
-      - file: /etc/postgresql/9.3/main/postgresql.conf
-      - file: /etc/postgresql/9.3/main/pg_hba.conf
+      - file: /etc/postgresql/9.5/main/postgresql.conf
+      - file: /etc/postgresql/9.5/main/pg_hba.conf
 
-/etc/postgresql/9.3/main/pg_hba.conf:
+/etc/postgresql/9.5/main/pg_hba.conf:
   file:
     - managed
     - source: salt://db/pg_hba.conf
@@ -84,7 +84,7 @@ postgresql:
     - require:
       - pkg: postgresql
 
-/etc/postgresql/9.3/main/postgresql.conf:
+/etc/postgresql/9.5/main/postgresql.conf:
   file:
     - managed
     - source: salt://db/postgresql.conf

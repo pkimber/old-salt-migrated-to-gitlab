@@ -75,6 +75,13 @@ nginx               Yes
 nginx               No
 {% endif -%}
 
+{% set chat = pillar.get('chat', False) %}
+{% if chat -%}
+chat                Yes
+{% else -%}
+chat                No
+{% endif -%}
+
 {% set devpi = pillar.get('devpi', None) -%}
 {% if devpi -%}
 devpi               Yes

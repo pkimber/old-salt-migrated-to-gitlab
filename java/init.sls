@@ -3,7 +3,7 @@
 {% if search or workflow %}
 # https://gist.github.com/renoirb/6722890
 #
-# How to install automatically Oracle Java 7 under Salt Stack
+# How to install automatically Oracle Java 8 under Salt Stack
 #
 # Thanks Oracle for complicating things :(
 #
@@ -25,16 +25,16 @@ oracle-license-select:
     - unless: which java
     - name: '/bin/echo /usr/bin/debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections'
     - require_in:
-      - pkg: oracle-java7-installer
+      - pkg: oracle-java8-installer
       - cmd: oracle-license-seen-lie
 
 oracle-license-seen-lie:
   cmd.run:
     - name: '/bin/echo /usr/bin/debconf shared/accepted-oracle-license-v1-1 seen true  | /usr/bin/debconf-set-selections'
     - require_in:
-      - pkg: oracle-java7-installer
+      - pkg: oracle-java8-installer
 
-oracle-java7-installer:
+oracle-java8-installer:
   pkg:
     - installed
     - require:
@@ -42,19 +42,19 @@ oracle-java7-installer:
 
 {% if workflow %}
 
-tomcat7:
+tomcat8:
   pkg:
     - installed
     - require:
-      - pkg: oracle-java7-installer
+      - pkg: oracle-java8-installer
 
-/etc/default/tomcat7:
+/etc/default/tomcat8:
   file.managed:
-    - source: salt://java/tomcat7
+    - source: salt://java/tomcat8
     - user: root
     - group: root
     - require:
-      - pkg: tomcat7
+      - pkg: tomcat8
 
 {% endif %}
 {% endif %}

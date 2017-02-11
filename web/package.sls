@@ -29,7 +29,10 @@ python-dev:
     - require:
       - pkg: build-essential
 
-python-virtualenv:
+python3-virtualenv:
+  pkg.installed
+
+python3-venv:
   pkg.installed
 
 {# for letsencrypt #}
@@ -88,6 +91,6 @@ dropboxd:
     {% else %}
     I think 'cpuarch' can only be 'x86' or 'x86_64'
     {% endif %}
-    - user: web
+    - runas: web
 
 {% endif %} # dropbox

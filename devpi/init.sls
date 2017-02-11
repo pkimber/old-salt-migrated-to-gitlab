@@ -18,15 +18,16 @@
     - require:
       - file: /home/web/repo/devpi
 
+{# https://www.kbsoftware.co.uk/docs/issues.html#virtualenv-managed #}
 /home/web/repo/devpi/venv_devpi:
-  virtualenv.manage:
-    - system_site_packages: False
+  virtualenv.managed:
     - index_url: https://pypi.python.org/simple/
     - requirements: salt://devpi/requirements.txt
-    - python: /usr/bin/python3
     - user: web
+    - venv_bin: /usr/bin/pyvenv-3.5
     - require:
-      - pkg: python-virtualenv
+      - pkg: python3-venv
+      - pkg: python3-virtualenv
       - file: /home/web/repo/devpi
 
 {% endif %}

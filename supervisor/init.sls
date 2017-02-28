@@ -1,4 +1,3 @@
-{% set chat = pillar.get('chat', False) %}
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
 {% set dropbox = pillar.get('dropbox', None) %}
@@ -36,18 +35,6 @@ supervisor:
       - file: /etc/supervisor/conf.d/dropbox_{{ account }}.conf
       {% endfor %}
       {% endif %}
-{% endif %}
-
-{% if chat %}
-/etc/supervisor/conf.d/chat.conf:
-  file:
-    - managed
-    - source: salt://supervisor/chat.conf
-    - template: jinja
-    - context:
-      site: {{ site }}
-    - require:
-      - pkg: supervisor
 {% endif %}
 
 {% if devpi %}
@@ -108,6 +95,19 @@ supervisor:
 {% endif %}
 
 {% for site, settings in sites.iteritems() %}
+
+{% set profile = settings.get('profile') -%}
+{% if profile == 'mattermost' %}
+/etc/supervisor/conf.d/chat.conf:
+  file:
+    - managed
+    - source: salt://supervisor/chat.conf
+    - template: jinja
+    - context:
+      site: {{ site }}
+    - require:
+      - pkg: supervisor
+{% endif %}
 
 {% if settings.get('ftp', None) %}
 /etc/supervisor/conf.d/{{ site }}_watch_ftp_folder.conf:

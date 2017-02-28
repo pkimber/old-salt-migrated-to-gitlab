@@ -1,4 +1,3 @@
-{% set chat = pillar.get('chat', False) %}
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
 {% set dropbox = pillar.get('dropbox', None) %}
@@ -22,9 +21,6 @@ supervisor:
   service:
     - running
     - watch:
-      {% if chat %}
-      - file: /etc/supervisor/conf.d/chat.conf
-      {% endif %}
       {% if devpi %}
       - file: /etc/supervisor/conf.d/devpi.conf
       {% endif %}

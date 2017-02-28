@@ -1,3 +1,4 @@
+{% set chat = pillar.get('chat', False) %}
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
 {% set dropbox = pillar.get('dropbox', None) %}
@@ -21,6 +22,9 @@ supervisor:
   service:
     - running
     - watch:
+      {% if chat %}
+      - file: /etc/supervisor/conf.d/chat.conf
+      {% endif %}
       {% if devpi %}
       - file: /etc/supervisor/conf.d/devpi.conf
       {% endif %}
@@ -32,6 +36,18 @@ supervisor:
       - file: /etc/supervisor/conf.d/dropbox_{{ account }}.conf
       {% endfor %}
       {% endif %}
+{% endif %}
+
+{% if chat %}
+/etc/supervisor/conf.d/chat.conf:
+  file:
+    - managed
+    - source: salt://supervisor/chat.conf
+    - template: jinja
+    - context:
+      site: {{ site }}
+    - require:
+      - pkg: supervisor
 {% endif %}
 
 {% if devpi %}

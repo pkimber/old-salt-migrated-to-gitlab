@@ -107,6 +107,8 @@ _________________________________________________________________________ sites
 {% set sites = pillar.get('sites', {}) %}
 {% for domain, settings in sites.iteritems() -%}
 {{ domain }}
+{% set profile = settings.get('profile') -%}
+- profile           {{ profile }}
 {% set testing = settings.get('testing', None) -%}
 {% if testing -%}
 - testing           Yes

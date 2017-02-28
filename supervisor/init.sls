@@ -1,10 +1,11 @@
+{% set chat = pillar.get('chat', False) %}
 {% set devpi = pillar.get('devpi', None) %}
 {% set django = pillar.get('django', None) %}
 {% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
 {% set sites = pillar.get('sites', {}) %}
 
-{% if django or devpi or dropbox or monitor %}
+{% if chat or django or devpi or dropbox or monitor %}
 
 {% if django or monitor %}
 uwsgi:
@@ -70,7 +71,7 @@ supervisor:
       - pkg: supervisor
 {% endif %}
 
-{% if django or monitor %}
+{% if chat or django or monitor %}
 
 /etc/supervisor/conf.d/uwsgi.conf:          # ID declaration
   file:                                     # state declaration

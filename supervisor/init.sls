@@ -22,6 +22,9 @@ supervisor:
   service:
     - running
     - watch:
+      {% if chat %}
+      - file: /etc/supervisor/conf.d/chat.conf
+      {% endif %}
       {% if devpi %}
       - file: /etc/supervisor/conf.d/devpi.conf
       {% endif %}
@@ -73,14 +76,14 @@ supervisor:
 
 {% if chat or django or monitor %}
 
-/etc/supervisor/conf.d/uwsgi.conf:          # ID declaration
-  file:                                     # state declaration
-    - managed                               # function
-    - source: salt://supervisor/uwsgi.conf  # function arg
-    - require:                              # requisite declaration
-      - pkg: supervisor                     # requisite reference
-
 {% if django %}
+
+/etc/supervisor/conf.d/uwsgi.conf:
+  file:
+    - managed
+    - source: salt://supervisor/uwsgi.conf
+    - require:
+      - pkg: supervisor
 
 /etc/supervisor/conf.d/statsd.conf:
   file:

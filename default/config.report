@@ -75,6 +75,13 @@ nginx               Yes
 nginx               No
 {% endif -%}
 
+{% set alfresco = pillar.get('alfresco', False) %}
+{% if alfresco -%}
+alfresco            Yes
+{% else -%}
+alfresco            No
+{% endif -%}
+
 {% set chat = pillar.get('chat', False) %}
 {% if chat -%}
 chat                Yes

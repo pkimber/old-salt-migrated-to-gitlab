@@ -1,3 +1,4 @@
+{% set alfresco = pillar.get('alfresco', False) %}
 {% set chat = pillar.get('chat', False) %}
 {% set django = pillar.get('django', None) %}
 {% set dropbox = pillar.get('dropbox', False) %}
@@ -13,7 +14,7 @@
 
 {% set users = pillar.get('users', {}) %}
 
-{% if chat or devpi or django or dropbox or monitor or apache %}
+{% if alfresco or chat or devpi or django or dropbox or monitor or apache %}
 
 /etc/cron.d/letsencrypt:
   file:
@@ -59,7 +60,7 @@
 {% endif %}
 
 {% endif %} # devpi or dropbox or monitor or apache
-{% if chat or django or dropbox or monitor %}
+{% if alfresco or chat or django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
 

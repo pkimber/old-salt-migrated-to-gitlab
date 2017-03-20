@@ -13,7 +13,8 @@
     - require:
       - file: /home/web/repo/project/{{ domain }}
 
-/home/web/repo/project/{{ domain }}/live/config/config.json:
+{# The Mattermost System Console writes to this file, so don't overwrite #}
+/home/web/repo/project/{{ domain }}/live/config/config.json.getting-started:
   file:
     - managed
     - source: salt://chat/config.json

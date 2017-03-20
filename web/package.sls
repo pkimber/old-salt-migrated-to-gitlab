@@ -1,3 +1,4 @@
+{% set alfresco = pillar.get('alfresco', None) %}
 {% set django = pillar.get('django', None) %}
 {% set dropbox = pillar.get('dropbox', None) %}
 {% set monitor = pillar.get('monitor', None) %}
@@ -16,7 +17,7 @@ git:
 mercurial:
   pkg.installed
 
-{% if django or devpi or monitor or apache %}
+{% if alfresco or django or devpi or monitor or apache %}
 
 python3:
   pkg.installed

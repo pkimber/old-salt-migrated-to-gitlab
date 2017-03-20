@@ -115,7 +115,7 @@ _________________________________________________________________________ sites
 {% else -%}
 - testing           No
 {% endif -%}
-{% set db_type = settings['db_type'] -%}
+{% set db_type = settings.get('db_type', None) -%}
 {% if db_type -%}
 - database          Yes ({{ db_type }})
 {% else -%}

@@ -150,6 +150,7 @@
       - file: /home/web/repo/files/{{ domain }}/public
       - user: web
 
+{% if gpg %}
 {% if alfresco %}
 /home/web/opt/alfresco-bart.sh:
   file:
@@ -173,11 +174,12 @@
     - template: jinja
     - makedirs: True
     - context:
+      gpg: {{ gpg }}
       domain: {{ domain }}
     - require:
       - file: /home/web/opt
       - user: web
-{% elif gpg %}
+{% else %}
 /home/web/opt/backup.{{ domain }}.sh:
   file:
     - managed
@@ -194,6 +196,7 @@
     - require:
       - file: /home/web/opt
       - user: web
+{% endif %} # alfresco
 {% endif %} # gpg
 
 {# create cron.d file even if it is empty... #}

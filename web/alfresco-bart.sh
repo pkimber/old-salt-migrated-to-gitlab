@@ -31,7 +31,7 @@
 #
 #########################################################################################
 
-ALFBRT_PATH="."
+ALFBRT_PATH="/home/web/opt"
 
 # Load properties
 if [ -n "$ALFBRT_PATH" ]; then
@@ -98,7 +98,7 @@ case $BACKUPTYPE in
 		fi
 		;;	
 	"scp" )
-		DEST=scp://${SCP_USER}@${SCP_SERVER}/${SCP_FOLDER}
+		DEST=pexpect+scp://${SCP_USER}@${SCP_SERVER}/${SCP_FOLDER}
 		PARAMS="${GLOBAL_DUPLICITY_PARMS} ${NOENCFLAG}"
 		;;
 	"local" )

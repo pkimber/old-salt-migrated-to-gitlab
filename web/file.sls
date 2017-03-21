@@ -170,7 +170,10 @@
     - user: web
     - group: web
     - mode: 444
+    - template: jinja
     - makedirs: True
+    - context:
+      domain: {{ domain }}
     - require:
       - file: /home/web/opt
       - user: web

@@ -1,5 +1,6 @@
 base:
   '*':
+    - alfresco
     - apache
     - chat
     - db

@@ -150,7 +150,31 @@
       - file: /home/web/repo/files/{{ domain }}/public
       - user: web
 
-{% if gpg %}
+{% if alfresco %}
+/home/web/opt/alfresco-bart.sh:
+  file:
+    - managed
+    - source: salt://web/alfresco-bart.sh
+    - user: web
+    - group: web
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: /home/web/opt
+      - user: web
+
+/home/web/opt/alfresco-bart.properties:
+  file:
+    - managed
+    - source: salt://web/alfresco-bart.properties
+    - user: web
+    - group: web
+    - mode: 444
+    - makedirs: True
+    - require:
+      - file: /home/web/opt
+      - user: web
+{% elif gpg %}
 /home/web/opt/backup.{{ domain }}.sh:
   file:
     - managed

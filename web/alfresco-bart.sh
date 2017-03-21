@@ -31,6 +31,8 @@
 #
 #########################################################################################
 
+ALFBRT_PATH="."
+
 # Load properties
 if [ -n "$ALFBRT_PATH" ]; then
   ALFBRT_PATH="$ALFBRT_PATH"

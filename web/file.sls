@@ -60,7 +60,7 @@
 {% endif %}
 
 {% endif %} # devpi or dropbox or monitor or apache
-{% if alfresco or chat or django or dropbox or monitor %}
+{% if chat or django or dropbox or monitor %}
 
 {% set sites = pillar.get('sites', {}) %}
 
@@ -151,35 +151,6 @@
       - user: web
 
 {% if gpg %}
-{% if alfresco %}
-/home/web/opt/alfresco-bart.sh:
-  file:
-    - managed
-    - source: salt://web/alfresco-bart.sh
-    - user: web
-    - group: web
-    - mode: 755
-    - makedirs: True
-    - require:
-      - file: /home/web/opt
-      - user: web
-
-/home/web/opt/alfresco-bart.properties:
-  file:
-    - managed
-    - source: salt://web/alfresco-bart.properties
-    - user: web
-    - group: web
-    - mode: 444
-    - template: jinja
-    - makedirs: True
-    - context:
-      gpg: {{ gpg }}
-      domain: {{ domain }}
-    - require:
-      - file: /home/web/opt
-      - user: web
-{% else %}
 /home/web/opt/backup.{{ domain }}.sh:
   file:
     - managed
@@ -196,7 +167,6 @@
     - require:
       - file: /home/web/opt
       - user: web
-{% endif %} # alfresco
 {% endif %} # gpg
 
 {# create cron.d file even if it is empty... #}
@@ -217,27 +187,7 @@
 
 {% endfor %} # domain, settings
 
-
-{% if dropbox %}
-{% for account in dropbox.accounts %}
-/home/web/opt/backup_dropbox_{{ account }}.sh:
-  file:
-    - managed
-    - source: salt://web/backup_dropbox.sh
-    - user: web
-    - group: web
-    - mode: 755
-    - template: jinja
-    - makedirs: True
-    - context:
-      dropbox_account: {{ account }}
-      gpg: {{ gpg }}
-    - require:
-      - file: /home/web/opt
-      - user: web
-{% endfor %}
-{% endif %} # dropbox
-
+{% endif %} # chat or django or dropbox or monitor
 
 {# create cron.d file for dropbox even if it is empty... #}
 {# or we won't be able to remove items from it #}
@@ -253,7 +203,6 @@
       cron: {{ empty_dict }}
       django: {{ empty_dict }}
       dropbox: {{ dropbox }}
-
 
 {% if gpg %}
 
@@ -275,6 +224,24 @@
     - mode: 755
     - contents_pillar: gpg:rsync:secret
 
-{% endif %} # gpg
+{% if dropbox %}
+{% for account in dropbox.accounts %}
+/home/web/opt/backup_dropbox_{{ account }}.sh:
+  file:
+    - managed
+    - source: salt://web/backup_dropbox.sh
+    - user: web
+    - group: web
+    - mode: 755
+    - template: jinja
+    - makedirs: True
+    - context:
+      dropbox_account: {{ account }}
+      gpg: {{ gpg }}
+    - require:
+      - file: /home/web/opt
+      - user: web
+{% endfor %}
+{% endif %} # dropbox
 
-{% endif %} # django or monitor
+{% endif %} # gpg

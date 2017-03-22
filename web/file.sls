@@ -181,6 +181,7 @@
     - template: jinja
     - context:
       cron: {{ cron }}
+      alfresco: {{ empty_dict }}
       django: {{ django }}
       dropbox: {{ empty_dict }}
       domain: {{ domain }}
@@ -189,8 +190,23 @@
 
 {% endif %} # chat or django or dropbox or monitor
 
-{# create cron.d file for dropbox even if it is empty... #}
+{# create cron.d file for alfresco and dropbox even if they are empty... #}
 {# or we won't be able to remove items from it #}
+
+/etc/cron.d/alfresco:
+  file:
+    - managed
+    - source: salt://web/cron_for_site
+    - user: root
+    - group: root
+    - mode: 755
+    - template: jinja
+    - context:
+      cron: {{ empty_dict }}
+      alfresco: {{ alfresco }}
+      django: {{ empty_dict }}
+      dropbox: {{ empty_dict }}
+
 /etc/cron.d/dropbox:
   file:
     - managed
@@ -201,6 +217,7 @@
     - template: jinja
     - context:
       cron: {{ empty_dict }}
+      alfresco: {{ empty_dict }}
       django: {{ empty_dict }}
       dropbox: {{ dropbox }}
 

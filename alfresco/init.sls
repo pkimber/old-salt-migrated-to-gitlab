@@ -13,8 +13,6 @@
     - template: jinja
     - context:
       settings: {{ settings }}
-    - require:
-      - file: /opt/alfresco-community/tomcat/shared/classes/alfresco-global.properties
 
 {% if gpg %}
 /home/web/opt/alfresco-bart.sh:

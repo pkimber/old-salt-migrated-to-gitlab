@@ -53,7 +53,7 @@
 {% for site, settings in sites.iteritems() %}
 {% if settings.get('ftp', None) %}
 {# for ftp uploads #}
-  /home/web/repo/ftp/{{ site }}:
+  /home/web/repo/ftp/{{ domain|replace('.', '_') }}:
     file.directory:
       - user: web
       - group: web
@@ -61,84 +61,84 @@
       - require:
         - file: /home/web/repo/ftp
 
-  ftp_group_{{ site }}:
+  ftp_group_{{ domain|replace('.', '_') }}:
     group.present:
-      - name: {{ site }}
+      - name: {{ domain|replace('.', '_') }}
       - gid: {{ settings.get('ftp_user_id') }}
       - system: True
 
-  ftp_user_{{ site }}:
+  ftp_user_{{ domain|replace('.', '_') }}:
     user.present:
-      - name: {{ site }}
+      - name: {{ domain|replace('.', '_') }}
       - uid: {{ settings.get('ftp_user_id') }}
       - gid_from_name: True
       - password: {{ settings.get('ftp_password') }}
       - shell: /bin/bash
       - require:
-        - group: ftp_group_{{ site }}
+        - group: ftp_group_{{ domain|replace('.', '_') }}
 
   {# folder for ftp upload #}
-  /home/{{ site }}/site:
+  /home/{{ domain|replace('.', '_') }}/site:
     file.directory:
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - group: web
       - require:
-        - user: {{ site }}
+        - user: {{ domain|replace('.', '_') }}
       - mode: 755
 
-  /home/{{ site }}/site/static:
+  /home/{{ domain|replace('.', '_') }}/site/static:
     file.directory:
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - group: web
       - require:
-        - file: /home/{{ site }}/site
+        - file: /home/{{ domain|replace('.', '_') }}/site
       - mode: 755
 
-  /home/{{ site }}/site/templates:
+  /home/{{ domain|replace('.', '_') }}/site/templates:
     file.directory:
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - group: web
       - require:
-        - file: /home/{{ site }}/site
+        - file: /home/{{ domain|replace('.', '_') }}/site
       - mode: 755
 
-  /home/{{ site }}/site/templates/templatepages:
+  /home/{{ domain|replace('.', '_') }}/site/templates/templatepages:
     file.directory:
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - group: web
       - require:
-        - file: /home/{{ site }}/site/templates
+        - file: /home/{{ domain|replace('.', '_') }}/site/templates
       - mode: 755
 
   {# symlink uploads to site folder #}
-  /home/web/repo/ftp/{{ site }}/site:
+  /home/web/repo/ftp/{{ domain|replace('.', '_') }}/site:
     file.symlink:
-      - target: /home/{{ site }}/site
+      - target: /home/{{ domain|replace('.', '_') }}/site
       - require:
-        - file: /home/web/repo/ftp/{{ site }}
-        - file: /home/{{ site }}/site
+        - file: /home/web/repo/ftp/{{ domain|replace('.', '_') }}
+        - file: /home/{{ domain|replace('.', '_') }}/site
 
-  /home/{{ site }}/opt:
+  /home/{{ domain|replace('.', '_') }}/opt:
     file.directory:
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - group: web
       - mode: 755
       - makedirs: False
 
-  /home/{{ site }}/opt/venv_watch_ftp_folder:
+  /home/{{ domain|replace('.', '_') }}/opt/venv_watch_ftp_folder:
     virtualenv.manage:
       - system_site_packages: False
       - requirements: salt://ftp/requirements2.txt
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - require:
         - pkg: python-virtualenv
 
   {# watch files created in the site folder and set correct mode #}
-  /home/{{ site }}/opt/watch_ftp_folder.py:
+  /home/{{ domain|replace('.', '_') }}/opt/watch_ftp_folder.py:
     file:
       - managed
       - source: salt://ftp/watch_ftp_folder.py
-      - user: {{ site }}
+      - user: {{ domain|replace('.', '_') }}
       - group: web
       - mode: 755
       - makedirs: False

@@ -95,7 +95,7 @@ supervisor:
 {% set postgres_settings = pillar.get('postgres_settings') -%}
 {% endif %}
 
-{% for site, settings in sites.iteritems() %}
+{% for domain, settings in sites.iteritems() %}
 
 {% set profile = settings.get('profile') -%}
 {% if profile == 'mattermost' %}
@@ -105,19 +105,18 @@ supervisor:
     - source: salt://supervisor/chat.conf
     - template: jinja
     - context:
-      site: {{ site }}
+      domain: {{ domain }}
     - require:
       - pkg: supervisor
 {% endif %}
-
 {% if settings.get('ftp', None) %}
-/etc/supervisor/conf.d/{{ site }}_watch_ftp_folder.conf:
+/etc/supervisor/conf.d/{{ domain|replace('.', '_') }}_watch_ftp_folder.conf:
   file:
     - managed
     - source: salt://supervisor/watch_ftp_folder.conf
     - template: jinja
     - context:
-      site: {{ site }}
+      domain: {{ domain }}
     - require:
       - pkg: supervisor
 {% endif %} # ftp

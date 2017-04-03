@@ -32,8 +32,7 @@
         - pkg: vsftpd
 
   /etc/vsftpd.userlist:
-    file:
-      - managed
+    file.managed:
       - source: salt://ftp/vsftpd.userlist
       - template: jinja
       - context:
@@ -137,9 +136,9 @@
 
   {# watch files created in the site folder and set correct mode #}
   /home/{{ domain|replace('.', '_') }}/opt/watch_ftp_folder.py:
-    file:
-      - managed
+    file.managed:
       - source: salt://ftp/watch_ftp_folder.py
+      - template: jinja
       - user: {{ domain|replace('.', '_') }}
       - group: web
       - mode: 755

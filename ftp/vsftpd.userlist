@@ -1,7 +1,7 @@
 {# we create a user for each site which has ftp enabled -#}
-{% for site, settings in sites.iteritems() -%}
+{% for domain, settings in sites.iteritems() -%}
 {% set ftp = settings.get('ftp', None) -%}
 {% if ftp -%}
-{{ site }}
+{{ domain|replace('.', '_') }}
 {% endif -%}
 {% endfor -%}

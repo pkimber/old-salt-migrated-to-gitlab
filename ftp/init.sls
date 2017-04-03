@@ -50,8 +50,9 @@
         - file: /home/web/repo
 {% endif %}
 
-{% for site, settings in sites.iteritems() %}
+{% for domain, settings in sites.iteritems() %}
 {% if settings.get('ftp', None) %}
+{% set env = settings.get('env', {}) -%}
 {# for ftp uploads #}
   /home/web/repo/ftp/{{ domain|replace('.', '_') }}:
     file.directory:
@@ -64,15 +65,15 @@
   ftp_group_{{ domain|replace('.', '_') }}:
     group.present:
       - name: {{ domain|replace('.', '_') }}
-      - gid: {{ settings.get('ftp_user_id') }}
+      - gid: {{ env['ftp_user_id'] }}
       - system: True
 
   ftp_user_{{ domain|replace('.', '_') }}:
     user.present:
       - name: {{ domain|replace('.', '_') }}
-      - uid: {{ settings.get('ftp_user_id') }}
+      - uid: {{ env['ftp_user_id'] }}
       - gid_from_name: True
-      - password: {{ settings.get('ftp_password') }}
+      - password: {{ env['ftp_password'] }}
       - shell: /bin/bash
       - require:
         - group: ftp_group_{{ domain|replace('.', '_') }}
@@ -127,11 +128,12 @@
 
   /home/{{ domain|replace('.', '_') }}/opt/venv_watch_ftp_folder:
     virtualenv.manage:
-      - system_site_packages: False
-      - requirements: salt://ftp/requirements2.txt
+      - index_url: https://pypi.python.org/simple/
       - user: {{ domain|replace('.', '_') }}
+      - requirements: salt://ftp/requirements.txt
       - require:
-        - pkg: python-virtualenv
+        - pkg: python3-venv
+        - pkg: python3-virtualenv
 
   {# watch files created in the site folder and set correct mode #}
   /home/{{ domain|replace('.', '_') }}/opt/watch_ftp_folder.py:

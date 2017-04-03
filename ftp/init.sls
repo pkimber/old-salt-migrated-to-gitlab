@@ -144,6 +144,8 @@
       - group: web
       - mode: 755
       - makedirs: False
+      - context:
+        sites: {{ env }}
 
 {% endif %}
 {% endfor %}

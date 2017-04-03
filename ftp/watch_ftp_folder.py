@@ -16,6 +16,7 @@ import urllib.parse
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+{% set env = settings.get('env', {}) -%}
 
 class MyHandler(FileSystemEventHandler):
 
@@ -47,7 +48,7 @@ class MyHandler(FileSystemEventHandler):
         query_path = '/'.join(['alfresco', 'api'])
         if path:
             query_path = '/'.join([query_path, path])
-        result = urllib.parse.urljoin({{ env['alfresco_url'] }}, query_path)
+        result = urllib.parse.urljoin('{{ env['alfresco_url'] }}', query_path)
         print('url: {}'.format(result))
         return result
 
@@ -73,15 +74,14 @@ class MyHandler(FileSystemEventHandler):
             #     'honeydown.pdf',
             # )
             # files = {'filedata': open(file_path, 'rb')}
-            files = {'filedata': open(event, 'rb')}
+            files = {'filedata': open(event.src_path, 'rb')}
             r = requests.post(
                 url,
-                auth=({{ env['alfresco_user'] }}, {{ env['alfresco_pass'] }}),
+                auth=('{{ env['alfresco_user'] }}', '{{ env['alfresco_pass'] }}'),
                 files=files,
             )
             self._response(r)
-            print("Uploaded '{}' to Alfresco".format(event))
-            self.stdout.write("Complete...")
+            print("Uploaded '{}' to Alfresco".format(event.src_path))
 
 
 if __name__ == "__main__":

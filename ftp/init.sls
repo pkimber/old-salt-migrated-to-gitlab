@@ -128,8 +128,9 @@
   /home/{{ domain|replace('.', '_') }}/opt/venv_watch_ftp_folder:
     virtualenv.manage:
       - index_url: https://pypi.python.org/simple/
-      - user: {{ domain|replace('.', '_') }}
       - requirements: salt://ftp/requirements.txt
+      - user: {{ domain|replace('.', '_') }}
+      - venv_bin: /usr/bin/pyvenv-3.5
       - require:
         - pkg: python3-venv
         - pkg: python3-virtualenv
@@ -138,13 +139,13 @@
   /home/{{ domain|replace('.', '_') }}/opt/watch_ftp_folder.py:
     file.managed:
       - source: salt://ftp/watch_ftp_folder.py
+      - context:
+        settings: {{ settings }}
       - template: jinja
       - user: {{ domain|replace('.', '_') }}
       - group: web
       - mode: 755
       - makedirs: False
-      - context:
-        sites: {{ env }}
 
 {% endif %}
 {% endfor %}

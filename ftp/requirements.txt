@@ -1,2 +1,2 @@
+inotify-simple==1.1.1
 requests==2.13.0
-watchdog==0.8.3

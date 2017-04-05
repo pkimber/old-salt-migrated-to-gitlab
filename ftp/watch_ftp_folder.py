@@ -1,8 +1,43 @@
 # -*- encoding: utf-8 -*-
 {% set env = settings.get('env', {}) -%}
 """
-Sample copied from:
+Watch a folder.  Upload new files to Alfresco.
+
+Changelog
+=========
+
+2017
+----
+
+We are not using FTP upload for Django templates, so I am updating the script
+to copy files to an Alfresco server.
+
+We were using watchdog (see code from 2014), but watchdog does not know when a
+file has finished copying.  I have searched for ideas, and it seems most of
+them are flawed.  People suggest watching the file size - when the file size
+stops increasing, then the file has finished copying.  This doesn't feel safe
+to me.  ``inotify`` seems a more elegant solution, but apparently, some file
+copy operations send multiple ``CLOSE_WRITE`` events.
+
+I am now attempting to use ``inotify``, but all python ``inotify`` packages are
+complicated.  ``inotify-simple`` is simple to use, so I will try it.
+
+.. warning:: This code will not work on Windows because it doesn't have
+             ``inotify``.
+
+Sample code copied from:
+http://inotify-simple.readthedocs.io/en/latest/
+
+2014
+----
+
+Code was used to set permissions on files after upload by an FTP server.  I
+think the files were Django templates which could be incorporated into the
+site.
+
+Original code copied from:
 http://brunorocha.org/python/watching-a-directory-for-file-changes-with-python.html
+
 """
 import json
 import os
@@ -12,11 +47,10 @@ import sys
 import time
 import urllib.parse
 
-from watchdog.events import FileSystemEventHandler
-from watchdog.observers import Observer
+from inotify_simple import INotify, flags, masks
 
 
-class MyHandler(FileSystemEventHandler):
+class MyHandler:
 
     def _chown(self, event):
         is_file = False
@@ -52,7 +86,7 @@ class MyHandler(FileSystemEventHandler):
         query_path = '/'.join(['alfresco', 'api'])
         if path:
             query_path = '/'.join([query_path, path])
-        result = urllib.parse.urljoin('{{ env['alfresco_url'] }}', query_path)
+        # pk result = urllib.parse.urljoin('{{ env['alfresco_url'] }}', query_path)
         sys.stdout.write('url: {}'.format(result))
         return result
 
@@ -80,13 +114,15 @@ class MyHandler(FileSystemEventHandler):
 
 if __name__ == "__main__":
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
-    event_handler = MyHandler()
-    observer = Observer()
-    observer.schedule(event_handler, path, recursive=True)
-    observer.start()
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
+    inotify = INotify()
+    watch_flags = flags.CLOSE_WRITE
+    sys.stdout.write('watching: {}'.format(path))
+    wd = inotify.add_watch(path, watch_flags)
+    while True:
+        for event in inotify.read():
+            for flag in flags.from_mask(event.mask):
+                if flag == flags.CLOSE_WRITE:
+                    file_path = os.path.join(path, event.name)
+                    sys.stdout.write('CLOSE_WRITE: {}'.format(file_path))
+                    handler = MyHandler()
+                    handler.on_created(file_path)

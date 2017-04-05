@@ -52,30 +52,25 @@ from inotify_simple import INotify, flags, masks
 
 class MyHandler:
 
-    def _chown(self, event):
-        is_file = False
-        if event.is_directory:
-            sys.stdout.write('is_directory: {}'.format(event.src_path))
+    def _chown(self, src_path):
+        if os.path.isfile(src_path):
+            sys.stdout.write('is_file: {}'.format(src_path))
             try:
                 os.chmod(
-                    event.src_path,
+                    src_path,
+                    stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH
+                )
+            except OSError as e:
+                sys.stdout.write(e)
+        else:
+            sys.stdout.write('is_directory: {}'.format(src_path))
+            try:
+                os.chmod(
+                    src_path,
                     stat.S_IREAD | stat.S_IWRITE | stat.S_IEXEC | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH
                 )
             except OSError as e:
                 sys.stdout.write(e)
-                pass
-        else:
-            sys.stdout.write('NOT event.is_directory: {}'.format(event.src_path))
-            try:
-                os.chmod(
-                    event.src_path,
-                    stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH
-                )
-                is_file = True
-            except OSError as e:
-                sys.stdout.write(e)
-                pass
-        return is_file
 
     def _response(self, r):
         sys.stdout.write('status_code: {}'.format(r.status_code))
@@ -86,29 +81,29 @@ class MyHandler:
         query_path = '/'.join(['alfresco', 'api'])
         if path:
             query_path = '/'.join([query_path, path])
-        # pk result = urllib.parse.urljoin('{{ env['alfresco_url'] }}', query_path)
+        result = urllib.parse.urljoin('{{ env['alfresco_url'] }}', query_path)
         sys.stdout.write('url: {}'.format(result))
         return result
 
-    def on_created(self, event):
+    def on_created(self, src_path):
         auth = (
             "{{ env['alfresco_user'] }}",
             "{{ env['alfresco_pass'] }}",
         )
         # change the owner
-        is_file = self._chown(event)
+        self._chown(src_path)
         # upload to alfresco
-        if is_file:
+        if os.path.isfile(src_path):
             # upload a file
-            sys.stdout.write("Found '{}'".format(event))
+            sys.stdout.write("Found '{}'".format(src_path))
             url = self._url(
                 '-default-/public/alfresco/versions/1/nodes/-my-/children'
             )
-            files = {'filedata': open(event.src_path, 'rb')}
+            files = {'filedata': open(src_path, 'rb')}
             r = requests.post(url, auth=auth, files=files)
             self._response(r)
             sys.stdout.write(
-                "Uploaded '{}' to Alfresco".format(event.src_path)
+                "Uploaded '{}' to Alfresco".format(src_path)
             )
 
 

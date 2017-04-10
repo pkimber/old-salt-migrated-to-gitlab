@@ -4,6 +4,12 @@
 
 {% if alfresco %}
 
+# for libreoffice
+libcups2:
+  pkg.installed
+libsm6:
+  pkg.installed
+
 {% for domain, settings in sites.iteritems() %}
 /opt/alfresco-community/tomcat/shared/classes/alfresco-global.properties:
   file.managed:

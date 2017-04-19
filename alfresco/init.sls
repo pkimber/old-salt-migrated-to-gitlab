@@ -5,10 +5,55 @@
 {% if alfresco %}
 
 # for libreoffice
+fontconfig:
+  pkg.installed
+fonts-noto:
+  pkg.installed
+libcairo2:
+  pkg.installed
 libcups2:
+  pkg.installed
+libfontconfig1:
+  pkg.installed
+libgl1-mesa-glx:
+  pkg.installed
+libglu-dev:
+  pkg.installed
+libglu1-mesa:
+  pkg.installed
+libice6:
+  pkg.installed
+libsm-dev:
   pkg.installed
 libsm6:
   pkg.installed
+libxext-dev:
+  pkg.installed
+libxinerama1:
+  pkg.installed
+libxrender1:
+  pkg.installed
+libxt6:
+  pkg.installed
+ttf-mscorefonts-installer:
+  pkg.installed
+
+imagemagick:
+  pkg.installed
+ghostscript:
+  pkg.installed
+libgs-dev:
+  pkg.installed
+libjpeg62:
+  pkg.installed
+libpng3:
+  pkg.installed
+
+
+/usr/lib/x86_64-linux-gnu/libGL.so.1:
+  file.symlink:
+    - target: /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1
+
 
 {% for domain, settings in sites.iteritems() %}
 /opt/alfresco-community/tomcat/shared/classes/alfresco-global.properties:

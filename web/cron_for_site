@@ -12,7 +12,7 @@ HOME=/home/web/
   {{ settings['schedule'] }}              web         . /home/web/opt/{{ domain }}.sh {{ name }} 2>&1 | /usr/bin/logger -t {{ domain }}_{{ name }}
 {% endfor -%}
 {% if alfresco %}
-  0       3       *       *       *       web         . /home/web/opt/alfresco-bart.sh 2>&1 | /usr/bin/logger -t backup_alfresco_bart
+  0       3       *       *       *       web         . /home/web/opt/alfresco-bart.sh backup 2>&1 | /usr/bin/logger -t backup_alfresco_bart
 {% endif %}
 {% if django %}
   0       1       *       *       *       web         . /home/web/opt/backup.{{ domain }}.sh 2>&1 | /usr/bin/logger -t backup_{{ domain }}

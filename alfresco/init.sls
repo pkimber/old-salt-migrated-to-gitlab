@@ -38,8 +38,6 @@ libxt6:
 ttf-mscorefonts-installer:
   pkg.installed
 
-imagemagick:
-  pkg.installed
 ghostscript:
   pkg.installed
 imagemagick:

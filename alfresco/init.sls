@@ -42,17 +42,25 @@ imagemagick:
   pkg.installed
 ghostscript:
   pkg.installed
+imagemagick:
+  pkg.installed
 libgs-dev:
   pkg.installed
 libjpeg62:
   pkg.installed
 libpng3:
   pkg.installed
+libxinerama-dev:
+  pkg.installed
 
 
 /usr/lib/x86_64-linux-gnu/libGL.so.1:
   file.symlink:
     - target: /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1
+
+# for postgres
+postgresql-client:
+  pkg.installed
 
 
 {% for domain, settings in sites.iteritems() %}

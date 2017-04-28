@@ -25,7 +25,7 @@ elasticsearch_soft:
     - name: elasticsearch
     - require:
       - file: elasticsearch_repo
-      - pkg: oracle-java7-installer
+      - pkg: oracle-java8-installer
 
 
 /etc/default/elasticsearch:
